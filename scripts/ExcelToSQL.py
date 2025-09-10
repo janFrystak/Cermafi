@@ -1,18 +1,25 @@
 import pandas as pd
+import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
 load_dotenv()
-database = "testdb"
-table = "zkousky"
 
-engine = create_engine("postgresql+psycopg2://dev:dev@localhost:5432/{testdb}")
-
-df = pd.read_excel("../../Data/Lead_up/2025/Uchazeci/PZ2025_kolo1_uchazeci_prihlasky_vysledky.xlsx", sheet_name="data")
-df.to_sql(table, engine, if_exists="append", index=True)
+database = os.getenv("db_name")
+table = os.getenv("tb_name")
+user = os.getenv("db_user")
+pswd = os.getenv("db_password")
 
 
-df = pd.read_excel("../../Data/Lead_up/2025/Uchazeci/PZ2025_kolo2_uchazeci_prihlasky_vysledky.xlsx", sheet_name="data")
+
+engine = create_engine("postgresql+psycopg2://" + user + ":" + pswd + "@localhost:5432/" + database)
+
+df = pd.read_excel("Server/Data/2025/Uchazeci/PZ2025_kolo1_uchazeci_prihlasky_vysledky.xlsx", sheet_name="data")
+df.to_sql(table, engine, if_exists="append", index=False)
+
+df = ""
+
+df = pd.read_excel("Server/Data/2025/Uchazeci/PZ2025_kolo2_uchazeci_prihlasky_vysledky.xlsx", sheet_name="data")
 df.to_sql(table, engine, if_exists="append", index=False)
 
 print("Excel table uploaded to PostgreSQL!")
