@@ -5,14 +5,15 @@ from sqlalchemy import create_engine
 
 load_dotenv()
 
-database = os.getenv("db_name")
-table = os.getenv("tb_name")
-user = os.getenv("db_user")
-pswd = os.getenv("db_password")
+database = os.getenv("DB_NAME")
+table = os.getenv("TB_NAME")
+user = os.getenv("DB_USER")
+pswd = os.getenv("DB_PSWD")
+port = os.getenv("HOST")
 
 
 
-engine = create_engine("postgresql+psycopg2://" + user + ":" + pswd + "@localhost:5432/" + database)
+engine = create_engine("postgresql+psycopg2://" + user + ":" + pswd + "@localhost:" + port + "/" + database)
 
 df = pd.read_excel("Server/Data/2025/Uchazeci/PZ2025_kolo1_uchazeci_prihlasky_vysledky.xlsx", sheet_name="data")
 df.to_sql(table, engine, if_exists="append", index=False)
