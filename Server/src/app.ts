@@ -1,13 +1,14 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 import {Request, Response} from "express";
-const express = require('express');
-const helmet = require("helmet");
+import express from "express";
+import helmet from 'helmet';
+
 const app = express();
 import { AppDataSource } from "../data-source";
 import { Uchazec } from "../Models/Uchazec-model";
 
 
-app.use(helmet());
+//app.use(helmet());
 
 
 AppDataSource.initialize()
@@ -27,7 +28,5 @@ AppDataSource.initialize()
 
         
     })
-    .catch(error => {
-        console.log(error);
-    })
+    
 

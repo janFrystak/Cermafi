@@ -1,13 +1,10 @@
-import "reflect-metadata"
-import { DataSource } from "typeorm"
-import { Uchazec } from "./Models/Uchazec-model"
-import * as dotenv from 'dotenv'
+import "reflect-metadata";
+import { DataSource } from "typeorm";
+import { Uchazec } from "./Models/Uchazec-model";
+import * as dotenv from 'dotenv';
 dotenv.config()
-
 const cf = process.env
-
-
-
+console.log("from data-source.js, line 7: " + cf);
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: cf["HOST"],
@@ -15,7 +12,7 @@ export const AppDataSource = new DataSource({
     username: cf["DB_USER"],
     password: cf["DB_PSWD"],
     database: cf["DB_NAME"],
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [Uchazec],
     migrations: [],

@@ -6,16 +6,16 @@
     "Cermafi": {
       "projectType": "application",
       "schematics": {},
-      "root": "",
-      "sourceRoot": "src",
+      "root": "Client",
+      "sourceRoot": "Client/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/cermafi",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
+            "index": "Client/src/index.html",
+            "browser": "Client/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -27,7 +27,7 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "Client/src/styles.css"
             ],
             "scripts": []
           },
@@ -85,7 +85,7 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "Client/src/styles.css"
             ],
             "scripts": []
           }
