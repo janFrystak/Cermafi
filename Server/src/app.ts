@@ -4,8 +4,8 @@ import express from "express";
 import helmet from 'helmet';
 
 const app = express();
-import { AppDataSource } from "../data-source";
-import { Uchazec } from "../Models/Uchazec-model";
+import { AppDataSource } from "./data-source";
+import { Uchazec } from "./Models/Uchazec-model";
 
 
 //app.use(helmet());
