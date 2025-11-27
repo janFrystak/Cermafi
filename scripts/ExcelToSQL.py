@@ -9,7 +9,7 @@ database = os.getenv("DB_NAME")
 table = os.getenv("TB_NAME")
 user = os.getenv("DB_USER")
 pswd = os.getenv("DB_PSWD")
-port = os.getenv("HOST")
+port = os.getenv("DB_HOST")
 
 
 

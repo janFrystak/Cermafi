@@ -5,7 +5,11 @@
   "projects": {
     "Cermafi": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "path": "src/app/Components"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",

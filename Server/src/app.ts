@@ -13,31 +13,45 @@ app.use(helmet());
 app.use(express.json());
 
 AppDataSource.initialize()
-    .then(() =>{
+    .then(() => {
         const uchazecRepository = AppDataSource.getRepository(Uchazec);
 
-        app.listen(8080, ()=>{
-            console.log("Listening on localhost:8080")
-            
-        });
-
-        app.get("/api/uchazec-single/:id", async(req:Request, res:Response)=>{
-            const id = parseInt(req.params["id"]);
+        // Register routes first
+        app.get("/api/uchazec-single/:id", async (req: Request, res: Response) => {
+            const id = parseInt(req.params.id);
             try {
-                const uchazec = await uchazecRepository.findOneBy({id});
+                const uchazec = await uchazecRepository.findOneBy({ id });
                 if (!uchazec) {
-                    return res.status(404).json({message: "Uchazec not found"});
+                    return res.status(404).json({ message: "Uchazec not found" });
                 }
                 res.json(uchazec);
-                console.log(uchazec);
             } catch (err) {
                 console.error(err);
-                res.status(500).json({message: "Internal server error"});
+                res.status(500).json({ message: "Internal server error" });
             }
-            
         });
 
-        
+        app.get("/api/uchazec", async (_req: Request, res: Response) => {
+            try {
+                const all = await uchazecRepository.find();
+                if (!all){
+                    return res.status(404).json({message: "Empty :("})
+                }
+                res.json(all);
+            } catch (err) {
+                console.error(err);
+                res.status(500).json({message: "Internal server error."});
+            }}
+        );
+
+        // Then start server
+        app.listen(8080, () => {
+            console.log("Listening on http://localhost:8080");
+        });
     })
+    .catch((err) => {
+        console.error("DataSource initialization error:", err);
+    });
+
     
 
