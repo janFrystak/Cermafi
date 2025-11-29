@@ -19,6 +19,7 @@ AppDataSource.initialize()
         // Register routes first
         app.get("/api/uchazec-single/:id", async (req: Request, res: Response) => {
             const id = parseInt(req.params.id);
+            console.log("id: ",id)
             try {
                 const uchazec = await uchazecRepository.findOneBy({ id });
                 if (!uchazec) {

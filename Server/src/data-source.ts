@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource({
     username: String(process.env.DB_USER),
     password: String(process.env.DB_PSWD),
     database: process.env.DB_NAME,
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [Uchazec],
     migrations: [],
