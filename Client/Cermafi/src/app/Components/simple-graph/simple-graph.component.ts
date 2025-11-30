@@ -16,8 +16,6 @@ export class SimpleGraphComponent implements OnInit{
   constructor(private dataService: ChartDataService) {}
 
  
-
-  
   ngOnInit(): void {
     this.dataService.getChartData('5').subscribe((data: any) => {
       this.chartData = {
