@@ -7,12 +7,20 @@ import { Observable } from 'rxjs';
 })
 
 export class ChartDataService {
-  private baseUrl = 'https://localhost:8080/api/uchazec-single'
+  private baseUrl = 'https://localhost:8080'
 
   constructor(private http:HttpClient) { }
 
-  getChartData(param: string): Observable<any> {
+  getChartData_Id(param: string): Observable<any> {
+    const myUrl = this.baseUrl + "uchatec-single/"
     const httpParams = new HttpParams().set('param', param);
-    return this.http.get(this.baseUrl, {params: httpParams})
+    return this.http.get(myUrl, {params: httpParams})
+  }
+  getChartData_YearRound(param: string): Observable<any> {
+    const myUrl = this.baseUrl + "uchatec/:id/:year/:kolo"
+    const httpParams = new HttpParams().set('param', param);
+    return this.http.get(myUrl, {params: httpParams})
   }
 }
+
+

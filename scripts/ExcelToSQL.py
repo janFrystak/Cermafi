@@ -2,6 +2,9 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
+import tkinter as tk
+from tkinter import filedialog as fd
+import os
 
 load_dotenv()
 
@@ -13,82 +16,70 @@ port = os.getenv("DB_HOST")
 
 
 
-engine = create_engine("postgresql+psycopg2://" + user + ":" + pswd + "@localhost:" + port + "/" + database)
+def choose_files(prompt: str):
+    root = tk.Tk()
+    root.withdraw()  # hide main window
 
-df = pd.read_excel("Server/Data/2025/Uchazeci/PZ2025_kolo1_uchazeci_prihlasky_vysledky.xlsx", sheet_name="data")
-df.to_sql(table, engine, if_exists="append", index=False)
+    parent_dir = os.path.dirname(os.getcwd())
 
-df = ""
+    filenames = fd.askopenfilenames(
+        parent=root,
+        title=prompt,
+        initialdir=parent_dir,
+        filetypes=[
+            ("Excel files", "*.xlsx *.xls"),
+            ("All files", "*.*")
+        ],
+    )
 
-df = pd.read_excel("Server/Data/2025/Uchazeci/PZ2025_kolo2_uchazeci_prihlasky_vysledky.xlsx", sheet_name="data")
-df.to_sql(table, engine, if_exists="append", index=False)
+    root.destroy()
 
-print("Excel table uploaded to PostgreSQL!")
+    if not filenames:
+        print("No files chosen. Closing.")
+        exit(1)
+
+    print("Chosen files:")
+    for f in filenames:
+        print(f" → {f}")
+
+    return filenames
 
 
-# import pandas as pd
-# import psycopg2
+def convert(path: str, engine):
+    try:
+        df = pd.read_excel(path, sheet_name="data")
+        df["id"] = None
+        df.to_sql(table, engine, if_exists="append", index=False)
+        print(f"Successfully loaded: {os.path.basename(path)}")
+    except Exception as e:
+        print(f"Error loading file: {path}")
+        print(e)
+        exit(1)
 
-# # Read Excel
-# df = pd.read_excel("Cermat-script-test.xlsx")
+def run(files):
+    print("Connecting to database...")
 
-# # Connect to Postgres
-# conn = psycopg2.connect("dbname=testdb  host=localhost port=5432")
-# cur = conn.cursor()
+    try:
+        engine = create_engine(
+            f"postgresql+psycopg2://{user}:{pswd}@localhost:{port}/{database}"
+        )
+        print("Connection successful!\n")
+    except Exception as e:
+        print("Unable to connect to database.")
+        print(e)
+        exit(1)
 
-# # Create table manually
-# cur.execute("""
-#     CREATE TABLE IF NOT EXISTS my_table (
-#         id SERIAL PRIMARY KEY,
-#         ss1_red INT,
-#         ss2_red INT,
-#         ss3_red INT,
-#         ss4_red INT,
-#         ss5_red INT,
-#         ss1_zrizovatel INT,
-#         ss2_zrizovatel INT,
-#         ss3_zrizovatel INT,
-#         ss4_zrizovatel INT,
-#         ss5_zrizovatel INT,
-#         ss1_kkov TEXT,
-#         ss1_kkov TEXT,
-#         ss1_kkov TEXT,
-#         ss1_kkov TEXT,
-#         ss1_kkov TEXT
-#         ss1_forma TEXT,
-#         ss1_forma TEXT,
-#         ss1_forma TEXT,
-#         ss1_forma TEXT,
-#         ss1_forma TEXT,
-#         ss1_zkraceno INT,
-#         ss1_zkraceno INT,
-#         ss1_zkraceno INT,
-#         ss1_zkraceno INT,
-#         ss1_zkraceno INT,
-#         ss1_prijat INT,
-#         ss1_prijat INT,
-#         ss1_prijat INT,
-#         ss1_prijat INT,
-#         ss1_prijat INT,
-#         ss1_duvod_nepr TEXT,
-#         ss1_duvod_nepr TEXT,
-#         ss1_duvod_nepr TEXT,
-#         ss1_duvod_nepr TEXT,
-#         ss1_duvod_nepr TEXT,
-#         c_m_procent_skor INT,
-#         c_procent_skor INT,
-#         m_procent_skor INT
-        
-#     )
-# """)
+    print(f"Writing into table: {table}")
+    conf = input("Continue? [y/n]: ").lower()
+    if conf != "y":
+        print("Task ended by user.")
+        exit(0)
 
-# # Insert rows
-# for _, row in df.iterrows():
-#     cur.execute(
-#         "INSERT INTO my_table (col1, col2, col3) VALUES (%s, %s, %s)",
-#         (row['col1'], row['col2'], row['col3'])
-#     )
+    for f in files:
+        print(f"\nLoading: {f}")
+        convert(f, engine)
 
-# conn.commit()
-# cur.close()
-# conn.close()
+    print("All Excel files successfully imported!")
+
+files = choose_files("Please select Excel files")
+run(files)
