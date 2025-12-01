@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { SimpleGraphComponent } from "./Components/simple-graph/simple-graph.component";
 
 
+
 @Component({
+  standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet, SimpleGraphComponent],
+  imports: [SimpleGraphComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'Cermafi';
