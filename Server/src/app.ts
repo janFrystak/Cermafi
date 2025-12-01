@@ -17,7 +17,7 @@ AppDataSource.initialize()
         const uchazecRepository = AppDataSource.getRepository(Uchazec);
 
         // Register routes first
-        app.get("/api/uchazec-single/:id", async (req: Request, res: Response) => {
+        app.get("/uchazec-single/:id", async (req: Request, res: Response) => {
             const id = parseInt(req.params.id);
             console.log("id: ",id)
             try {
@@ -31,8 +31,29 @@ AppDataSource.initialize()
                 res.status(500).json({ message: "Internal server error" });
             }
         });
+        app.get("uchatec/:id/:year/:kolo"), async (req: Request, res: Response) => {
+            const id = parseInt(req.params.id) 
+            const year = parseInt(req.params.year)
+            const kolo = parseInt(req.params.kolo)
 
-        app.get("/api/uchazec", async (_req: Request, res: Response) => {
+            console.log("id: ", id, " -- ", "year: ", year, " -- ", "kolo: ", kolo)
+            try {
+                const uchazeci = await uchazecRepository.find({
+                    where: {
+                        rok:String(year),
+                        kolo:String(kolo)
+                    },
+                }) 
+                if(!uchazeci){
+                    return res.status(404).json({message: "No uchazec found"})
+                }
+            } catch(err) {
+                console.error(err)
+                res.status(500).json({message: "Internal server error"})
+            }
+        }
+
+        app.get("/uchazec", async (_req: Request, res: Response) => {
             try {
                 const all = await uchazecRepository.find();
                 if (!all){

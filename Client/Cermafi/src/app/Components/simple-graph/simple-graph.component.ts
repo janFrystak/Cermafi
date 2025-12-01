@@ -17,11 +17,11 @@ export class SimpleGraphComponent implements OnInit{
 
  
   ngOnInit(): void {
-    this.dataService.getChartData('5').subscribe((data: any) => {
+    this.dataService.getChartData_Id('5').subscribe((data: any) => {
       this.chartData = {
         labels: data.labels,
         datasets: [
-          { label: 'Year', data: data.values}
+          { label: 'Uchatec', data: data.values}
         ]
       }
     })
