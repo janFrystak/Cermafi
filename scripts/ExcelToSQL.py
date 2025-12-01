@@ -1,18 +1,18 @@
 import pandas as pd
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, dotenv_values
 from sqlalchemy import create_engine
 import tkinter as tk
 import tkinter.filedialog as fd
 
 
-load_dotenv()
+config = dotenv_values("../Server/.env")
 
-database = os.getenv("DB_NAME")
-table = os.getenv("TB_NAME")
-user = os.getenv("DB_USER")
-pswd = os.getenv("DB_PSWD")
-port = os.getenv("DB_HOST")
+database = config["DB_NAME"]
+table = config["TB_NAME"]
+user = config["DB_USER"]
+pswd = config["DB_PSWD"]
+port = config["DB_PORT"]
 
 
 def choose_files(prompt: str) -> str:
@@ -36,15 +36,14 @@ def choose_files(prompt: str) -> str:
         exit(1)
     return list(filenames)
 
-def convert(path: str, engine):
+def convert(path: str, engine, sheet: str):
     try:
-
-        df = pd.read_excel(path, sheet_name="data")
-        df["id"] = None
+        df = pd.read_excel(path, sheet_name=sheet)
+        # df["id"] = None
         df.to_sql(table, engine, if_exists="append", index=False)
-        print("Succesfully loaded: {path}")
+        print("Succesfully loaded: ", path)
     except Exception as e:
-        print("Error while loading file: {path}")
+        print("Error while loading file: ", path)
         print(e)
         exit(1)
 
@@ -64,15 +63,19 @@ def run(filepaths):
 
   
 
-    print(f"Writing into table: **{table}**")
-    conf = input("Continue? [y/n]: ").lower()
+    print(f"Writing into table: {table}")
+    data_sheet = input("Enter datasheet: ")
+    if not data_sheet:
+        print("Please provice spreadsheets data sheet")
+        exit(0)
+    '''conf = input("Continue? [y/n]: ").lower()
     if conf != "y":
         print("Task ended by user.")
         exit(0)
-
+    '''
     for path in filepaths:
-        print("Loading file: {path}")
-        convert(path, engine)
+        print("Loading file: ", path)
+        convert(path, engine, data_sheet)
 
     
 

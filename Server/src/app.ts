@@ -31,22 +31,22 @@ AppDataSource.initialize()
                 res.status(500).json({ message: "Internal server error" });
             }
         });
-        app.get("uchatec/:id/:year/:kolo"), async (req: Request, res: Response) => {
-            const id = parseInt(req.params.id) 
+        app.get("uchatec/:year/:round"), async (req: Request, res: Response) => {
             const year = parseInt(req.params.year)
-            const kolo = parseInt(req.params.kolo)
+            const round = parseInt(req.params.round)
 
-            console.log("id: ", id, " -- ", "year: ", year, " -- ", "kolo: ", kolo)
+            console.log("year: ", year, " -- ", "kolo: ", round)
             try {
                 const uchazeci = await uchazecRepository.find({
                     where: {
                         rok:String(year),
-                        kolo:String(kolo)
+                        kolo:String(round)
                     },
                 }) 
                 if(!uchazeci){
                     return res.status(404).json({message: "No uchazec found"})
                 }
+                res.json(uchazeci)
             } catch(err) {
                 console.error(err)
                 res.status(500).json({message: "Internal server error"})

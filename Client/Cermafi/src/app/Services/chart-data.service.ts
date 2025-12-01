@@ -11,14 +11,16 @@ export class ChartDataService {
 
   constructor(private http:HttpClient) { }
 
-  getChartData_Id(param: string): Observable<any> {
-    const myUrl = this.baseUrl + "uchatec-single/"
-    const httpParams = new HttpParams().set('param', param);
+  getChartData_Id(id: string): Observable<any> {
+    const myUrl = this.baseUrl + "/uchazec-single/:id"
+    const httpParams = new HttpParams().set('id', id);
     return this.http.get(myUrl, {params: httpParams})
   }
-  getChartData_YearRound(param: string): Observable<any> {
-    const myUrl = this.baseUrl + "uchatec/:id/:year/:kolo"
-    const httpParams = new HttpParams().set('param', param);
+  getChartData_YearRound(year: string, round: string): Observable<any> {
+    const myUrl = this.baseUrl + "/uchazec/:year/:kolo"
+    const httpParams = new HttpParams()
+      .set('year', year)
+      .set('round', round)
     return this.http.get(myUrl, {params: httpParams})
   }
 }
