@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+
 from dotenv import load_dotenv, dotenv_values
 from sqlalchemy import create_engine
 import tkinter as tk
@@ -14,7 +15,7 @@ user = config["DB_USER"]
 pswd = config["DB_PSWD"]
 port = config["DB_PORT"]
 
-
+print(database, table, user, port)
 def choose_files(prompt: str) -> str:
     root = tk.Tk()
     root.withdraw()
@@ -49,12 +50,13 @@ def convert(path: str, engine, sheet: str):
 
 def run(filepaths):
     print("Connecting to database...")
-
+    print("testing: ", user, pswd, port, database)
     try:
-        print(user, pswd, port, database)
+        
         engine = create_engine(
             f"postgresql+psycopg2://{user}:{pswd}@localhost:{port}/{database}"
         )
+        print(user, pswd, database)
         print("Connection succesful!")
     except Exception as e:
         print("Unable to connect to database.")
