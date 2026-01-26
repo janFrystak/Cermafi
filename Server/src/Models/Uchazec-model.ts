@@ -10,7 +10,7 @@ export class Uchazec {
 
     @Column("bigint")
     kolo!: string;
-
+    
     @Column()
     ss1_redizo!: number;
     @Column()

@@ -1,1 +1,13 @@
 issue with filling ORM array: https://github.com/typeorm/typeorm/issues/4498
+unable to start database: https://stackoverflow.com/questions/69754628/psql-error-connection-to-server-on-socket-tmp-s-pgsql-5432-failed-no-such
+python csv reading libary: https://www.w3schools.com/python/pandas/
+getting started with postgres: https://neon.com/postgresql
+
+Tabulka Redizo: http://stistko.uiv.cz/dsia/rs.html
+Tabulka Kkov: https://isv.gov.cz/ccis/detail/0967c638-ec70-4584-b826-60f2271d39b9
+
+
+how to operate:
+Start postgres service - brew services start postgresql@
+Start server - build js - npm run build:ts - node app.js
+Start Client - ag seerve
