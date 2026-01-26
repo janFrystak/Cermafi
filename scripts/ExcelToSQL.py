@@ -75,40 +75,48 @@ def convert(path: str, engine, sheet: str):
         # 5. Pivot the attributes back into columns
         uchazec_volba = long_df.pivot(
             index=['index', 'poradi'], 
-            columns='attribute', 
+            columns= "attribute", 
             values='value'
         ).reset_index()
 
-        # IMPORTANT: Remove the name of the columns level (currently 'attribute')
+        # !! Remove the name of the columns level (currently 'attribute')
         uchazec_volba.columns.name = None 
 
+        # Converting some row values into a more database friendly form
         if "duvod_neprijeti" in uchazec_volba.columns:
             uchazec_volba["duvod_neprijeti"] = uchazec_volba["duvod_neprijeti"].astype(str).str.strip()
-            # 2. Replace using the dictionary
             uchazec_volba["duvod_neprijeti"] = uchazec_volba["duvod_neprijeti"].replace(duvod_neprijeti_table)
-            # 3. Convert 'nan' strings (from astype(str)) back to actual None/NaN for SQL
             uchazec_volba["duvod_neprijeti"] = uchazec_volba["duvod_neprijeti"].replace('nan', None)
-            
-        # 6. Final cleanup
-        uchazec_volba = uchazec_volba.rename(columns={'index': 'uchazec_id'})
-        uchazec_volba['poradi'] = uchazec_volba['poradi'].astype(int)
+
+        if "kkov" in uchazec_volba.columns:
+            uchazec_volba['kkov'] = uchazec_volba['kkov'].astype(str)
+            uchazec_volba['kkov'] = uchazec_volba['kkov'].str.strip()
+            uchazec_volba['kkov'] = uchazec_volba['kkov'].str.replace(r'[-/]', '', regex=True)
+            uchazec_volba['kkov'] = uchazec_volba['kkov'].replace('nan', None)
+    
+
         
-        # Ensure all expected columns exist even if they were empty in Excel
+        #Renaming columns
+        uchazec_volba = uchazec_volba.rename(columns={'index': 'uchazec_id', 'kkov': 'obor_kod'})   
+        atributy[1] = "obor_kod"
+        
+        # uchazec_volba['poradi'] = uchazec_volba['poradi'].astype(int)
+        
+        # Make sure all expected columns exist even if they were empty in Excel
         for col in atributy:
             if col not in uchazec_volba.columns:
                 uchazec_volba[col] = None
 
-        # Remove empty choices (where redizo is missing)
+        # Remove empty choices (volby) 
         uchazec_volba = uchazec_volba.dropna(subset=['redizo'])
 
-        # Reorder columns to match your DB schema exactly
+        # Reorder columns to match DB schema 
         uchazec_volba = uchazec_volba[['uchazec_id', 'poradi'] + atributy]
 
 
-
-        # 4. Save to SQL
-        uchazec_t.to_sql("uchazec_t", engine, if_exists="append", index=False)
-        uchazec_volba.to_sql("uchazec_volba_t", engine, if_exists="append", index=False)
+        # Save to SQL
+        uchazec_t.to_sql("uchazec_t", engine, if_exists="replace", index=False)
+        uchazec_volba.to_sql("uchazec_volba_t", engine, if_exists="replace", index=False)
 
         print("Successfully loaded: ", path)
     except Exception as e:

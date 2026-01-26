@@ -6,7 +6,7 @@ export class Redizo {
     type: 'bigint',
     name: 'id',
   })
-  id!: string; // bigint → string in JS/TS
+  id!: number
 
   @Column({ type: 'bigint', name: 'red_izo', nullable: true })
   redIzo!: string;

@@ -1,5 +1,6 @@
 issue with filling ORM array: https://github.com/typeorm/typeorm/issues/4498
 unable to start database: https://stackoverflow.com/questions/69754628/psql-error-connection-to-server-on-socket-tmp-s-pgsql-5432-failed-no-such
+error: https://stackoverflow.com/questions/38256402/valueerror-only-single-character-unicode-strings-can-be-converted-to-py-ucs4-g
 python csv reading libary: https://www.w3schools.com/python/pandas/
 getting started with postgres: https://neon.com/postgresql
 
