@@ -8,31 +8,31 @@ export class Redizo {
   })
   id!: number
 
-  @Column({ type: 'bigint', name: 'red_izo', nullable: true })
-  redIzo!: string;
+  @Column({ type: 'text', nullable: true })
+  red_izo!: string;
 
-  @Column({ type: 'bigint', name: 'izo', nullable: true })
+  @Column({ type: 'text', nullable: true })
   izo!: string;
 
-  @Column({ type: 'text', name: 'zar_pln', nullable: true })
-  zarPln!: string;
+  @Column({ type: 'text', nullable: true })
+  zar_pln!: string;
 
-  @Column({ type: 'text', name: 'zar_zkr', nullable: true })
-  zarZkr!: string;
+  @Column({ type: 'text', nullable: true })
+  zar_zkr!: string;
 
-  @Column({ type: 'text', name: 'misto', nullable: true })
+  @Column({ type: 'text', nullable: true })
   misto!: string;
 
-  @Column({ type: 'text', name: 'ulice', nullable: true })
+  @Column({ type: 'text', nullable: true })
   ulice!: string;
 
-  @Column({ type: 'bigint', name: 'psc', nullable: true })
+  @Column({ type: 'text', nullable: true })
   psc!: string;
 
-  @Column({ type: 'text', name: 'vusc', nullable: true })
+  @Column({ type: 'text', nullable: true })
   vusc!: string;
 
-  @Column({ type: 'text', name: 'obor', nullable: true })
+  @Column({ type: 'text', nullable: true })
   obor!: string;
 
   @Column({ type: 'text', name: 'obor_naz', nullable: true })

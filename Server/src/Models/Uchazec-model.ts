@@ -22,6 +22,7 @@ export class Uchazec {
     @Column()
     c_procentni_skor!: number;  
 
-    @OneToMany(()=> UchazecVolba, (volba) => volba.obor)
-    volba!: UchazecVolba
+    //backwards lookup
+    @OneToMany(()=> UchazecVolba, (volba) => volba.uchazec)
+    volba!: UchazecVolba[]
 }

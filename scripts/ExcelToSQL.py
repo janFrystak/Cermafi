@@ -51,8 +51,8 @@ def convert(path: str, engine, sheet: str):
         # 2. Prepare Choices Table (uchazec_volba_t)
         # These are the column bases (suffixes after 'ssX_')
                 # 1. Define attributes and identify all possible preference columns
-        atributy = ['zrizovatel', 'kkov', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti', 'redizo']
-        duvod_neprijeti_table = {"prijat_na_vyssi_prioritu":1, "pro_nesplneni_podminek":2, "pro_nedostacujici_kapacitu": 3, "vzal_se_prijeti":4}
+        atributes = ['zrizovatel', 'kkov', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti', 'redizo']
+        duvod_neprijeti_table = {"prijat_na_vyssi_prioritu":1, "pro_nesplneni_podminek":2, "pro_nedostacujici_kapacitu": 3, "vzdal_se_prijeti":4}
         # 2. Melt the dataframe to get a long list of all 'ss' columns
         # We include 'index' as the identifier
         long_df = df.reset_index().melt(
@@ -97,13 +97,14 @@ def convert(path: str, engine, sheet: str):
 
         
         #Renaming columns
-        uchazec_volba = uchazec_volba.rename(columns={'index': 'uchazec_id', 'kkov': 'obor_kod'})   
-        atributy[1] = "obor_kod"
+        uchazec_volba = uchazec_volba.rename(columns={'index': 'uchazec_id', 'kkov': 'obor_kod', 'duvod_neprijeti':'duvod_neprijeti_id'})   
+        atributes[1] = "obor_kod"
+        atributes[5] = "duvod_neprijeti_id"
         
         # uchazec_volba['poradi'] = uchazec_volba['poradi'].astype(int)
         
         # Make sure all expected columns exist even if they were empty in Excel
-        for col in atributy:
+        for col in atributes:
             if col not in uchazec_volba.columns:
                 uchazec_volba[col] = None
 
@@ -111,12 +112,12 @@ def convert(path: str, engine, sheet: str):
         uchazec_volba = uchazec_volba.dropna(subset=['redizo'])
 
         # Reorder columns to match DB schema 
-        uchazec_volba = uchazec_volba[['uchazec_id', 'poradi'] + atributy]
+        uchazec_volba = uchazec_volba[['uchazec_id', 'poradi'] + atributes]
 
 
         # Save to SQL
-        uchazec_t.to_sql("uchazec_t", engine, if_exists="replace", index=False)
-        uchazec_volba.to_sql("uchazec_volba_t", engine, if_exists="replace", index=False)
+        uchazec_t.to_sql("uchazec_t", engine, if_exists="append", index=False)
+        uchazec_volba.to_sql("uchazec_volba_t", engine, if_exists="append", index=False)
 
         print("Successfully loaded: ", path)
     except Exception as e:

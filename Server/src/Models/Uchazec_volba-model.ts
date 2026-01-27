@@ -1,6 +1,7 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Uchazec } from './Uchazec-model';
 import { Obor } from './Obor-model';
+import { Neprijeti } from './Neprijeti-model';
 
 @Entity('uchazec_volba_t')
 export class UchazecVolba {
@@ -16,8 +17,8 @@ export class UchazecVolba {
     @Column({ nullable: true })
     zrizovatel!: string;
 
-    @Column({ nullable: true })
-    kkov!: string;
+    @Column({ nullable: true})
+    obor_kod!: string;
 
     @Column({ nullable: true })
     forma!: string;
@@ -28,15 +29,20 @@ export class UchazecVolba {
     @Column({ nullable: true })
     prijat!: boolean;
 
-    @Column({ type: 'int', nullable: true })
+    @Column({ type: 'int', nullable: true, name: 'duvod_neprijeti_id'})
     duvod_neprijeti!: number; 
 
-    // Definice vztahu zpět na uchazeče
-    @ManyToOne(() => Uchazec, (uchazec) => uchazec.id, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'uchazec_id' })
+    
+    @ManyToOne(() => Uchazec, (uchazec) => uchazec.volba, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'uchazec_id'})
     uchazec!:Uchazec;
 
-    @ManyToOne(() => Obor, (obor) => obor.volba, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'obor' })
+    @ManyToOne(() => Obor, (obor) => obor.volba)
+    @JoinColumn({ name: 'obor_kod', referencedColumnName: 'kod_kkov' })
     obor!:Obor
+
+    @ManyToOne(()=> Neprijeti,(neprijeti) => neprijeti.volba)
+    @JoinColumn({name: 'duvod_neprijeti_id'})
+    neprijeti!:Neprijeti
+    
 }
