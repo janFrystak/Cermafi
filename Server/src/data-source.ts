@@ -2,6 +2,10 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Uchazec } from "./Models/Uchazec-model";
 import dotenv from 'dotenv';
+import { UchazecVolba } from "./Models/Uchazec_volba-model";
+import { Neprijeti } from "./Models/Neprijeti-model";
+import { Obor } from "./Models/Obor-model";
+import { Redizo } from "./Models/Redizo-model";
 
 dotenv.config({path: '../.env'})
 
@@ -15,8 +19,8 @@ export const AppDataSource = new DataSource({
     password: String(process.env.DB_PSWD),
     database: process.env.DB_NAME,
     synchronize: false,
-    logging: false,
-    entities: [Uchazec],
+    logging: ["query", "error", "schema", "warn"],
+    entities: [Uchazec, UchazecVolba, Neprijeti, Obor, Redizo],
     migrations: [],
     subscribers: [],
 })

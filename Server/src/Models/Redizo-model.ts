@@ -1,43 +1,98 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { UchazecVolba } from './Uchazec_volba-model';
 
 @Entity({ name: 'redizo' })
 export class Redizo {
-  @PrimaryGeneratedColumn({
-    type: 'bigint',
-    name: 'id',
-  })
-  id!: number
+  @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
+  id!: number;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true, name: 'RED_IZO' })
   red_izo!: string;
 
-  @Column({ type: 'text', nullable: true })
-  izo!: string;
+  @Column({ type: 'text', nullable: true, name: 'IČO' })
+  ico!: string;
 
-  @Column({ type: 'text', nullable: true })
-  zar_pln!: string;
+  @Column({ type: 'text', nullable: true, name: 'Zřizovatel' })
+  zrizovatel!: string;
 
-  @Column({ type: 'text', nullable: true })
-  zar_zkr!: string;
+  @Column({ type: 'text', nullable: true, name: 'Území' })
+  uzemi!: string;
 
-  @Column({ type: 'text', nullable: true })
-  misto!: string;
+  @Column({ type: 'text', nullable: true, name: 'Kraj' })
+  kraj!: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true, name: 'Okres/Obvod' })
+  okresObvod!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Správní úřad' })
+  spravniUrad!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'ORP' })
+  orp!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Název ORP' })
+  nazevOrp!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Plný název' })
+  plnyNazev!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Zkrácený název' })
+  zkracenyNazev!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Ulice' })
   ulice!: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true, name: 'Č. p.' })
+  cisloPopisne!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Č. or.' })
+  cisloOrientacni!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Část obce' })
+  castObce!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'PSČ' })
   psc!: string;
 
-  @Column({ type: 'text', nullable: true })
-  vusc!: string;
+  @Column({ type: 'text', nullable: true, name: 'Místo' })
+  misto!: string;
 
-  @Column({ type: 'text', nullable: true })
-  obor!: string;
+  @Column({ type: 'text', nullable: true, name: 'Telefon' })
+  telefon!: string;
 
-  @Column({ type: 'text', name: 'obor_naz', nullable: true })
-  oborNaz!: string;
+  @Column({ type: 'text', nullable: true, name: 'Fax' })
+  fax!: string;
 
-  @Column({ type: 'text', name: 'pln_naz', nullable: true })
-  plnNaz!: string;
+  @Column({ type: 'text', nullable: true, name: 'Email 1' })
+  email1!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Email 2' })
+  email2!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'WWW' })
+  www!: string;
+
+
+  @Column({ type: 'text', nullable: true, name: 'Ředitel' })
+  reditel!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'je OVM' })
+  jeOvm!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'ZUJ' })
+  zuj!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Email zřizovatele' })
+  emailZrizovatele!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Právní forma ředitelství' })
+  pravniFormaReditelstvi!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'Datum zápisu' })
+  datumZapisu!: string;
+
+
+  @OneToMany(() => UchazecVolba, (volba) => volba.redizo_join)
+  volba_join!: UchazecVolba[];
 }

@@ -2,8 +2,9 @@ import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Uchazec } from './Uchazec-model';
 import { Obor } from './Obor-model';
 import { Neprijeti } from './Neprijeti-model';
+import { Redizo } from './Redizo-model';
 
-@Entity('uchazec_volba_t')
+@Entity('uchazec_volba')
 export class UchazecVolba {
     @PrimaryColumn()
     uchazec_id!: number;
@@ -33,16 +34,21 @@ export class UchazecVolba {
     duvod_neprijeti!: number; 
 
     
-    @ManyToOne(() => Uchazec, (uchazec) => uchazec.volba, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Uchazec, (uchazec) => uchazec.volba_join, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'uchazec_id'})
-    uchazec!:Uchazec;
+    uchazec_join!:Uchazec;
 
-    @ManyToOne(() => Obor, (obor) => obor.volba)
-    @JoinColumn({ name: 'obor_kod', referencedColumnName: 'kod_kkov' })
-    obor!:Obor
+    @ManyToOne(() => Obor, (obor) => obor.volba_join)
+    @JoinColumn({ name: 'obor_kod', referencedColumnName: 'kod' })
+    obor_join!:Obor
 
-    @ManyToOne(()=> Neprijeti,(neprijeti) => neprijeti.volba)
+    @ManyToOne(()=> Neprijeti,(neprijeti) => neprijeti.volba_join)
     @JoinColumn({name: 'duvod_neprijeti_id'})
-    neprijeti!:Neprijeti
+    neprijeti_join!:Neprijeti
+
+    @ManyToOne(()=> Redizo, (redizo) => redizo.volba_join)
+    @JoinColumn({name: 'redizo', referencedColumnName:'red_izo'})
+    redizo_join!:Redizo
+    
     
 }

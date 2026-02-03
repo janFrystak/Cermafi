@@ -40,17 +40,17 @@ def choose_files(prompt: str) -> str:
 def convert(path: str, engine, sheet: str):
     try:
         df = pd.read_excel(path, sheet_name=sheet)
-        
-        # 1. Prepare Applicant Table (uchazec_t)
-        uchazec_t = (
+        # start from 1 not 0
+        df.index = df.index+1
+        # 1. Prepare Applicant Table (uchazec)
+        uchazec = (
             df.reset_index()
             .rename(columns={'index': 'id'})
-            [['id', 'rok', 'kolo', 'c_m_procentni_skor', 'c_procentni_skor']]
+            [['id', 'rok', 'kolo', 'm_procentni_skor', 'c_procentni_skor']]
         )
 
-        # 2. Prepare Choices Table (uchazec_volba_t)
-        # These are the column bases (suffixes after 'ssX_')
-                # 1. Define attributes and identify all possible preference columns
+        # 2. Prepare Choices Table (uchazec_volba)
+        # These are the column attributes(suffixes after 'ssX_')
         atributes = ['zrizovatel', 'kkov', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti', 'redizo']
         duvod_neprijeti_table = {"prijat_na_vyssi_prioritu":1, "pro_nesplneni_podminek":2, "pro_nedostacujici_kapacitu": 3, "vzdal_se_prijeti":4}
         # 2. Melt the dataframe to get a long list of all 'ss' columns
@@ -72,7 +72,7 @@ def convert(path: str, engine, sheet: str):
 
               
 
-        # 5. Pivot the attributes back into columns
+        # 5. Change the attributes back into columns
         uchazec_volba = long_df.pivot(
             index=['index', 'poradi'], 
             columns= "attribute", 
@@ -97,17 +97,20 @@ def convert(path: str, engine, sheet: str):
 
         
         #Renaming columns
-        uchazec_volba = uchazec_volba.rename(columns={'index': 'uchazec_id', 'kkov': 'obor_kod', 'duvod_neprijeti':'duvod_neprijeti_id'})   
+        uchazec_volba = uchazec_volba.rename(columns={'index': 'uchazec_id', 'kkov': 'obor_kod', 'duvod_neprijeti':'duvod_neprijeti_id'})  
+        uchazec_volba["id"] = pd.RangeIndex() 
         atributes[1] = "obor_kod"
         atributes[5] = "duvod_neprijeti_id"
         
         # uchazec_volba['poradi'] = uchazec_volba['poradi'].astype(int)
         
         # Make sure all expected columns exist even if they were empty in Excel
+        removed_col = ""
         for col in atributes:
             if col not in uchazec_volba.columns:
+                removed_col = removed_col+ col
                 uchazec_volba[col] = None
-
+        print("removed: "+ removed_col)
         # Remove empty choices (volby) 
         uchazec_volba = uchazec_volba.dropna(subset=['redizo'])
 
@@ -116,8 +119,8 @@ def convert(path: str, engine, sheet: str):
 
 
         # Save to SQL
-        uchazec_t.to_sql("uchazec_t", engine, if_exists="append", index=False)
-        uchazec_volba.to_sql("uchazec_volba_t", engine, if_exists="append", index=False)
+        uchazec.to_sql("uchazec", engine, if_exists="replace", index=False)
+        uchazec_volba.to_sql("uchazec_volba", engine, if_exists="replace", index=False)
 
         print("Successfully loaded: ", path)
     except Exception as e:

@@ -5,26 +5,42 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { AppDataSource } from "./data-source";
 import { Uchazec } from "./Models/Uchazec-model";
+import { UchazecVolba } from './Models/Uchazec_volba-model';
 
 const app = express();
-
-
 
 app.use(helmet());
 app.use(express.json());
 
 AppDataSource.initialize()
     .then(() => {
-        const uchazecRepository = AppDataSource.getRepository(Uchazec);
+        const volbaRepository = AppDataSource.getRepository(UchazecVolba);
+        const uchazecRepository = AppDataSource.getRepository(Uchazec)
+        
 
        
-        // Allow local dev client to call this API
         app.use(cors());
         app.get("/uchazec-single/:id", async (req: Request, res: Response) => {
             const id = parseInt(req.params.id);
             console.log("id: ",id)
             try {
-                const uchazec = await uchazecRepository.findOneBy({ id });
+                const uchazec = await uchazecRepository.findOne({
+                    where: {id},
+                    
+                    relations:{
+                        volba_join:{
+                            obor_join:true,
+                            neprijeti_join:true,
+                            redizo_join:true
+                        }
+                    },
+                order: {
+                    volba_join:{
+                        poradi:"ASC"
+                    }
+                }
+                
+            });
                 if (!uchazec) {
                     return res.status(404).json({ message: "Uchazec not found" });
                 }
@@ -34,10 +50,10 @@ AppDataSource.initialize()
                 res.status(500).json({ message: "Internal server error" });
             }
         });
-        app.get("/uchazec/:year/:round", async (req: Request, res: Response) => {
+        app.get("/uchazec-count/:year/:round", async (req: Request, res: Response) => {
             
-            const year = String(req.params.year);
-            const round = String(req.params.round);
+            const year = parseInt(req.params.year);
+            const round = parseInt(req.params.round);
 
             console.log("year: ", year, " -- kolo: ", round);
 
@@ -54,12 +70,11 @@ AppDataSource.initialize()
             }
         });
 
-        // Aggregated counts across a range of years
-        // Example: /uchazec/years?start=2017&end=2025&round=1
+        // Aggregated counts across a range of year
         app.get('/uchazec/years', async (req: Request, res: Response) => {
             const startRaw = req.query.start?.toString();
             const endRaw = req.query.end?.toString();
-            const round = String(req.query.round ?? '1');
+            const round = Number(req.query.round ?? '1');
 
             const start = Number(startRaw);
             const end = Number(endRaw);
@@ -78,7 +93,7 @@ AppDataSource.initialize()
 
             try {
                 const countPromises = years.map(async (y) => {
-                    return uchazecRepository.count({ where: { rok: String(y), kolo: String(round) } });
+                    return uchazecRepository.count({ where: { rok: y, kolo: round} });
                 });
 
                 const counts = await Promise.all(countPromises);
@@ -92,11 +107,21 @@ AppDataSource.initialize()
 
         app.get("/uchazec", async (_req: Request, res: Response) => {
             try {
-                const all = await uchazecRepository.find();
+                const all = await uchazecRepository.find(
+                    {
+                        relations:{
+                            volba_join:{
+                                redizo_join: true,
+                                obor_join: true,
+                                neprijeti_join:true
+                            }
+                        }
+                    }
+                );
                 if (!all){
                     return res.status(404).json({message: "Empty :("})
                 }
-                res.json(all);
+                res.json(all); 
             } catch (err) {
                 console.error(err);
                 res.status(500).json({message: "Internal server error."});

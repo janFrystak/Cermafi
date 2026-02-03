@@ -12,6 +12,6 @@ export class Neprijeti{
     @Column({unique:true})
     duvod!:string
 
-    @OneToMany(()=>UchazecVolba, volba=>volba.neprijeti)
-    volba!:UchazecVolba[]
+    @OneToMany(()=>UchazecVolba, volba=>volba.neprijeti_join)
+    volba_join!:UchazecVolba[]
 }

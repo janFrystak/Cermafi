@@ -43,8 +43,12 @@ def choose_files(prompt: str) -> str:
 def convert(path: str, engine, seperator: str, table: str):
     try:
         df = pd.read_csv(path, sep=seperator)
-        # df["id"] = None
-        df.to_sql(table, engine, if_exists="replace", index=False)
+        
+        df.index = df.index+1
+        df.to_sql(table, engine, if_exists="replace", index=True, index_label="id")
+       
+       
+
         print("Succesfully loaded: ", path)
     except Exception as e:
         print("Error while loading file: ", path)
@@ -67,7 +71,7 @@ def run(filepaths):
         exit(1)
 
   
-    table = input("Please input table name (uchazec, redizo, kkov...):")
+    table = input("Please input table name (uchazec, redizo, obor...):")
     seperator = input("Please input the CSV files seperator: ")
     print(f"Writing into table: {table}")
     

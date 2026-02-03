@@ -7,7 +7,7 @@ export class Obor {
     @PrimaryGeneratedColumn()
     id!:number
 
-    @Column({name:'kod_kkov'})
+    @Column({name:'kod'})
     kod!:string
 
     @Column()
@@ -16,6 +16,6 @@ export class Obor {
     @Column()
     zkracenyNazev!:string
 
-    @OneToMany(()=>UchazecVolba, volba=>volba.obor)
-    volba!: UchazecVolba
+    @OneToMany(()=>UchazecVolba, volba=>volba.obor_join)
+    volba_join!: UchazecVolba
 }

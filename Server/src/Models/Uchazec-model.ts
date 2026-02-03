@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm";
 import {UchazecVolba} from "./Uchazec_volba-model"
 
-@Entity("uchazec_t")
+@Entity("uchazec")
 export class Uchazec {
     @PrimaryGeneratedColumn({
         type: "bigint",
@@ -23,6 +23,6 @@ export class Uchazec {
     c_procentni_skor!: number;  
 
     //backwards lookup
-    @OneToMany(()=> UchazecVolba, (volba) => volba.uchazec)
-    volba!: UchazecVolba[]
+    @OneToMany(()=> UchazecVolba, (volba) => volba.uchazec_join)
+    volba_join!: UchazecVolba[]
 }
