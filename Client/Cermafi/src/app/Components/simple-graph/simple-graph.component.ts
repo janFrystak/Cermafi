@@ -14,36 +14,48 @@ import { forkJoin } from 'rxjs';
 })
 
 export class SimpleGraphComponent implements OnInit{
-  chartData: ChartData<'line'> = { labels: [], datasets: [] };
-  chartOptions: ChartOptions<'line'> = {
+
+  public chartData: ChartData<"line"> = {
+    datasets: []
+  }
+
+  public chartOptions: ChartOptions<"line"> = {
     responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top'
-      }
+    scales: {
+      y: { beginAtZero: true }
     },
-    
+    plugins: {
+      legend: {display: true, position: "top"}
+    }
   };
+
+  
+
   constructor(private dataService: ChartDataService) {}
 
   ngOnInit(): void {
-    
-    this.dataService.getChartData_YearsRange("2020", "2025", '1').subscribe((res: any) => {
-      const labels = res.labels;
-      const values = res.values;
+    this.loadData();
+  }
 
+  private loadData(): void {
+    this.dataService.getChartData_YearsRange("2020", "2025", '1').subscribe({
+      next: (res)=>{
+  
       this.chartData = {
-        labels,
+        labels: res.labels,
         datasets: [
           {
             label: 'Počet uchazečů',
-            data: values,
+            data: res.values,
             borderColor: 'rgba(54,162,235,1)',
-            backgroundColor: 'rgba(54,162,235,0.2)'
+            backgroundColor: 'rgba(54,162,235,0.2)',
+            fill: true, 
+            tension: 0.3
           }
         ]
       };
+    },
+    error: (err) => console.error("Chyba při načtení dat grafu: ", err)
     });
   }
 }
