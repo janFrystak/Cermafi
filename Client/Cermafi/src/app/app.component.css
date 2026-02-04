@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  background-color: var(--p-content-background);
+  color: var(--p-text-color);
+  font-family: var(--p-font-family);
+}
+
+h1, h2, h3 {
+  color: var(--p-text-color);
+}

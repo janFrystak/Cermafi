@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts'
 import { CommonModule } from '@angular/common';
-import { ChartDataService } from '../../Services/chart-data.service';
-import { forkJoin } from 'rxjs';
+import { ChartDataService } from '../../../Services/chart-data.service';
+import { UIChart } from "primeng/chart" 
 
 @Component({
   standalone: true,
   selector: 'app-simple-graph',
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, UIChart],
   templateUrl: './simple-graph.component.html',
   styleUrls: ['./simple-graph.component.css']
 })
