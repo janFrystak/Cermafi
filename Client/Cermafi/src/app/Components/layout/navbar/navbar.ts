@@ -1,10 +1,12 @@
 import { Component, OnInit} from '@angular/core';
 import { Menubar } from "primeng/menubar";
 import { MenuItem, PrimeIcons } from 'primeng/api';
+import { DarkModeToggle } from '../../elements/dark-mode-toggle/dark-mode-toggle';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Menubar],
+  imports: [Menubar, DarkModeToggle, RouterLink],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
@@ -14,15 +16,18 @@ export class Navbar implements OnInit{
     ngOnInit(): void {
       this.items = [
         {
-          icon: PrimeIcons.HOME
+          icon: PrimeIcons.HOME,
+          routerLink: '/home',
         },
         { 
           label: "Podle regionu", 
-          icon: PrimeIcons.MAP
+          icon: PrimeIcons.MAP,
+          routerLink: '/region',
         },
         {
           label: "Podle oboru",
-          icon: PrimeIcons.HAMMER
+          icon: PrimeIcons.HAMMER,
+          routerLink: '/field'
         },
         
       ]

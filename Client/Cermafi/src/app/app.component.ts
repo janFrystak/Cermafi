@@ -1,16 +1,13 @@
 import { Component } from '@angular/core';
-import { SimpleGraphComponent } from "./Components/graphs/simple-graph/simple-graph.component";
 import { Navbar } from "./Components/layout/navbar/navbar";
-
-
-
+import { RouterOutlet } from "@angular/router";
 
 
 
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [SimpleGraphComponent, Navbar],
+  imports: [Navbar, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
