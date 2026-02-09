@@ -1,9 +1,10 @@
 
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { UchazecVolba } from './Uchazec_volba-model';
+import { Kraj } from './Kraj-model';
 
-@Entity({ name: 'redizo' })
-export class Redizo {
+@Entity({ name: 'skola' })
+export class Skola {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
   id!: number;
 
@@ -20,7 +21,7 @@ export class Redizo {
   uzemi!: string;
 
   @Column({ type: 'text', nullable: true, name: 'Kraj' })
-  kraj!: string;
+  kraj_id!: string;
 
   @Column({ type: 'text', nullable: true, name: 'Okres/Obvod' })
   okresObvod!: string;
@@ -93,6 +94,11 @@ export class Redizo {
   datumZapisu!: string;
 
 
-  @OneToMany(() => UchazecVolba, (volba) => volba.redizo_join)
+  @OneToMany(() => UchazecVolba, (volba) => volba.skola_join)
   volba_join!: UchazecVolba[];
+
+  @ManyToOne(() => Kraj, (kraj) => kraj.skola_join)
+  @JoinColumn({ name: 'kraj' }) 
+  kraj_join!: Kraj;
+
 }

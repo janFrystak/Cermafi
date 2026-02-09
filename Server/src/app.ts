@@ -31,7 +31,7 @@ AppDataSource.initialize()
                         volba_join:{
                             obor_join:true,
                             neprijeti_join:true,
-                            redizo_join:true
+                            skola_join:true
                         }
                     },
                 order: {
@@ -111,7 +111,7 @@ AppDataSource.initialize()
                     {
                         relations:{
                             volba_join:{
-                                redizo_join: true,
+                                skola_join: true,
                                 obor_join: true,
                                 neprijeti_join:true
                             }

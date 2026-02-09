@@ -2,7 +2,7 @@ import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Uchazec } from './Uchazec-model';
 import { Obor } from './Obor-model';
 import { Neprijeti } from './Neprijeti-model';
-import { Redizo } from './Skola-model';
+import { Skola } from './Skola-model';
 
 @Entity('uchazec_volba')
 export class UchazecVolba {
@@ -46,9 +46,9 @@ export class UchazecVolba {
     @JoinColumn({name: 'duvod_neprijeti_id'})
     neprijeti_join!:Neprijeti
 
-    @ManyToOne(()=> Redizo, (redizo) => redizo.volba_join)
+    @ManyToOne(()=> Skola, (redizo) => redizo.volba_join)
     @JoinColumn({name: 'redizo', referencedColumnName:'red_izo'})
-    redizo_join!:Redizo
+    skola_join!:Skola
     
     
 }

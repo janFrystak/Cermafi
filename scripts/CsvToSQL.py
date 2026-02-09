@@ -42,7 +42,7 @@ def choose_files(prompt: str) -> str:
 
 def convert(path: str, engine, seperator: str, table: str):
     try:
-        df = pd.read_csv(path, sep=seperator)
+        df = pd.read_csv(path, sep=seperator, encoding='utf-16')
         
         df.index = df.index+1
         df.to_sql(table, engine, if_exists="replace", index=True, index_label="id")
