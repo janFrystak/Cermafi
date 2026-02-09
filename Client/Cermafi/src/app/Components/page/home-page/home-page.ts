@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { SimpleGraphComponent } from '../../graphs/simple-graph/simple-graph.component';
+import { CountdownTimer } from '../../elements/countdown-timer/countdown-timer';
 
 @Component({
   selector: 'app-home-page',
-  imports: [SimpleGraphComponent],
+  imports: [SimpleGraphComponent, CountdownTimer, ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })

@@ -6,6 +6,8 @@ python csv reading libary: https://www.w3schools.com/python/pandas/
 getting started with postgres: https://neon.com/postgresql
 pandas DataFrame to_sql() metod: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html
 stylová knihovna: https://primeng.org/
+countdown: https://github.com/janFrystak/CatClock
+mapa čr: https://mapsvg.com/maps
 
 Tabulka Redizo: http://stistko.uiv.cz/dsia/rs.html
 Tabulka Kkov: https://isv.gov.cz/ccis/detail/0967c638-ec70-4584-b826-60f2271d39b9

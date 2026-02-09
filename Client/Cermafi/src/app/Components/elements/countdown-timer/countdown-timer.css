@@ -1,0 +1,11 @@
+
+
+    .countdown-container { 
+      text-align: center; 
+      padding: 1rem; 
+    }
+    .timer {
+       font-size: 1.5rem; 
+       font-weight: bold; 
+       font-family: monospace;
+      }

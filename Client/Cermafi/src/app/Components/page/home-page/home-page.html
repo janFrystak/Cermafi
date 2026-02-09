@@ -1,3 +1,29 @@
-<h2>O nás</h2>
-  <p>Informacní web zaměřený na výsledky přímaček za posledních x let.</p>
-<app-simple-graph></app-simple-graph>
+<div class="p-4"> <!-- Padding kolem celého obsahu -->
+  
+  
+  <section class="text-center mb-5">
+    <h2 class="text-4xl font-bold mb-2">O Cermafi</h2>
+    <p class="text-xl text-secondary">Informační web zaměřený na výsledky přijímaček za posledních x let.</p>
+  </section>
+
+  
+  <div class="grid">
+    
+   
+    <div class="col-12 md:col-8">
+        <div class="p-card p-4 shadow-2 border-round-xl">
+        <h3 class="mt-0 mb-4 text-center">Trend počtu uchazečů</h3>
+        <app-simple-graph></app-simple-graph>
+      </div>
+      
+    </div>
+
+  
+    <div class="col-12 md:col-4">
+      <div class="p-card p-4 shadow-2 h-full flex flex-column align-items-center justify-content-center border-round-xl bg-primary-reverse">
+        <app-countdown-timer></app-countdown-timer>
+      </div>
+    </div>
+
+  </div>
+</div>
