@@ -71,7 +71,7 @@ def run(filepaths):
         exit(1)
 
   
-    table = input("Please input table name (uchazec, redizo, obor...):")
+    table = input("Please input table name (uchazec, skola, obor...):")
     seperator = input("Please input the CSV files seperator: ")
     print(f"Writing into table: {table}")
     

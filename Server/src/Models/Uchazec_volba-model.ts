@@ -2,7 +2,7 @@ import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Uchazec } from './Uchazec-model';
 import { Obor } from './Obor-model';
 import { Neprijeti } from './Neprijeti-model';
-import { Redizo } from './Redizo-model';
+import { Redizo } from './Skola-model';
 
 @Entity('uchazec_volba')
 export class UchazecVolba {

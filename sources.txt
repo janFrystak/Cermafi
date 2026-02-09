@@ -9,7 +9,7 @@ stylová knihovna: https://primeng.org/
 countdown: https://github.com/janFrystak/CatClock
 mapa čr: https://mapsvg.com/maps
 
-Tabulka Redizo: http://stistko.uiv.cz/dsia/rs.html
+Tabulka ŠKOL(Redizo): http://stistko.uiv.cz/dsia/rs.html
 Tabulka Kkov: https://isv.gov.cz/ccis/detail/0967c638-ec70-4584-b826-60f2271d39b9
 
 

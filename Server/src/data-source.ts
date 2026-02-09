@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import { UchazecVolba } from "./Models/Uchazec_volba-model";
 import { Neprijeti } from "./Models/Neprijeti-model";
 import { Obor } from "./Models/Obor-model";
-import { Redizo } from "./Models/Redizo-model";
+import { Redizo } from "./Models/Skola-model";
 
 dotenv.config({path: '../.env'})
 
