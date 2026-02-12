@@ -1,0 +1,20 @@
+
+
+
+
+:host ::ng-deep .region {
+  fill: var(--p-primary-100);
+  pointer-events: all; /* Zajistí, že plocha reaguje na myš */
+  transition: fill 0.2s;
+}
+
+:host ::ng-deep .region:hover {
+  fill: var(--p-primary-500) !important;
+  cursor: pointer;
+}
+
+svg {
+  width: 100%;
+  height: auto; 
+  display: block;
+}

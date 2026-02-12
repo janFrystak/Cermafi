@@ -12,7 +12,7 @@ export class Kraj {
   @Column({ type: 'varchar', length: 10, unique: true })
   region_nazev_kratky!: string; 
 
-  // Definice vztahu 1:N (Jeden kraj má mnoho škol)
-  @OneToMany(() => Skola, (skola) => skola.kraj_join)
+
+  @OneToMany(() => Skola, skola => skola.kraj_join)
   skola_join!: Skola[];
 }

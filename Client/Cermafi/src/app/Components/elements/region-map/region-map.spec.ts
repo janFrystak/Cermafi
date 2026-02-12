@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GeoMap } from './geo-map';
+import { RegionMap } from './region-map';
 
 describe('GeoMap', () => {
-  let component: GeoMap;
-  let fixture: ComponentFixture<GeoMap>;
+  let component: RegionMap;
+  let fixture: ComponentFixture<RegionMap>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GeoMap]
+      imports: [RegionMap]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GeoMap);
+    fixture = TestBed.createComponent(RegionMap);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

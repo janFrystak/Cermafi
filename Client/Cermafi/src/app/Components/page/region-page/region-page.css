@@ -1,0 +1,20 @@
+/* Globální vylepšení pro celou geo-page */
+.layout-wrapper {
+    background: var(--p-surface-50); /* Jemné pozadí pod kartami */
+    min-height: calc(100vh - 120px);
+}
+
+:host ::ng-deep .p-card {
+    border-radius: 1.5rem;
+}
+
+/* Zajištění, že SVG mapa nebude "oříznutá" a bude mít prostor dýchat */
+:host ::ng-deep app-region-map svg {
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.05));
+    max-height: 70vh;
+}
+
+/* Úprava pro tmavý režim */
+:host-context(.p-dark) .layout-wrapper {
+    background: var(--p-surface-950);
+}

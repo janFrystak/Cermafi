@@ -21,6 +21,11 @@ export class ChartDataService {
     return this.http.get(myUrl)
   }
 
+  getChartData_RegionId(id: number): Observable<any>{
+    const myUrl = `${this.baseUrl}/region/${encodeURIComponent(id)}}`
+    return this.http.get(myUrl)
+  }
+
   getChartData_YearsRange(start: string, end: string, round: string = '1'): Observable<ChartResponse> {
     const params = new HttpParams()
       .set("start", start)

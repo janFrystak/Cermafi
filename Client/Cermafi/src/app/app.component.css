@@ -8,3 +8,9 @@ body {
 h1, h2, h3 {
   color: var(--p-text-color);
 }
+
+footer {
+  background-color: var(--p-surface-900); 
+  padding: 3rem 1rem;
+  margin-top: 4rem;
+}

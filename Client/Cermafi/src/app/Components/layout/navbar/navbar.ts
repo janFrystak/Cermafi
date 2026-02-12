@@ -2,7 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { Menubar } from "primeng/menubar";
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { DarkModeToggle } from '../../elements/dark-mode-toggle/dark-mode-toggle';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',

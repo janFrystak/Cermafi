@@ -6,6 +6,8 @@ import { UchazecVolba } from "./Models/Uchazec_volba-model";
 import { Neprijeti } from "./Models/Neprijeti-model";
 import { Obor } from "./Models/Obor-model";
 import { Skola } from "./Models/Skola-model";
+import { Kraj } from "./Models/Kraj-model";
+
 
 dotenv.config({path: '../.env'})
 
@@ -20,7 +22,7 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_NAME,
     synchronize: false,
     logging: ["query", "error", "schema", "warn"],
-    entities: [Uchazec, UchazecVolba, Neprijeti, Obor, Skola],
+    entities: [Uchazec, UchazecVolba, Neprijeti, Obor, Skola, Kraj],
     migrations: [],
     subscribers: [],
 })

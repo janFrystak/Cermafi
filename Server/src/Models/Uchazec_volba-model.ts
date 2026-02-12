@@ -46,7 +46,7 @@ export class UchazecVolba {
     @JoinColumn({name: 'duvod_neprijeti_id'})
     neprijeti_join!:Neprijeti
 
-    @ManyToOne(()=> Skola, (redizo) => redizo.volba_join)
+    @ManyToOne(()=> Skola, (skola) => skola.volba_join)
     @JoinColumn({name: 'redizo', referencedColumnName:'red_izo'})
     skola_join!:Skola
     

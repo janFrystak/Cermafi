@@ -20,6 +20,29 @@ AppDataSource.initialize()
 
        
         app.use(cors());
+        app.get("/region/id", async (req: Request, res: Response)=>{
+            const id = parseInt(req.params.id)
+            try {
+                const uchazecData = await uchazecRepository.createQueryBuilder('uchazec')
+                    
+                    .leftJoinAndSelect('uchazec.volba_join', 'volba')
+                    .leftJoinAndSelect('volba.obor_join', 'obor')
+                    .leftJoinAndSelect('volba.neprijeti_join', 'neprijeti')
+                    .leftJoinAndSelect('volba.skola_join', 'skola')
+                    .leftJoinAndSelect('skola.kraj_join', 'kraj')
+                    .where('kraj.id = :regionId', { regionId: Number(id) })
+                    .getMany();
+
+                    if (!uchazecData) {
+                        return res.status(404).json({ message: "Uchazec not found" });
+                    }
+                    res.json(uchazecData);
+            } catch (err){
+                console.error;
+                res.status(404).json({message: "Internal server error"})
+            }
+            
+        })
         app.get("/uchazec-single/:id", async (req: Request, res: Response) => {
             const id = parseInt(req.params.id);
             console.log("id: ",id)
