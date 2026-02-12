@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UchazecVolba } from "./Uchazec_volba-model";
 
-@Entity({name: "neprijeti"})
+@Entity({name: "neprijeti_duvod"})
 export class Neprijeti{
     @PrimaryGeneratedColumn({
         name: "id",

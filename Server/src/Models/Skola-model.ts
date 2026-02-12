@@ -20,8 +20,8 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'Území' })
   uzemi!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Kraj' })
-  kraj_id!: string;
+  @Column({ type: 'bigint', nullable: true, name: 'kraj_id' })
+  kraj_id!: number; 
 
   @Column({ type: 'text', nullable: true, name: 'Okres/Obvod' })
   okresObvod!: string;
@@ -98,7 +98,7 @@ export class Skola {
   volba_join!: UchazecVolba[];
 
   @ManyToOne(() => Kraj, (kraj) => kraj.skola_join)
-  @JoinColumn({ name: 'kraj' }) 
+  @JoinColumn({ name: 'kraj_id' }) 
   kraj_join!: Kraj;
 
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ChartResponse } from '../Models/chart-response.interface';
 
 @Injectable({providedIn: 'root'})
@@ -23,7 +23,7 @@ export class ChartDataService {
 
   getChartData_RegionId(id: number): Observable<any>{
     const myUrl = `${this.baseUrl}/region/${encodeURIComponent(id)}}`
-    return this.http.get(myUrl)
+    return this.http.get(myUrl).pipe(tap(data=> console.log("Service data: ", data)))
   }
 
   getChartData_YearsRange(start: string, end: string, round: string = '1'): Observable<ChartResponse> {

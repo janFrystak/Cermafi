@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
 import { Skola } from './Skola-model'; // Předpokládaný název entity pro školy
 
-@Entity('regions')
+@Entity('kraj')
 export class Kraj {
   @PrimaryColumn()
   id!: number; 

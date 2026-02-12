@@ -20,11 +20,10 @@ AppDataSource.initialize()
 
        
         app.use(cors());
-        app.get("/region/id", async (req: Request, res: Response)=>{
+        app.get("/region/:id", async (req: Request, res: Response)=>{
             const id = parseInt(req.params.id)
             try {
                 const uchazecData = await uchazecRepository.createQueryBuilder('uchazec')
-                    
                     .leftJoinAndSelect('uchazec.volba_join', 'volba')
                     .leftJoinAndSelect('volba.obor_join', 'obor')
                     .leftJoinAndSelect('volba.neprijeti_join', 'neprijeti')

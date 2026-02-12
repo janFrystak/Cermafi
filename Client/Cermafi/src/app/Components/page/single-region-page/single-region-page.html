@@ -1,1 +1,5 @@
-<h1></h1>
+<div *ngIf="regionData">
+    <h1>{{ regionData.region_nazev }}</h1>
+    <!-- Zde budou grafy a statistiky -->
+    <pre>{{ regionData | json }}</pre> <!-- Tvůj dočasný var_dump -->
+</div>
