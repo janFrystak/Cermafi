@@ -38,13 +38,22 @@ def choose_files(prompt: str) -> str:
     return list(filenames)
 
 def convert(path: str, engine, sheet: str):
+    current_max_id = 0
+    try:
+        current_max_id = pd.read_sql("SELECT MAX(id) FROM public.uchazec", engine).iloc[0,0]
+    except Exception as e:
+        print("Starting new table")
+        current_max_id = 0
+        
     try:
         df = pd.read_excel(path, sheet_name=sheet)
-        # start from 1 not 0
-        df.index = df.index+1
+        df.columns = df.columns.astype(str).str.strip()
+        # start from 1 not 0 and account already existing rows
+        df.index = df.index+current_max_id+1
         # 1. Prepare Applicant Table (uchazec)
         uchazec = (
-            df.reset_index()
+            df
+            .reset_index()
             .rename(columns={'index': 'id'})
             [['id', 'rok', 'kolo', 'm_procentni_skor', 'c_procentni_skor']]
         )
@@ -54,7 +63,7 @@ def convert(path: str, engine, sheet: str):
         atributes = ['zrizovatel', 'kkov', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti', 'redizo']
         duvod_neprijeti_table = {"prijat_na_vyssi_prioritu":1, "pro_nesplneni_podminek":2, "pro_nedostacujici_kapacitu": 3, "vzdal_se_prijeti":4}
         # 2. Melt the dataframe to get a long list of all 'ss' columns
-        # We include 'index' as the identifier
+        # Include 'index' as the identifier
         long_df = df.reset_index().melt(
             id_vars=['index'], 
             var_name='temp_col', 
@@ -79,6 +88,8 @@ def convert(path: str, engine, sheet: str):
             values='value'
         ).reset_index()
 
+        uchazec_volba['index'] = uchazec_volba['index'] + current_max_id + 1
+
         # !! Remove the name of the columns level (currently 'attribute')
         uchazec_volba.columns.name = None 
 
@@ -97,12 +108,17 @@ def convert(path: str, engine, sheet: str):
 
         
         #Renaming columns
-        uchazec_volba = uchazec_volba.rename(columns={'index': 'uchazec_id', 'kkov': 'obor_kod', 'duvod_neprijeti':'duvod_neprijeti_id'})  
-        uchazec_volba["id"] = pd.RangeIndex() 
+        uchazec_volba = uchazec_volba.rename(columns={
+            'index': 'uchazec_id', 
+            'kkov': 'obor_kod',
+            'duvod_neprijeti':'duvod_neprijeti_id'
+        })
+
+
         atributes[1] = "obor_kod"
         atributes[5] = "duvod_neprijeti_id"
         
-        # uchazec_volba['poradi'] = uchazec_volba['poradi'].astype(int)
+        
         
         # Make sure all expected columns exist even if they were empty in Excel
         removed_col = ""
@@ -110,17 +126,18 @@ def convert(path: str, engine, sheet: str):
             if col not in uchazec_volba.columns:
                 removed_col = removed_col+ col
                 uchazec_volba[col] = None
-        print("removed: "+ removed_col)
+        if removed_col not None:
+            print("removed: "+ removed_col)
         # Remove empty choices (volby) 
         uchazec_volba = uchazec_volba.dropna(subset=['redizo'])
 
         # Reorder columns to match DB schema 
         uchazec_volba = uchazec_volba[['uchazec_id', 'poradi'] + atributes]
-
+        
 
         # Save to SQL
-        uchazec.to_sql("uchazec", engine, if_exists="replace", index=False)
-        uchazec_volba.to_sql("uchazec_volba", engine, if_exists="replace", index=False)
+        uchazec.to_sql("uchazec", engine, if_exists="append", index=False)
+        uchazec_volba.to_sql("uchazec_volba", engine, if_exists="append", index=False)
 
         print("Successfully loaded: ", path)
     except Exception as e:
@@ -137,7 +154,6 @@ def run(filepaths):
         engine = create_engine(
             f"postgresql+psycopg2://{user}:{pswd}@localhost:{port}/{database}"
         )
-        print(user, pswd, database)
         print("Connection succesful!")
     except Exception as e:
         print("Unable to connect to database.")
@@ -147,25 +163,50 @@ def run(filepaths):
   
 
     #print(f"Writing into table: {table}")
-    data_sheet = input("Enter datasheet: ")
-    if not data_sheet:
-        print("Please provice spreadsheets data sheet")
-        exit(0)
+
     '''conf = input("Continue? [y/n]: ").lower()
     if conf != "y":
         print("Task ended by user.")
         exit(0)
     '''
+    if len(filepaths) > 1:
+        sheet_option= input("select sheets Individualy[0] or Mass[1]")
+        match int(sheet_option):
+            case 0:
+                option = None
+            case 1:
+                option = input("Please input datasheet number, [from 0]")
+            case _:
+                print("Invalid option chosen")
+                exit()
+    else:
+        option = None    
     for path in filepaths:
+        chosen_sheet = None
+        xl = pd.ExcelFile(path)
+        sheets = xl.sheet_names
+        if option is None:
+            sheets_id = []
+            for id, item in enumerate(sheets):
+                sheets_id.append(f"{item} [{id}]")
+            print(f"Dostupné listy v souboru: {sheets_id}")
+            data_sheet_id = input("Enter datasheet number: ")
+            if not data_sheet_id:
+                print("Please provice spreadsheets data sheet")
+                exit(0)
+            chosen_sheet = sheets[int(data_sheet_id)]
+        else:
+            chosen_sheet = sheets[int(option)]  
         print("Loading file: ", path)
-        convert(path, engine, data_sheet)
+        
+        convert(path, engine, chosen_sheet)
 
     
 
     print("Excel tables succesfully converted into tables!")
 
 
-print("=== EXCEL → PostgreSQL IMPORTER ===\n")
+print("=== EXCEL to PostgreSQL IMPORTER ===\n")
 
 files = choose_files("Choose one or more Excel files:")
 run(files)
