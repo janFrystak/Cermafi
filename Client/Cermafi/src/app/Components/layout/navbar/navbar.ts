@@ -6,7 +6,7 @@ import { RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Menubar, DarkModeToggle, RouterLink],
+  imports: [Menubar, DarkModeToggle],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })

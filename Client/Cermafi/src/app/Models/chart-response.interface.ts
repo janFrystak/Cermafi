@@ -1,4 +1,5 @@
 export interface ChartResponse {
     labels: string[];
-    values: number[];   
+    value_round1: number[];  
+    value_round2: number[]; 
 }

@@ -28,8 +28,6 @@ export class SimpleGraphComponent implements OnInit{
     }
   };
 
-  
-
   constructor(private dataService: ChartDataService) {}
 
   ngOnInit(): void {
@@ -37,20 +35,31 @@ export class SimpleGraphComponent implements OnInit{
   }
 
   private loadData(): void {
-    this.dataService.getChartData_YearsRange("2020", "2025", '1').subscribe({
+    this.dataService
+    .getChartData_YearsRange("2020", "2025")
+    .subscribe({
       next: (res)=>{
   
       this.chartData = {
         labels: res.labels,
         datasets: [
           {
-            label: 'Počet uchazečů',
-            data: res.values,
-            borderColor: 'rgba(54,162,235,1)',
-            backgroundColor: 'rgba(54,162,235,0.2)',
+            label: 'Počet uchazečů (Kolo 2)',
+            data: res.value_round2,
+            borderColor: 'rgb(0, 31, 61)',
+            backgroundColor: 'rgb(230, 230, 230)',
+            fill: true,
+            tension: 0.3
+          },
+          {
+            label: 'Počet uchazečů (Kolo 1)',
+            data: res.value_round1,
+            borderColor: 'rgb(237, 152, 95)',
+            backgroundColor: 'rgb(250, 216, 183)',
             fill: true, 
             tension: 0.3
           }
+          
         ]
       };
     },

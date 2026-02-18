@@ -72,20 +72,23 @@ AppDataSource.initialize()
                 res.status(500).json({ message: "Internal server error" });
             }
         });
-        app.get("/uchazec-count/:year/:round", async (req: Request, res: Response) => {
+        app.get("/uchazec-count/:year", async (req: Request, res: Response) => {
             
             const year = parseInt(req.params.year);
-            const round = parseInt(req.params.round);
+            
 
-            console.log("year: ", year, " -- kolo: ", round);
+            console.log("year: ", year, " -- kolo: ");
 
             try {
-                const total = await uchazecRepository.count({
-                    where: { rok: year, kolo: round }
+                const total_round1 = await uchazecRepository.count({
+                    where: { rok: year, kolo: 1 }
                 });
+                const total_round2 = await uchazecRepository.count({
+                    where: {rok: year, kolo: 2}
+                })
 
                
-                return res.json({ labels: ["Počet uchazečů"], values: [total] });
+                return res.json({ labels: ["Počet uchazečů"], value_round1: [total_round1], value_round2: [total_round2] });
             } catch (err) {
                 console.error(err);
                 return res.status(500).json({ message: "Internal server error" });
@@ -114,13 +117,17 @@ AppDataSource.initialize()
             for (let y = start; y <= end; y++) years.push(y);
 
             try {
-                const countPromises = years.map(async (y) => {
-                    return uchazecRepository.count({ where: { rok: y, kolo: round} });
+                const countPromises_Round1 = years.map(async (y) => {
+                    return uchazecRepository.count({ where: { rok: y, kolo: 1} });
                 });
+                const countPromises_Round2 = years.map(async (y) =>{
+                    return uchazecRepository.count({where: {rok: y, kolo: 2}})
+                })
 
-                const counts = await Promise.all(countPromises);
+                const count_round1 = await Promise.all(countPromises_Round1);
+                const count_round2 = await Promise.all(countPromises_Round2);
 
-                return res.json({ labels: years.map(String), values: counts });
+                return res.json({ labels: years.map(String), value_round1: count_round1, value_round2: count_round2 });
             } catch (err) {
                 console.error(err);
                 return res.status(500).json({ message: 'Internal server error' });

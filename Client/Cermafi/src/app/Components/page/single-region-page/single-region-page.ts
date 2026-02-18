@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataService } from '../../../Services/chart-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { RegionRespone } from '../../../Models/region-response';
+import { RegionRespone } from '../../../Models/region-response.interface';
 import { JsonPipe, NgIf } from '@angular/common';
+import { ScrollerModule } from 'primeng/scroller';
+
 
 @Component({
   selector: 'app-single-region-page',
-  imports: [NgIf, JsonPipe],
+  imports: [NgIf, JsonPipe, ScrollerModule],
   templateUrl: './single-region-page.html',
   styleUrl: './single-region-page.css',
 })
 export class SingleRegionPage implements OnInit {
   regionId: number | null = null;
-  regionData?: RegionRespone
+  regionData: RegionRespone | null  = null;
 
   constructor (
     private route: ActivatedRoute,
@@ -21,24 +23,26 @@ export class SingleRegionPage implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this.getData();
+    this.loadData();
     }
-  getData():void{
+  loadData():void{
     this.regionId = Number(this.route.snapshot.paramMap.get('id'));
     if(this.regionId){
-
-      this.dataService.getChartData_RegionId(this.regionId).subscribe({
+      this.dataService
+      .getData_RegionId(this.regionId)
+      .subscribe({
         next: (res) => {
-          this.regionData = res;
-
-        }, 
-        error: (err) => {
-          console.error('Chyba při komunikaci s API:', err);
-        }
-      });
+         /*  this.regionData.stats = {
+            totalApps: res.totalApplications,
+            schoolCount: res.schoolCount,
+            successRate: res.scoreAverage, 
+            popFields: res.popularFields,
+          }; */
+      }});
+    };
   }
 
   }
   
 
-}
+
