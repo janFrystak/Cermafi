@@ -40,15 +40,31 @@ def choose_files(prompt: str) -> str:
         exit(1)
     return list(filenames)
 
+def process_dataFrame(df, table, engine):
+    while True:
+        if ('id' in df.columns): 
+            id_override = input("Found existing column id, override column with a new one? (y/n)").lower()
+            match id_override:
+                case "y":
+                    df = df.drop(columns=["id"])
+                    df.index = df.index + 1
+                    df.to_sql(table, engine, if_exists="replace", index=True, index_label="id", chunksize=1000)
+                    break
+                case "n":
+                    df.to_sql(table, engine, if_exists="replace", index=False, chunksize=1000)
+                    break
+                case _:
+                    print("Invlaid answer given")
+        else:
+            df.index = df.index+1
+            df.to_sql(table, engine, if_exists="replace", index=True, index_label="id", chunksize=1000)
+            break
+
 def convert(path: str, engine, seperator: str, table: str):
     try:
-        df = pd.read_csv(path, sep=seperator, encoding='utf-8')
-        if ('id' not in df.columns): 
-            df.index = df.index+1
-        df.to_sql(table, engine, if_exists="replace", index=True, index_label="id")
-       
-       
-
+        df = pd.read_csv(path, sep=seperator, encoding='utf-8-sig')
+        process_dataFrame(df, table, engine)
+        
         print("Succesfully loaded: ", path)
     except Exception as e:
         print("Error while loading file: ", path)
@@ -60,33 +76,31 @@ def run(filepaths):
     print("testing: ", user, pswd, port, database)
     try:
         
-        engine = create_engine(
-            f"postgresql+psycopg2://{user}:{pswd}@localhost:{port}/{database}"
-        )
-        print(user, pswd, database)
+        engine = create_engine(f"postgresql+psycopg2://{user}:{pswd}@localhost:{port}/{database}")
+        """ print(user, pswd, database) """
         print("Connection succesful!")
+
     except Exception as e:
         print("Unable to connect to database.")
         print(e)
         exit(1)
 
-  
-    table = input("Please input table name (uchazec, skola, obor...):")
-    seperator = input("Please input the CSV files seperator: ")
-    print(f"Writing into table: {table}")
-    
-    conf = input("Continue? [y/n]: ").lower()
-    if conf != "y":
-        print("Task ended by user.")
-        exit(0)
     
     for path in filepaths:
-        print("Loading file: ", path)
+        table = input("Please input table name (uchazec, skola, obor...):").strip().lower()
+        seperator = input("Please input the CSV files seperator: ")
+        conf = input("Continue? (y/n): ").lower()
+        if conf != "y":
+            print("Task ended by user.")
+            break
+        print(f"Selected table: {table} for file ", path)
         convert(path, engine, seperator, table)
 
     
 
     print("Excel tables succesfully converted into tables!")
+    print("Closing connection")
+    engine.dispose()
 
 
 print("=== CSV → PostgreSQL IMPORTER ===\n")

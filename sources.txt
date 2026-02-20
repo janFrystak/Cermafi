@@ -1,3 +1,5 @@
+nested sql queries: https://www.geeksforgeeks.org/sql/nested-queries-in-sql/
+faster way to find sucess rate: https://stackoverflow.com/questions/26610332/use-of-avg-function-to-determine-percentages-in-a-sql-query
 issue with filling ORM array: https://github.com/typeorm/typeorm/issues/4498
 unable to start database: https://stackoverflow.com/questions/69754628/psql-error-connection-to-server-on-socket-tmp-s-pgsql-5432-failed-no-such
 error: https://stackoverflow.com/questions/38256402/valueerror-only-single-character-unicode-strings-can-be-converted-to-py-ucs4-g

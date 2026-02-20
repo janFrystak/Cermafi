@@ -20,28 +20,60 @@ AppDataSource.initialize()
 
        
         app.use(cors());
-        app.get("/region/:id", async (req: Request, res: Response)=>{
-            const id = parseInt(req.params.id)
-            try {
-                const uchazecData = await uchazecRepository.createQueryBuilder('uchazec')
-                    .leftJoinAndSelect('uchazec.volba_join', 'volba')
-                    .leftJoinAndSelect('volba.obor_join', 'obor')
-                    .leftJoinAndSelect('volba.neprijeti_join', 'neprijeti')
-                    .leftJoinAndSelect('volba.skola_join', 'skola')
-                    .leftJoinAndSelect('skola.kraj_join', 'kraj')
-                    .where('kraj.id = :regionId', { regionId: Number(id) })
-                    .getMany();
+        
+        app.get("/region/:id/summary", async (req: Request, res: Response) => {
+    const regionId = parseInt(req.params.id);
 
-                    if (!uchazecData) {
-                        return res.status(404).json({ message: "Uchazec not found" });
-                    }
-                    res.json(uchazecData);
-            } catch (err){
-                console.error;
-                res.status(404).json({message: "Internal server error"})
-            }
-            
-        })
+    try {
+        const stats = await AppDataSource.query(`
+            WITH temp_region AS (
+                SELECT uv.*, u.rok
+                FROM public.uchazec_volba uv
+                JOIN public.uchazec u ON uv.uchazec_id = u.id
+                JOIN public.skola s ON uv.redizo = s."RED_IZO"
+                WHERE s.kraj_id = $1 AND u.kolo = 1
+            )
+            SELECT 
+                COUNT(DISTINCT uchazec_id) as "totalApps",
+                
+                ROUND(AVG(CASE WHEN poradi = '1' AND prijat = 1 THEN 100 ELSE 0 END), 2) as "firstChoiceSuccessRate",
+                
+                ROUND(AVG(CASE WHEN poradi = '2' AND prijat = 1 THEN 100 ELSE 0 END), 2) as "secondChoiceSuccessRate",
+                
+             
+                (SELECT ROUND(COUNT(*) FILTER (WHERE best_result > 1 OR best_result IS NULL) * 100.0 / COUNT(*), 2)
+                  FROM (
+                    SELECT MIN(prijat) as best_result
+                    FROM temp_region 
+                    GROUP BY uchazec_id
+                  ) sub
+                ) as "failRate"
+            FROM temp_region
+        `, [regionId]);
+
+        
+        const popFields = await AppDataSource.query(`
+            SELECT o.nazev as name, COUNT(*) as count, o.kod as code
+            FROM public.uchazec_volba uv
+            JOIN public.obor o ON uv.obor_kod = o.kod
+            JOIN public.skola s ON uv.redizo = s."RED_IZO"
+            WHERE s.kraj_id = $1 AND uv.poradi = '1'
+            GROUP BY o.nazev, o.kod
+            ORDER BY count DESC
+            LIMIT 3
+        `, [regionId]);
+
+        res.json({
+            ...stats[0],
+            popFields: popFields
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});    
+        
         app.get("/uchazec-single/:id", async (req: Request, res: Response) => {
             const id = parseInt(req.params.id);
             console.log("id: ",id)
@@ -97,37 +129,47 @@ AppDataSource.initialize()
 
         // Aggregated counts across a range of year
         app.get('/uchazec/years', async (req: Request, res: Response) => {
-            const startRaw = req.query.start?.toString();
-            const endRaw = req.query.end?.toString();
-            const round = Number(req.query.round ?? '1');
+            const start = parseInt(req.query.start?.toString() || "" );
+            const end = parseInt(req.query.end?.toString() || "");
+            const maxYearRange = 20; 
 
-            const start = Number(startRaw);
-            const end = Number(endRaw);
-
-            if (!Number.isInteger(start) || !Number.isInteger(end) || start > end) {
-                return res.status(400).json({ message: 'Invalid start/end query parameters. Use integer years and start <= end.' });
+           
+            if (isNaN(start) || isNaN(end) || start > end) {
+                return res.status(400).json({ message: 'Invalid start/end years.'});
             }
 
-            const maxYearRange = 50; 
             if (end - start + 1 > maxYearRange) {
                 return res.status(400).json({ message: `Range too large; max ${maxYearRange} years allowed.`});
             }
 
-            const years: number[] = [];
-            for (let y = start; y <= end; y++) years.push(y);
-
             try {
-                const countPromises_Round1 = years.map(async (y) => {
-                    return uchazecRepository.count({ where: { rok: y, kolo: 1} });
-                });
-                const countPromises_Round2 = years.map(async (y) =>{
-                    return uchazecRepository.count({where: {rok: y, kolo: 2}})
-                })
+               const rawData = await uchazecRepository
+                .createQueryBuilder("u")
+                .select("u.rok", "year")
+                .addSelect("u.kolo", "round")
+                .addSelect("COUNT(u.id)", "count")
+                .where("u.rok BETWEEN :start AND :end", { start, end })
+                .groupBy("u.rok")
+                .addGroupBy("u.kolo")
+                .orderBy("u.rok", "ASC")
+                .getRawMany();
 
-                const count_round1 = await Promise.all(countPromises_Round1);
-                const count_round2 = await Promise.all(countPromises_Round2);
+                
+            const yearsRange = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+            const value_round1 = yearsRange.map(y => {
+                const entry = rawData.find(d => Number(d.year) === y && Number(d.round) === 1);
+                return entry ? Number(entry.count) : 0;
+            });
+            const value_round2 = yearsRange.map(y => {
+                const entry = rawData.find(d => Number(d.year) === y && Number(d.round) === 2);
+                return entry ? Number(entry.count) : 0;
+            });
 
-                return res.json({ labels: years.map(String), value_round1: count_round1, value_round2: count_round2 });
+            return res.json({ 
+                labels: yearsRange.map(String), 
+                value_round1, 
+                value_round2 
+            });
             } catch (err) {
                 console.error(err);
                 return res.status(500).json({ message: 'Internal server error' });

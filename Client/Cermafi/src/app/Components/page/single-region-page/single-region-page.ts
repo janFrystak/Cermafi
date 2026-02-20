@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataService } from '../../../Services/chart-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { RegionRespone } from '../../../Models/region-response.interface';
+import { RegionResponse } from '../../../Models/region-response.interface';
 import { JsonPipe, NgIf } from '@angular/common';
 import { ScrollerModule } from 'primeng/scroller';
 
 
 @Component({
   selector: 'app-single-region-page',
-  imports: [NgIf, JsonPipe, ScrollerModule],
+  imports: [ScrollerModule],
   templateUrl: './single-region-page.html',
   styleUrl: './single-region-page.css',
 })
 export class SingleRegionPage implements OnInit {
   regionId: number | null = null;
-  regionData: RegionRespone | null  = null;
+  regionData: RegionResponse | null  = null;
 
   constructor (
     private route: ActivatedRoute,

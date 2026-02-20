@@ -40,7 +40,7 @@ def choose_files(prompt: str) -> str:
 def convert(path: str, engine, sheet: str):
     current_max_id = 0
     try:
-        current_max_id = pd.read_sql("SELECT MAX(id) FROM public.uchazec", engine).iloc[0,0]
+        current_max_id = int(pd.read_sql("SELECT MAX(id) FROM public.uchazec", engine).iloc[0,0])
     except Exception as e:
         print("Starting new table")
         current_max_id = 0
@@ -70,20 +70,20 @@ def convert(path: str, engine, sheet: str):
             value_name='value'
         )
 
-        # 3. Split 'ss1_redizo' into 'poradi' (1) and 'attribute' (redizo)
+        # 3. Split 'ss1_redizo' into 'priorita' (1) and 'attribute' (redizo)
         # This regex captures the number after 'ss' and the text after the underscore
         extracted = long_df['temp_col'].str.extract(r'ss(\d+)_(\w+)')
-        long_df['poradi'] = extracted[0]
+        long_df['priorita'] = extracted[0]
         long_df['attribute'] = extracted[1]
 
         # 4. Filter out rows that didn't match the ss{i}_{attr} pattern (like 'rok', 'kolo')
-        long_df = long_df.dropna(subset=['poradi', 'attribute'])
+        long_df = long_df.dropna(subset=['priorita', 'attribute'])
 
               
 
         # 5. Change the attributes back into columns
         uchazec_volba = long_df.pivot(
-            index=['index', 'poradi'], 
+            index=['index', 'priorita'], 
             columns= "attribute", 
             values='value'
         ).reset_index()
@@ -95,9 +95,12 @@ def convert(path: str, engine, sheet: str):
 
         # Converting some row values into a more database friendly form
         if "duvod_neprijeti" in uchazec_volba.columns:
-            uchazec_volba["duvod_neprijeti"] = uchazec_volba["duvod_neprijeti"].astype(str).str.strip()
-            uchazec_volba["duvod_neprijeti"] = uchazec_volba["duvod_neprijeti"].replace(duvod_neprijeti_table)
-            uchazec_volba["duvod_neprijeti"] = uchazec_volba["duvod_neprijeti"].replace('nan', None)
+            uchazec_volba["duvod_neprijeti_id"] = (
+            uchazec_volba["duvod_neprijeti"]
+            .astype(str)
+            .str.strip()
+            .map(duvod_neprijeti_table)
+    )
 
         if "kkov" in uchazec_volba.columns:
             uchazec_volba['kkov'] = uchazec_volba['kkov'].astype(str)
@@ -126,13 +129,13 @@ def convert(path: str, engine, sheet: str):
             if col not in uchazec_volba.columns:
                 removed_col = removed_col+ col
                 uchazec_volba[col] = None
-        if removed_col not None:
+        if removed_col:
             print("removed: "+ removed_col)
         # Remove empty choices (volby) 
         uchazec_volba = uchazec_volba.dropna(subset=['redizo'])
 
         # Reorder columns to match DB schema 
-        uchazec_volba = uchazec_volba[['uchazec_id', 'poradi'] + atributes]
+        uchazec_volba = uchazec_volba[['uchazec_id', 'priorita'] + atributes]
         
 
         # Save to SQL
@@ -170,7 +173,10 @@ def run(filepaths):
         exit(0)
     '''
     if len(filepaths) > 1:
-        sheet_option= input("select sheets Individualy[0] or Mass[1]")
+        try:
+            sheet_option= int(input("select sheets Individualy[0] or Mass[1]"))
+        except(e):
+            print("Invalid option chosen")
         match int(sheet_option):
             case 0:
                 option = None
