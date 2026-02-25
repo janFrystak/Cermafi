@@ -8,7 +8,7 @@ export class Skola {
   @PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
   id!: number;
 
-  @Column({ type: 'text', nullable: true, name: 'RED_IZO' })
+  @Column({ type: 'text', nullable: true, name: 'red_izo' })
   red_izo!: string;
 
   @Column({ type: 'text', nullable: true, name: 'IČO' })
@@ -35,7 +35,7 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'Název ORP' })
   nazevOrp!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Plný název' })
+  @Column({ type: 'text', nullable: true, name: 'plny_nazev' })
   plnyNazev!: string;
 
   @Column({ type: 'text', nullable: true, name: 'Zkrácený název' })
@@ -56,7 +56,7 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'PSČ' })
   psc!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Místo' })
+  @Column({ type: 'text', nullable: true, name: 'misto' })
   misto!: string;
 
   @Column({ type: 'text', nullable: true, name: 'Telefon' })

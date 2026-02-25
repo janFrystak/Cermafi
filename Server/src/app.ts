@@ -20,60 +20,187 @@ AppDataSource.initialize()
 
        
         app.use(cors());
-        
-        app.get("/region/:id/summary", async (req: Request, res: Response) => {
-    const regionId = parseInt(req.params.id);
+        app.get("/region/summary/:id/:year", async(req: Request, res: Response) => {
+            const regionId = req.params.id;
+            const year = req.params.year;
+            try {
+                const stats = await AppDataSource.query(`
+                    WITH temp_region AS (
+                        SELECT uv.*, u.rok, s.kraj_id
+                        FROM public.uchazec_volba uv
+                        JOIN public.uchazec u ON uv.uchazec_id = u.id
+                        JOIN public.skola s ON uv.redizo = s.red_izo
+                        WHERE s.kraj_id = $1 AND u.rok = $2 AND u.kolo = 1 
+                    )
+                    SELECT 
+                        $1 as "id",
+                        k.region_nazev as "regionName", 
+                        COUNT(DISTINCT tr.uchazec_id) as "totalApps",
+                        
+                        ROUND(AVG(CASE WHEN tr.prijat = 1 THEN 100 ELSE 0 END) 
+                            FILTER (WHERE tr.poradi = '1'), 2) as "firstChoiceSuccessRate",
+                        ROUND(AVG(CASE WHEN tr.prijat = 1 THEN 100 ELSE 0 END) 
+                            FILTER (WHERE tr.poradi = '2'), 2) as "secondChoiceSuccessRate",
+                            
+                        (SELECT ROUND(COUNT(*) FILTER (WHERE best_result > 1 OR best_result IS NULL) * 100.0 / NULLIF(COUNT(*), 0), 2)
+                        FROM (
+                            SELECT MIN(prijat) as best_result
+                            FROM temp_region 
+                            GROUP BY uchazec_id
+                        ) sub
+                        ) as "failRate"
+                    FROM public.kraj k
+                    LEFT JOIN temp_region tr ON k.id = tr.kraj_id
+                    WHERE k.id = $1
+                    GROUP BY k.id, k.region_nazev, k.region_nazev_kratky  
+                `, [regionId, year]);
 
-    try {
-        const stats = await AppDataSource.query(`
-            WITH temp_region AS (
-                SELECT uv.*, u.rok
-                FROM public.uchazec_volba uv
-                JOIN public.uchazec u ON uv.uchazec_id = u.id
-                JOIN public.skola s ON uv.redizo = s."RED_IZO"
-                WHERE s.kraj_id = $1 AND u.kolo = 1
-            )
-            SELECT 
-                COUNT(DISTINCT uchazec_id) as "totalApps",
+                const popFields = await AppDataSource.query(`
+                    SELECT 
+                        o.nazev as name, 
+                        COUNT(*) as count, 
+                        o.kod as code
+                    FROM public.uchazec_volba uv
+                    JOIN public.uchazec u 
+                        ON uv.uchazec_id = u.id
+                    JOIN public.obor o 
+                        ON uv.obor_kod = o.kod
+                    JOIN public.skola s 
+                        ON uv.redizo = s.red_izo
+                    WHERE 
+                        s.kraj_id = $1 
+                        AND 
+                        u.rok = $2 
+                        AND 
+                        uv.poradi = '1'
+                    GROUP BY o.nazev, o.kod
+                    ORDER BY count DESC
+                    LIMIT 5
+                `, [regionId, year]);
+
+                const topSchools = await AppDataSource.query(`
+                    SELECT 
+                        s.plny_nazev as name, 
+                        COUNT(*) as count,
+                        s.red_izo as redizo,
+                        s.misto as place,
+                        s.id as id
+                    FROM public.uchazec_volba uv
+                    JOIN public.uchazec u 
+                        ON uv.uchazec_id = u.id
+                    JOIN public.skola s 
+                        ON uv.redizo = s.red_izo
+                    WHERE 
+                        s.kraj_id = $1 
+                        AND 
+                        uv.poradi = '1'
+                        AND
+                        u.rok = $2
+                    GROUP BY name, s.red_izo, place, s.id
+                    ORDER BY count DESC
+                    LIMIT 5
+
+                    
+                `, [regionId, year]);
+
+            res.json({
+                ...stats[0],
+                popFields: popFields,
+                topSchools: topSchools
+
+            })
+        } catch(e){
+            res.status(500).json({message: "Internal server error"})
+        }
+        })
+        app.get("/region/summary/:id", async (req: Request, res: Response) => {
+            const regionId = parseInt(req.params.id);
+
+            try {
+                const stats = await AppDataSource.query(`
+                WITH temp_region AS (
+                    SELECT uv.*, u.rok , s.kraj_id
+                    FROM public.uchazec_volba uv
+                    JOIN public.uchazec u ON uv.uchazec_id = u.id
+                    JOIN public.skola s ON uv.redizo = s.red_izo
+                    WHERE s.kraj_id = $1 AND u.kolo = 1 
+                )
+                SELECT 
+                    $1 as "id",
+                    k.region_nazev as "regionName", 
+                    COUNT(DISTINCT tr.uchazec_id) as "totalApps",
+                    
                 
-                ROUND(AVG(CASE WHEN poradi = '1' AND prijat = 1 THEN 100 ELSE 0 END), 2) as "firstChoiceSuccessRate",
+                    ROUND(AVG(CASE WHEN tr.prijat = 1 THEN 100 ELSE 0 END) 
+                        FILTER (WHERE tr.poradi = '1'), 2) as "firstChoiceSuccessRate",
+                    ROUND(AVG(CASE WHEN tr.prijat = 1 THEN 100 ELSE 0 END) 
+                        FILTER (WHERE tr.poradi = '2'), 2) as "secondChoiceSuccessRate",
+                    (SELECT ROUND(COUNT(*) FILTER (WHERE best_result > 1 OR best_result IS NULL) * 100.0 / NULLIF(COUNT(*), 0), 2)
+                    FROM (
+                        SELECT MIN(prijat) as best_result
+                        FROM temp_region 
+                        GROUP BY uchazec_id
+                    ) sub
+                    ) as "failRate"
+                FROM public.kraj k
+                LEFT JOIN temp_region tr ON k.id = tr.kraj_id
+                WHERE k.id = $1
+                GROUP BY k.id, k.region_nazev, k.region_nazev_kratky  
+            `, [regionId]);
+
                 
-                ROUND(AVG(CASE WHEN poradi = '2' AND prijat = 1 THEN 100 ELSE 0 END), 2) as "secondChoiceSuccessRate",
+                const topFields = await AppDataSource.query(`
+                    SELECT 
+                        o.nazev as name, 
+                        COUNT(*) as count, 
+                        o.kod as code
+                    FROM public.uchazec_volba uv
+                    JOIN public.obor o 
+                        ON uv.obor_kod = o.kod
+                    JOIN public.skola s 
+                        ON uv.redizo = s.red_izo
+                    WHERE 
+                        s.kraj_id = $1 
+                        AND 
+                        uv.poradi = '1'
+                    GROUP BY o.nazev, o.kod
+                    ORDER BY count DESC
+                    LIMIT 5
+                `, [regionId]);
+
+                const topSchools = await AppDataSource.query(`
+                    SELECT 
+                        s.plny_nazev as name, 
+                        COUNT(*) as count,
+                        s.red_izo as redizo,
+                        s.misto as place,
+                        s.id as id
+                    FROM public.uchazec_volba uv
+                    JOIN public.uchazec u 
+                        ON uv.uchazec_id = u.id
+                    JOIN public.skola s 
+                        ON uv.redizo = s.red_izo
+                    WHERE 
+                        s.kraj_id = $1 
+                        AND 
+                        uv.poradi = '1'
+                    GROUP BY name, s.red_izo, place, s.id
+                    ORDER BY count DESC
+                    LIMIT 5
+                `, [regionId]);
+
+                res.json({
+                    ...stats[0],
+                    topFields: topFields,
+                    topSchools: topSchools
+                });
+
+            } catch (err) {
+                console.error(err);
+                res.status(500).json({ message: "Internal server error" });
+            }
+        });    
                 
-             
-                (SELECT ROUND(COUNT(*) FILTER (WHERE best_result > 1 OR best_result IS NULL) * 100.0 / COUNT(*), 2)
-                  FROM (
-                    SELECT MIN(prijat) as best_result
-                    FROM temp_region 
-                    GROUP BY uchazec_id
-                  ) sub
-                ) as "failRate"
-            FROM temp_region
-        `, [regionId]);
-
-        
-        const popFields = await AppDataSource.query(`
-            SELECT o.nazev as name, COUNT(*) as count, o.kod as code
-            FROM public.uchazec_volba uv
-            JOIN public.obor o ON uv.obor_kod = o.kod
-            JOIN public.skola s ON uv.redizo = s."RED_IZO"
-            WHERE s.kraj_id = $1 AND uv.poradi = '1'
-            GROUP BY o.nazev, o.kod
-            ORDER BY count DESC
-            LIMIT 3
-        `, [regionId]);
-
-        res.json({
-            ...stats[0],
-            popFields: popFields
-        });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});    
-        
         app.get("/uchazec-single/:id", async (req: Request, res: Response) => {
             const id = parseInt(req.params.id);
             console.log("id: ",id)

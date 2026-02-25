@@ -1,6 +1,17 @@
 export interface FieldModel {
     id: number,
-    kod: string,
+    code: string,
     name: string, 
-    shortName: string
+    count: number | null
+}
+
+export interface SchoolModel {
+    id: number,
+    place: string | null,
+    redizo: string,
+    ownerType: string | null,
+    krajId: string | null, 
+    okres: string | null,
+    name: string,
+    count: number | null
 }
