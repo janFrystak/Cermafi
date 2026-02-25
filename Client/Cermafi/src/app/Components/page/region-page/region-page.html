@@ -20,23 +20,10 @@
 
                     <p-divider></p-divider>
 
-                    <div class="flex flex-column gap-4 mt-4">
-                        <div class="flex align-items-center gap-3">
-                            <i class="pi pi-mouse text-primary"></i>
-                            <span class="text-sm font-medium">Interaktivní výběr regionu</span>
-                        </div>
-                        <div class="flex align-items-center gap-3">
-                            <i class="pi pi-chart-bar text-primary"></i>
-                            <span class="text-sm font-medium">Okamžitý přehled statistik</span>
-                        </div>
-                        <div class="flex align-items-center gap-3">
-                            <i class="pi pi-list text-primary"></i>
-                            <span class="text-sm font-medium">Seznam škol v lokalitě</span>
-                        </div>
-                    </div>
+                    
                 </div>
 
-                <!-- Pravý panel: Mapa -->
+               
                 <div class="col-12 lg:col-8 p-0 md:pl-6 flex align-items-center justify-content-center" style="min-height: 450px;">
                     <div class="w-full">
                         <app-region-map></app-region-map>
@@ -45,15 +32,7 @@
             </div>
 
             <!-- Footer Panelu: Status bar -->
-            <ng-template pTemplate="footer">
-                <div class="flex justify-content-between align-items-center text-xs text-secondary uppercase tracking-wider">
-                    <span>Režim prohlížení: Celá ČR</span>
-                    <span class="flex align-items-center gap-2">
-                        <i class="pi pi-circle-fill text-green-500" style="font-size: 0.5rem"></i>
-                        Databáze připojena
-                    </span>
-                </div>
-            </ng-template>
+            
         </p-panel>
 
     </div>

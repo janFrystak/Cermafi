@@ -27,8 +27,10 @@ export class SimpleGraphComponent implements OnInit{
       legend: {display: true, position: "top"}
     }
   };
-
-  constructor(private dataService: ChartDataService) {}
+  
+  constructor(
+    private dataService: ChartDataService
+  ) {}
 
   ngOnInit(): void {
     this.loadData();

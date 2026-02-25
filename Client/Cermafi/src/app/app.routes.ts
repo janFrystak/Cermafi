@@ -11,8 +11,9 @@ export const routes: Routes = [
     {path: 'region', component: RegionPage},
     {path: 'field', component: FieldPage },
     {path: 'region/:id', component: SingleRegionPage},
+    { path: 'region/:id/:year', component: SingleRegionPage },
     {path: '', redirectTo:'home', pathMatch: 'full'},
-    /* {path: '**', redirectTo: 'home'}, */
+   
    
     
 ];

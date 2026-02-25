@@ -1,0 +1,98 @@
+<div class="dashboard-container p-5" *ngIf="regionData">
+  
+  <header class="flex justify-content-between align-items-end mb-6">
+    <div>
+      <span class="text-blue-500 font-bold uppercase tracking-wider text-sm">Regional Analytics</span>
+      <h1 class="text-6xl font-black m-0 line-height-1 mt-2">{{ regionData.regionName }}</h1>
+    </div>
+    
+    <div class="year-toggle p-2 surface-100 border-round-xl flex gap-2">
+       <button class="year-btn" [class.active]="!year">All Time</button>
+       <button class="year-btn" [class.active]="year === 2024">2024</button>
+       <button class="year-btn" [class.active]="year === 2025">2025</button>
+    </div>
+  </header>
+
+  <div class="grid g-4">
+    
+    <div class="col-12 lg:col-4">
+      <div class="glass-card p-4 mb-4 text-center">
+        <h3 class="text-500 font-medium mb-4">The Admission Funnel</h3>
+        
+        <div class="flex justify-content-around align-items-center mb-5">
+          <div class="circle-stat">
+            <div class="circle-overlay">{{ regionData.firstChoiceSuccessRate }}%</div>
+            <p-progressSpinner strokeWidth="4" [style]="{width: '120px', height: '120px'}" 
+              class="success-1"></p-progressSpinner>
+            <span class="block mt-2 font-bold text-sm">1st Choice</span>
+          </div>
+
+          <div class="circle-stat">
+            <div class="circle-overlay secondary">{{ regionData.secondChoiceSuccessRate }}%</div>
+            <p-progressSpinner strokeWidth="4" [style]="{width: '120px', height: '120px'}" 
+              class="success-2"></p-progressSpinner>
+            <span class="block mt-2 font-bold text-sm">2nd Choice</span>
+          </div>
+        </div>
+
+        <p-divider></p-divider>
+        
+        <div class="mt-4">
+          <span class="text-400 text-sm">Failure to Place</span>
+          <div class="text-4xl font-black text-pink-500">{{ regionData.failRate }}%</div>
+          <p class="text-xs text-500 mt-2 px-4">Applicants who were not accepted into any of their chosen schools.</p>
+        </div>
+      </div>
+
+      <div class="glass-card p-4 bg-primary text-primary-contrast">
+        <span class="block mb-1 opacity-70">Total Round 1 Applicants</span>
+        <div class="text-5xl font-black">{{ regionData.totalApps | number }}</div>
+      </div>
+    </div>
+
+    <div class="col-12 lg:col-8">
+      
+      <h3 class="text-xl font-bold mb-3 flex align-items-center">
+        <i class="pi pi-verified mr-2 text-blue-500"></i> Top Target Schools
+      </h3>
+      <div class="grid mb-5">
+        <div class="col-12" *ngFor="let school of regionData.topSchools; let i = index">
+          <div class="rank-card flex align-items-center p-3 mb-2 glass-card hover-trigger">
+            <div class="rank-badge" [attr.data-rank]="i + 1">{{ i + 1 }}</div>
+            <div class="flex-1 ml-4">
+              <div class="text-xl font-bold text-900">{{ school.name }}</div>
+              <div class="text-500 text-sm"><i class="pi pi-map-marker text-xs"></i> {{ school.place }}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-2xl font-black text-blue-600">{{ school.count }}</div>
+              <div class="text-xs font-bold uppercase text-400">P1 Apps</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-bold mb-3 flex align-items-center">
+        <i class="pi pi-chart-line mr-2 text-purple-500"></i> Market Demand by Field
+      </h3>
+      <div class="glass-card p-0 overflow-hidden">
+        <p-table [value]="regionData.topFields" responsiveLayout="scroll" class="custom-table">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Field Name</th>
+              <th>Code</th>
+              <th class="text-right">Applications</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-field>
+            <tr>
+              <td class="font-bold">{{ field.name }}</td>
+              <td><p-tag [value]="field.code" severity="info" [rounded]="true"></p-tag></td>
+              <td class="text-right font-black text-lg">{{ field.count }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+    </div>
+  </div>
+</div>
