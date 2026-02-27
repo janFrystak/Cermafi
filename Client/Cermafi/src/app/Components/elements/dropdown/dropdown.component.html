@@ -1,0 +1,7 @@
+<p-dropdown 
+      [options]="years()" 
+      [(ngModel)]="selectedYear" 
+      (onChange)="onYearSelect($event)"
+      placeholder="Vyberte rok"
+      styleClass="year-dropdown">
+</p-dropdown>

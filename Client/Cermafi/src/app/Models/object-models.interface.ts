@@ -12,6 +12,7 @@ export interface SchoolModel {
     ownerType: string | null,
     krajId: string | null, 
     okres: string | null,
-    name: string,
+    full_name: string,
+    short_name: string,
     count: number | null
 }

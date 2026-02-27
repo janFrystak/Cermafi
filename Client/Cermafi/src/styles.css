@@ -1,1 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg-card: rgba(255,255,255,0.6);
+  --bg-surface: #ffffff;
+  --bg-muted: #f3f4f6;
+
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-accent: #3b82f6;
+
+  --kpi-primary-bg: #2563eb;
+  --kpi-primary-text: #ffffff;
+
+  --funnel-bg: #e5e7eb;
+  --funnel-green: rgb(187, 203, 46);
+  --funnel-blue: rgb(8, 131, 149);
+  --funnel-red: rgb(227, 106, 106);
+
+  --rank-1: gold;
+  --rank-2: silver;
+  --rank-3: #cd7f32;
+
+  --school-badge-bg: #eef2ff;
+  --school-item-bg: #ffffff;
+  --school-item-hover: #f9fafb;
+
+  --table-hover: #f9fafb;
+}
+
+.p-dark {
+  --bg-card: rgba(255,255,255,0.06);
+  --bg-surface: #1f1f1f;
+  --bg-muted: #2a2a2a;
+
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-accent: #60a5fa;
+
+  --kpi-primary-bg: #1d4ed8;
+  --kpi-primary-text: #e5e7eb;
+
+  --funnel-bg: #3a3a3a;
+  --funnel-green: #22c55e;
+  --funnel-blue: #3b82f6;
+  --funnel-red: #ef4444;
+
+  --rank-1: gold;
+  --rank-2: silver;
+  --rank-3: #cd7f32;
+
+  --school-badge-bg: #312e81;
+  --school-item-bg: #262626;
+  --school-item-hover: #323232;
+
+  --table-hover: #2d2d2d;
+}

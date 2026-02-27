@@ -1,85 +1,252 @@
-.dashboard-container {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+.dashboard {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  color: var(--text-primary);
 }
 
-/* Glassmorphism Effect */
-.glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-round: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
-/* Custom Year Buttons */
-.year-btn {
-  border: none;
-  background: transparent;
-  padding: 0.5rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &.active {
-    background: white;
-    color: #1e293b;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  }
+.dash-title .dash-subtitle {
+  font-size: .8rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-accent);
+  letter-spacing: .12em;
 }
 
-/* Circular Stats Overlays */
-.circle-stat {
-  position: relative;
-  text-align: center;
-}
-
-.circle-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.5rem;
+.dash-region {
+  font-size: 3.5rem;
   font-weight: 900;
-  color: #2e7d32; 
-
-  &.secondary {
-    color: #00838f; 
-  }
+  margin-top: .3rem;
 }
 
-/* Rank Badges */
-.rank-badge {
-  width: 48px;
-  height: 48px;
+/* Year Toggle */
+.year-toggle {
+  background: var(--bg-muted);
+  padding: .5rem;
+  border-radius: 12px;
+  display: flex;
+  gap: .5rem;
+}
+
+.year-btn {
+  background: transparent;
+  border: none;
+  padding: .4rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: .5;
+  color: var(--text-primary);
+}
+
+.year-btn.active {
+  background: var(--text-accent);
+  color: white;
+  opacity: 1;
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.left-col,
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.card-title {
+  margin-top: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.kpi {
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.kpi-label {
+  font-size: .9rem;
+  opacity: .7;
+}
+
+.kpi-value {
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+.kpi.primary {
+  background: var(--kpi-primary-bg);
+  color: var(--kpi-primary-text);
+}
+
+
+.funnel {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.funnel-row {
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.funnel-bar {
+  width: 100%;
+  height: 12px;
+  background: var(--funnel-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 8px;
+}
+
+.fill.green { background: var(--funnel-green); }
+.fill.blue { background: var(--funnel-blue); }
+.fill.red { background: var(--funnel-red); }
+
+.funnel-value {
+  font-weight: 700;
+}
+
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
+  margin-bottom: .3rem;
+  color: var(--text-primary);
+}
+
+.icon {
+  margin-right: .5rem;
+  color: var(--text-accent);
+}
+
+.icon.purple {
+  color: #8b5cf6;
+}
+
+.school-list {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+}
+
+.school-item {
+  display: flex;
+  align-items: center;
+  padding: .9rem 1rem;
+  background: var(--school-item-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  transition: transform .15s, background .15s;
+  border-left: 4px solid transparent;
+  color: var(--text-primary);
+}
+
+.school-item:hover {
+  transform: translateY(-2px);
+  background: var(--school-item-hover);
+}
+
+.rank-1 { border-left-color: var(--rank-1); }
+.rank-2 { border-left-color: var(--rank-2); }
+.rank-3 { border-left-color: var(--rank-3); }
+
+.rank-badge {
+  width: 40px;
+  height: 40px;
+  background: var(--school-badge-bg);
+  border-radius: 50%;
+  display: flex;
   justify-content: center;
-  border-radius: 16px;
-  font-weight: 900;
+  align-items: center;
+  font-weight: 800;
   font-size: 1.2rem;
-  background: #f1f5f9;
-  color: #64748b;
-
-  &[data-rank="1"] { background: #fef3c7; color: #92400e; } /* Gold */
-  &[data-rank="2"] { background: #f1f5f9; color: #475569; } /* Silver */
-  &[data-rank="3"] { background: #ffedd5; color: #9a3412; } /* Bronze */
+  color: var(--text-primary);
 }
 
-/* Table Clean up */
-::ng-deep .custom-table .p-datatable-thead > tr > th {
-  background: transparent;
-  color: #94a3b8;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  border: none;
+.school-info {
+  margin-left: 1rem;
+  flex: 1;
 }
 
-::ng-deep .custom-table .p-datatable-tbody > tr {
-  background: transparent;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+.school-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.school-place {
+  font-size: .9rem;
+  color: var(--text-secondary);
+}
+
+.school-apps {
+  text-align: right;
+}
+
+.school-apps .count {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-accent);
+}
+
+.school-apps .label {
+  font-size: .7rem;
+  opacity: .6;
+}
+
+/* ===========================================
+   TABLE
+=========================================== */
+
+.table-card {
+  padding: 0;
+}
+
+.styled-table table {
+  border-collapse: collapse;
+  width: 100%;
+  color: var(--text-primary);
+}
+
+.styled-table tbody tr:hover {
+  background: var(--table-hover);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.bold {
+  font-weight: 700;
 }

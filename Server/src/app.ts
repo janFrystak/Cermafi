@@ -80,7 +80,8 @@ AppDataSource.initialize()
 
                 const topSchools = await AppDataSource.query(`
                     SELECT 
-                        s.plny_nazev as name, 
+                        s.plny_nazev as full_name, 
+                        s.zkraceny_nazev as short_name,
                         COUNT(*) as count,
                         s.red_izo as redizo,
                         s.misto as place,
@@ -170,7 +171,8 @@ AppDataSource.initialize()
 
                 const topSchools = await AppDataSource.query(`
                     SELECT 
-                        s.plny_nazev as name, 
+                        s.zkraceny_nazev as short_name,
+                        s.plny_nazev as full_name,
                         COUNT(*) as count,
                         s.red_izo as redizo,
                         s.misto as place,
@@ -184,7 +186,7 @@ AppDataSource.initialize()
                         s.kraj_id = $1 
                         AND 
                         uv.poradi = '1'
-                    GROUP BY name, s.red_izo, place, s.id
+                    GROUP BY short_name,full_name, s.red_izo, place, s.id
                     ORDER BY count DESC
                     LIMIT 5
                 `, [regionId]);
@@ -254,7 +256,24 @@ AppDataSource.initialize()
             }
         });
 
-        // Aggregated counts across a range of year
+        
+        app.get('/years', async (req: Request, res: Response)=>{
+            try {
+                const years = await uchazecRepository
+                .createQueryBuilder("u")
+                .select("DISTINCT u.year", "year")
+                .orderBy("u.year", "ASC")
+                .getRawMany();
+
+                const list = years.map(y => y.year);
+
+                return res.json(list);
+                
+            } catch (err) {
+                console.error(err);
+                return res.status(500).json({ message: "Internal server error" });
+            }
+        })
         app.get('/uchazec/years', async (req: Request, res: Response) => {
             const start = parseInt(req.query.start?.toString() || "" );
             const end = parseInt(req.query.end?.toString() || "");

@@ -6,13 +6,13 @@ import { DecimalPipe, JsonPipe, NgFor, NgIf } from '@angular/common';
 import { ScrollerModule } from 'primeng/scroller';
 import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
-import { Divider } from 'primeng/divider';
-import { ProgressSpinner } from 'primeng/progressspinner';
 import { TableModule} from 'primeng/table';
+import { YearDropdownComponent } from '../../elements/dropdown/dropdown.component';
 
-@Component({
+
+@Component({  
   selector: 'app-single-region-page',
-  imports: [ScrollerModule, CardModule, NgFor, NgIf, DecimalPipe, Tag, Divider, ProgressSpinner, TableModule],
+  imports: [ScrollerModule, CardModule, NgFor, NgIf, DecimalPipe, Tag, YearDropdownComponent, TableModule],
   templateUrl: './single-region-page.html',
   styleUrl: './single-region-page.css',
 })
