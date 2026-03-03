@@ -6,12 +6,23 @@
       <h1 class="dash-region">{{ regionData.regionName }}</h1>
     </div>
 
-    <div class="year-toggle">
-      <button class="year-btn" [class.active]="!year">Všechny roky</button>
-      <app-year-dropdown
-        [years] = >
-      </app-year-dropdown>
+    
+  <div class="year-toggle">
+    <button 
+      class="year-btn" 
+      [class.active]="!year"
+      (click)="year = null; fetchData()">
+      Všechny roky
+    </button>
+
+    <div class="dropdown-segment" [class.active]="year">
+      <app-dropdown
+        [placeholder]="'Vyberte rok'"
+        [values]="avYears"
+        (valueChanged)="year = $event; fetchData()">
+      </app-dropdown>
     </div>
+  </div>
   </header>
 
   <div class="dash-grid">

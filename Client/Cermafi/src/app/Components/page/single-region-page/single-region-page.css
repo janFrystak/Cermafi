@@ -26,7 +26,8 @@
   margin-top: .3rem;
 }
 
-/* Year Toggle */
+
+/* Toggle container */
 .year-toggle {
   background: var(--bg-muted);
   padding: .5rem;
@@ -35,6 +36,7 @@
   gap: .5rem;
 }
 
+/* Button segment */
 .year-btn {
   background: transparent;
   border: none;
@@ -42,14 +44,41 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  opacity: .5;
+  opacity: .6;
   color: var(--text-primary);
+  transition: 0.2s ease;
 }
 
 .year-btn.active {
   background: var(--text-accent);
   color: white;
   opacity: 1;
+}
+
+
+.dropdown-segment {
+  display: flex;
+  align-items: center;
+  padding: 0 .4rem;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+.dropdown-segment.active {
+  background: var(--text-accent);
+  color: white;
+}
+
+
+.dropdown-segment.active ::ng-deep .p-dropdown-label {
+  color: white !important;
+}
+
+
+::ng-deep .p-dropdown {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .dash-grid {

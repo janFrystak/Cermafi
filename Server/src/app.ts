@@ -55,7 +55,7 @@ AppDataSource.initialize()
                     GROUP BY k.id, k.region_nazev, k.region_nazev_kratky  
                 `, [regionId, year]);
 
-                const popFields = await AppDataSource.query(`
+                const topFields = await AppDataSource.query(`
                     SELECT 
                         o.nazev as name, 
                         COUNT(*) as count, 
@@ -77,6 +77,7 @@ AppDataSource.initialize()
                     ORDER BY count DESC
                     LIMIT 5
                 `, [regionId, year]);
+                
 
                 const topSchools = await AppDataSource.query(`
                     SELECT 
@@ -97,7 +98,7 @@ AppDataSource.initialize()
                         uv.poradi = '1'
                         AND
                         u.rok = $2
-                    GROUP BY name, s.red_izo, place, s.id
+                    GROUP BY full_name, short_name, s.red_izo, place, s.id
                     ORDER BY count DESC
                     LIMIT 5
 
@@ -106,7 +107,7 @@ AppDataSource.initialize()
 
             res.json({
                 ...stats[0],
-                popFields: popFields,
+                popFields: topFields,
                 topSchools: topSchools
 
             })
@@ -114,6 +115,7 @@ AppDataSource.initialize()
             res.status(500).json({message: "Internal server error"})
         }
         })
+
         app.get("/region/summary/:id", async (req: Request, res: Response) => {
             const regionId = parseInt(req.params.id);
 
@@ -234,12 +236,9 @@ AppDataSource.initialize()
             }
         });
         app.get("/uchazec-count/:year", async (req: Request, res: Response) => {
-            
             const year = parseInt(req.params.year);
-            
-
             console.log("year: ", year, " -- kolo: ");
-
+            
             try {
                 const total_round1 = await uchazecRepository.count({
                     where: { rok: year, kolo: 1 }
@@ -261,12 +260,11 @@ AppDataSource.initialize()
             try {
                 const years = await uchazecRepository
                 .createQueryBuilder("u")
-                .select("DISTINCT u.year", "year")
-                .orderBy("u.year", "ASC")
+                .select("DISTINCT u.rok", "rok")
                 .getRawMany();
-
-                const list = years.map(y => y.year);
-
+                
+                const list = years.map(y => y.rok);
+                console.log ("YEARS HERE: ", list)
                 return res.json(list);
                 
             } catch (err) {

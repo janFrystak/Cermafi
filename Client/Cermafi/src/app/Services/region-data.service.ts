@@ -16,8 +16,8 @@ export class RegionDataService {
     return this.http.get<RegionResponse>(myUrl)
 
   }
-  getData_Years(): Observable<Number[]>{
-    return this.http.get<Number[]>(`${this.baseUrl}/years/`)
+  getData_Years(): Observable<number[]>{
+    return this.http.get<number[]>(`${this.baseUrl}/years`)
   }
   getData_RegionYearSummary(id: number, year: number): Observable<RegionResponse>{
     const myUrl = `${this.baseUrl}/region/summary/${id}/${year}`
