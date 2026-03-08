@@ -6,6 +6,7 @@ import cors from 'cors';
 import { AppDataSource } from "./data-source";
 import { Uchazec } from "./Models/Uchazec-model";
 import { UchazecVolba } from './Models/Uchazec_volba-model';
+import { Obor } from './Models/Obor-model';
 
 const app = express();
 
@@ -16,6 +17,7 @@ AppDataSource.initialize()
     .then(() => {
         const volbaRepository = AppDataSource.getRepository(UchazecVolba);
         const uchazecRepository = AppDataSource.getRepository(Uchazec)
+        const fieldRepository = AppDataSource.getRepository(Obor)
         
 
        
@@ -247,8 +249,11 @@ AppDataSource.initialize()
                     where: {rok: year, kolo: 2}
                 })
 
-               
-                return res.json({ labels: ["Počet uchazečů"], value_round1: [total_round1], value_round2: [total_round2] });
+                return res.json({ 
+                    labels: ["Počet uchazečů"], 
+                    value_round1: [total_round1], 
+                    value_round2: [total_round2] 
+                });
             } catch (err) {
                 console.error(err);
                 return res.status(500).json({ message: "Internal server error" });
@@ -319,8 +324,27 @@ AppDataSource.initialize()
                 return res.status(500).json({ message: 'Internal server error' });
             }
         });
-
-        app.get("/uchazec", async (_req: Request, res: Response) => {
+        app.get("/fields", async(req: Request, res: Response)=>{
+            try {
+                const all = await fieldRepository
+                .createQueryBuilder("u")
+                .addSelect("u.id", "id")
+                .select("u.kod", "code")
+                .addSelect("u.nazev", "name")
+                .getRawMany();
+                
+                if (!all || all.length === 0) {
+                    return res.status(404).json({ message: "No fields found." });
+                }
+                return res.json(all)
+            }
+            catch(err){
+                console.error(err);
+                return res.status(500).json({message: 'Internal server error'})
+            }
+            
+        })
+        app.get("/uchazec", async (req: Request, res: Response) => {
             try {
                 const all = await uchazecRepository.find(
                     {
@@ -334,7 +358,7 @@ AppDataSource.initialize()
                     }
                 );
                 if (!all){
-                    return res.status(404).json({message: "Empty :("})
+                    return res.status(404).json({message: "No objects found"})
                 }
                 res.json(all); 
             } catch (err) {

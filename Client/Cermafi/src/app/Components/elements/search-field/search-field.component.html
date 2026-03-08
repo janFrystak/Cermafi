@@ -1,1 +1,26 @@
-<p>search-field works!</p>
+<div class="search-container">
+<p-iconField iconPosition="left">
+    <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
+    <input 
+        pInputText
+        type="text" 
+        [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value); isDropdownVisible.set(true)"
+        (focus)="isDropdownVisible.set(true)"
+        [placeholder]="placeholder()" 
+        class="search-input" />
+</p-iconField>
+
+  @if (isDropdownVisible() && topResults().length > 0) {
+    <div class="hint-overlay">
+      @for (item of topResults(); track item.id) {
+        <div class="hint-row" (click)="selectItem(item)">
+          <div class="hint-content">
+            <span class="h1-text">{{ item.h1 }}</span>
+            <span class="h2-text">{{ item.h2 }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

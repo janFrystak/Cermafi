@@ -1,1 +1,5 @@
-<p>field-page works!</p>
+<app-search-field
+    [items]="searchItems()" 
+  [placeholder]="'Hledat obor vzdělání...'"
+  (itemSelected)="handleSelection($event)">
+</app-search-field>

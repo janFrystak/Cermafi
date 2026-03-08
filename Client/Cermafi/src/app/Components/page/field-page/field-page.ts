@@ -1,11 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { SearchFieldComponent } from '../../elements/search-field/search-field.component';
+import { SearchItem } from '../../../Models/element-items.interface';
+import { FieldDataService } from '../../../Services/field-data.service';
+
 
 @Component({
   selector: 'app-field-page',
-  imports: [],
+  imports: [SearchFieldComponent],
   templateUrl: './field-page.html',
   styleUrl: './field-page.css',
 })
 export class FieldPage {
+  constructor(
+    private fieldService : FieldDataService
+  ){}
+  
+  searchItems = signal<SearchItem[]>([]);
 
+  ngOnInit() {
+    this.fieldService.getData_Fields().subscribe(fields => {
+    
+      const mapped = fields.map(f => ({
+        id: f.id,      
+        h1: f.name,   
+        h2: f.code     
+      }));
+      this.searchItems.set(mapped);
+    });
+  }
+
+  handleSelection(item: SearchItem) {
+    console.log("User picked ID:", item.id);
+  }
 }
