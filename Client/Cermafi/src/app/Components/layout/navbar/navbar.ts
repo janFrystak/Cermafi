@@ -1,8 +1,8 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Menubar } from "primeng/menubar";
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { DarkModeToggle } from '../../elements/dark-mode-toggle/dark-mode-toggle';
-import { RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,28 +10,39 @@ import { RouterLink} from '@angular/router';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar implements OnInit{
-    items: MenuItem[] | undefined;
+export class Navbar implements OnInit {
+  items: MenuItem[] | undefined;
 
-    ngOnInit(): void {
-      this.items = [
-        {
-          icon: PrimeIcons.HOME,
-          routerLink: '/home',
-        },
-        { 
-          label: "Podle regionu", 
-          icon: PrimeIcons.MAP,
-          routerLink: '/region',
-        },
-        {
-          label: "Podle oboru",
-          icon: PrimeIcons.HAMMER,
-          routerLink: '/field'
-        },
-        
-      ]
-    }
+  constructor(private router: Router) {}
 
+  ngOnInit(): void {
+    this.buildMenu();
 
+    this.router.events.subscribe(() => this.buildMenu());
+  }
+
+  private buildMenu(): void {
+    const url = this.router.url;
+
+    this.items = [
+      {
+        label: 'Přehled',
+        icon: PrimeIcons.TH_LARGE,
+        routerLink: '/home',
+        styleClass: url === '/home' ? 'active-nav-item' : '',
+      },
+      {
+        label: 'Podle regionu',
+        icon: PrimeIcons.MAP_MARKER,
+        routerLink: '/region',
+        styleClass: url === '/region' ? 'active-nav-item' : '',
+      },
+      {
+        label: 'Podle oboru',
+        icon: PrimeIcons.BOOK,
+        routerLink: '/field',
+        styleClass: url === '/field' ? 'active-nav-item' : '',
+      },
+    ];
+  }
 }

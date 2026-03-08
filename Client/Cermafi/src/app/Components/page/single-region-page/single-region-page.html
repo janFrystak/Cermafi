@@ -1,5 +1,75 @@
-<div class="dashboard" *ngIf="regionData">
+<div class="dashboard" *ngIf="dataLoading">
 
+  <header class="dash-header">
+    <div class="dash-title">
+      <p-skeleton height="0.85rem" width="120px" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2.2rem" width="280px"></p-skeleton>
+    </div>
+    <div class="year-toggle">
+        <p-skeleton height="2.2rem" width="110px" borderRadius="8px"></p-skeleton>
+        <p-skeleton height="2.2rem" width="150px" borderRadius="8px"></p-skeleton>
+      </div>
+    </header>
+    <div class="dash-grid">
+
+    <div class="left-col">
+
+      <div class="card">
+        <p-skeleton height="1.1rem" width="160px" styleClass="mb-4"></p-skeleton>
+        <div *ngFor="let i of [1,2,3]" class="funnel-row" style="margin-bottom: 1.1rem;">
+          <p-skeleton height="0.85rem" width="70px"></p-skeleton>
+          <p-skeleton height="1rem" styleClass="flex-1 mx-3"></p-skeleton>
+          <p-skeleton height="0.85rem" width="36px"></p-skeleton>
+        </div>
+      </div>
+
+      <div class="card kpi primary">
+        <p-skeleton height="0.85rem" width="200px"></p-skeleton>
+        <p-skeleton height="2.8rem" width="130px"></p-skeleton>
+      </div>
+    </div>
+
+    <div class="right-col">
+
+      <p-skeleton height="1.1rem" width="180px" styleClass="mb-3"></p-skeleton>
+
+      <div class="school-list">
+        <div class="school-item" *ngFor="let i of [1,2,3,4,5]" style="display:flex; align-items:center; gap: 1rem; padding: 0.75rem 0;">
+          <p-skeleton shape="circle" size="2.2rem"></p-skeleton>
+          <div style="flex:1">
+            <p-skeleton height="0.9rem" width="70%" styleClass="mb-2"></p-skeleton>
+            <p-skeleton height="0.75rem" width="45%"></p-skeleton>
+          </div>
+          <div style="text-align:right">
+            <p-skeleton height="1.2rem" width="50px" styleClass="mb-1"></p-skeleton>
+            <p-skeleton height="0.7rem" width="70px"></p-skeleton>
+          </div>
+        </div>
+      </div>
+
+      <p-skeleton height="1.1rem" width="200px" styleClass="mb-3 mt-4"></p-skeleton>
+
+      <div class="card table-card">
+    
+        <div style="display:flex; gap:1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--p-surface-200);">
+          <p-skeleton height="0.8rem" width="50%"></p-skeleton>
+          <p-skeleton height="0.8rem" width="15%"></p-skeleton>
+          <p-skeleton height="0.8rem" width="15%" styleClass="ml-auto"></p-skeleton>
+        </div>
+
+        <div *ngFor="let i of [1,2,3,4,5,6]"
+             style="display:flex; gap:1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--p-surface-100);">
+          <p-skeleton height="0.85rem" width="50%"></p-skeleton>
+          <p-skeleton height="1.4rem" width="60px" borderRadius="999px"></p-skeleton>
+          <p-skeleton height="0.85rem" width="40px" styleClass="ml-auto"></p-skeleton>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="dashboard" *ngIf="!dataLoading && regionData">
   <header class="dash-header">
     <div class="dash-title">
       <span class="dash-subtitle">Analýza regionu</span>
@@ -11,7 +81,9 @@
     <button 
       class="year-btn" 
       [class.active]="!year"
-      (click)="year = null; fetchData()">
+      (click)="
+        year = null; 
+        fetchData()">
       Všechny roky
     </button>
 

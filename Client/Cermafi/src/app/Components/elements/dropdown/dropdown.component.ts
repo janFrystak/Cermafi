@@ -1,19 +1,20 @@
 import { Component, input, output, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
+
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-dropdown',
   standalone: true,
-  imports: [FormsModule, DropdownModule],
+  imports: [FormsModule, Select],
   template: `
-    <p-dropdown 
+    <p-select 
       [options]="values() || []" 
       [(ngModel)]="selectedValue" 
       (onChange)="onValueSelect($event)"
       [placeholder]="placeholder()"
       styleClass="year-dropdown">
-    </p-dropdown>
+    </p-select>
   `,
   styleUrl: './dropdown.component.css'
 })

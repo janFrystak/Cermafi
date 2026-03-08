@@ -8,16 +8,18 @@ import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
 import { TableModule} from 'primeng/table';
 import { DropdownComponent } from '../../elements/dropdown/dropdown.component';
+import { Skeleton } from 'primeng/skeleton';
 
 
 
 @Component({  
   selector: 'app-single-region-page',
-  imports: [ScrollerModule, CardModule, NgFor, NgIf, DecimalPipe, Tag, DropdownComponent, TableModule],
+  imports: [ScrollerModule, CardModule, NgFor, NgIf, DecimalPipe, Tag, DropdownComponent, TableModule, Skeleton],
   templateUrl: './single-region-page.html',
   styleUrl: './single-region-page.css',
 })
 export class SingleRegionPage implements OnInit {
+  dataLoading = true;
   regionId: number | null = null;
   regionData: RegionResponse | null = null;
   year: number | null = null
@@ -32,8 +34,11 @@ export class SingleRegionPage implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.regionId = Number(params.get('id'));
       this.year = Number(params.get('year'));
-      this.fetchYears();
       this.fetchData();
+      this.fetchYears();
+      
+      
+      
     });
   }
   fetchYears(): void {
@@ -58,9 +63,11 @@ export class SingleRegionPage implements OnInit {
       next: (data) => {
         this.regionData = data;
         console.log('Data loaded:', this.regionData);
+        this.dataLoading = false
       },
       error: (err) => console.error('Error fetching region data:', err)
     });
+    
   }
 }
   

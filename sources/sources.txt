@@ -22,3 +22,9 @@ how to operate:
 Start postgres service - brew services start postgresql@
 Start server - build js - npm run build:ts - node app.js
 Start Client - ag seerve
+
+
+
+
+
+

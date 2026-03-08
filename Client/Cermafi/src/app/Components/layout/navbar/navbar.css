@@ -1,0 +1,27 @@
+:host ::ng-deep .p-menubar {
+  background: var(--p-surface-0);
+  border-bottom: 1px solid var(--p-surface-200);
+  padding: 0.5rem 1.5rem;
+}
+
+:host ::ng-deep .p-menubar-item-link {
+  border-radius: 6px;
+  transition: background 0.15s ease;
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .p-menubar-item-link .p-menuitem-icon {
+  font-size: 0.9rem; /* slightly smaller — icons at default size feel heavy */
+  opacity: 0.75;
+}
+
+:host ::ng-deep .active-nav-item > .p-menubar-item-link {
+  background: var(--p-primary-50) !important;
+  color: var(--p-primary-600) !important;
+  font-weight: 600;
+}
+
+:host ::ng-deep .active-nav-item > .p-menubar-item-link .p-menuitem-icon {
+  color: var(--p-primary-600) !important;
+  opacity: 1;
+}

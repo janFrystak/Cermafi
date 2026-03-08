@@ -107,7 +107,7 @@ AppDataSource.initialize()
 
             res.json({
                 ...stats[0],
-                popFields: topFields,
+                topFields: topFields,
                 topSchools: topSchools
 
             })
