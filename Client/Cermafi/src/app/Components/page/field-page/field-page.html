@@ -1,5 +1,9 @@
-<app-search-field
-    [items]="searchItems()" 
-  [placeholder]="'Hledat obor vzdělání...'"
-  (itemSelected)="handleSelection($event)">
-</app-search-field>
+<div class="flex justify-content-center align-items-center pt-6">
+  <div style="width: 100%; max-width: 480px;">
+    </div><app-search-field
+        [items]="searchItems()" 
+        [placeholder]="'Hledat obor vzdělání...'"
+        (itemSelected)="handleSelection($event)">
+    </app-search-field>
+  </div>
+

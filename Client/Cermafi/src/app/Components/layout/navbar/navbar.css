@@ -1,27 +1,52 @@
 :host ::ng-deep .p-menubar {
-  background: var(--p-surface-0);
-  border-bottom: 1px solid var(--p-surface-200);
+  /* Uses your custom surface color + subtle transparency for blur */
+  background: var(--bg-surface); 
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  /* Softer border that adapts to dark mode */
+  border-bottom: 1px solid var(--bg-muted);
   padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
 }
 
 :host ::ng-deep .p-menubar-item-link {
-  border-radius: 6px;
-  transition: background 0.15s ease;
+  color: var(--text-secondary) !important;
+  border-radius: 8px;
+  transition: all 0.2s ease;
   gap: 0.5rem;
 }
 
-:host ::ng-deep .p-menubar-item-link .p-menuitem-icon {
-  font-size: 0.9rem; /* slightly smaller — icons at default size feel heavy */
-  opacity: 0.75;
+:host ::ng-deep .p-menubar-item-link:hover {
+  background: var(--school-item-hover) !important;
+  color: var(--text-primary) !important;
 }
 
+:host ::ng-deep .p-menubar-item-link .p-menuitem-icon {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+/* THE ACTIVE STATE - Much cleaner in Dark Mode */
 :host ::ng-deep .active-nav-item > .p-menubar-item-link {
-  background: var(--p-primary-50) !important;
-  color: var(--p-primary-600) !important;
+  /* Instead of heavy blue, use a subtle tint of your accent color */
+  background: rgba(59, 130, 246, 0.1) !important; 
+  color: var(--text-accent) !important;
   font-weight: 600;
 }
 
+.p-dark :host ::ng-deep .active-nav-item > .p-menubar-item-link {
+  /* Brighter glow for dark mode */
+  background: rgba(96, 165, 250, 0.15) !important;
+}
+
 :host ::ng-deep .active-nav-item > .p-menubar-item-link .p-menuitem-icon {
-  color: var(--p-primary-600) !important;
+  color: var(--text-accent) !important;
   opacity: 1;
+}
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 1100; /* Stays above PrimeNG tables but below modals */
 }

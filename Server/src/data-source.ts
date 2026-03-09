@@ -21,7 +21,7 @@ export const AppDataSource = new DataSource({
     password: String(process.env.DB_PSWD),
     database: process.env.DB_NAME,
     synchronize: false,
-    logging: ["query", "error", "schema", "warn"],
+    logging: ["error", "schema", "warn"],
     entities: [Uchazec, UchazecVolba, Neprijeti, Obor, Skola, Kraj],
     migrations: [],
     subscribers: [],

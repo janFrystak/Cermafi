@@ -40,7 +40,7 @@ def choose_files(prompt: str) -> str:
 def convert(path: str, engine, sheet: str):
     current_max_id = 0
     try:
-        current_max_id = int(pd.read_sql("SELECT MAX(id) FROM public.uchazec", engine).iloc[0,0])
+        current_max_id = int(pd.read_sql("SELECT COALESCE(MAX(id)) FROM public.uchazec", engine).iloc[0,0])
     except Exception as e:
         print("Starting new table")
         current_max_id = 0
@@ -79,8 +79,6 @@ def convert(path: str, engine, sheet: str):
         # 4. Filter out rows that didn't match the ss{i}_{attr} pattern (like 'rok', 'kolo')
         long_df = long_df.dropna(subset=['priorita', 'attribute'])
 
-              
-
         # 5. Change the attributes back into columns
         uchazec_volba = long_df.pivot(
             index=['index', 'priorita'], 
@@ -88,7 +86,7 @@ def convert(path: str, engine, sheet: str):
             values='value'
         ).reset_index()
 
-        uchazec_volba['index'] = uchazec_volba['index'] + current_max_id + 1
+        
 
         # !! Remove the name of the columns level (currently 'attribute')
         uchazec_volba.columns.name = None 
@@ -108,20 +106,15 @@ def convert(path: str, engine, sheet: str):
             uchazec_volba['kkov'] = uchazec_volba['kkov'].str.replace(r'[-/]', '', regex=True)
             uchazec_volba['kkov'] = uchazec_volba['kkov'].replace('nan', None)
     
-
-        
         #Renaming columns
         uchazec_volba = uchazec_volba.rename(columns={
             'index': 'uchazec_id', 
             'kkov': 'obor_kod',
-            'duvod_neprijeti':'duvod_neprijeti_id'
+            
         })
-
 
         atributes[1] = "obor_kod"
         atributes[5] = "duvod_neprijeti_id"
-        
-        
         
         # Make sure all expected columns exist even if they were empty in Excel
         removed_col = ""
@@ -136,13 +129,30 @@ def convert(path: str, engine, sheet: str):
 
         # Reorder columns to match DB schema 
         uchazec_volba = uchazec_volba[['uchazec_id', 'priorita'] + atributes]
+
         
-
+      
+        append_input: str = input("File: "+ path+ "\n  - Append[a] or Ovverride[o] into current table: ")
+        append = "append"
+        match(append_input.lower().strip()):
+            case "a": append = "append"
+            case "o": append = "replace"
+            case _: 
+                print("Invalid option chosen")
+                exit()
+    
         # Save to SQL
-        uchazec.to_sql("uchazec", engine, if_exists="append", index=False)
-        uchazec_volba.to_sql("uchazec_volba", engine, if_exists="append", index=False)
+        uchazec.to_sql("uchazec", engine, if_exists=append, index=False)
+        uchazec_volba.to_sql("uchazec_volba", engine, if_exists=append, index=False)
 
-        print("Successfully loaded: ", path)
+        uchazec_count = len(uchazec)
+        volba_count = len(uchazec_volba)
+
+        print(f"Successfully loaded: {os.path.basename(path)}")
+        print(f"   - {uchazec_count} new applicants (uchazeči) inserted.")
+        print(f"   - {volba_count} new school choices (volby) inserted.")
+        print("-" * 30)
+
     except Exception as e:
         print("Error while loading file: ", path)
         print(e)
@@ -195,7 +205,7 @@ def run(filepaths):
             sheets_id = []
             for id, item in enumerate(sheets):
                 sheets_id.append(f"{item} [{id}]")
-            print(f"Dostupné listy v souboru: {sheets_id}")
+            print(f"Available lists in file: {sheets_id}")
             data_sheet_id = input("Enter datasheet number: ")
             if not data_sheet_id:
                 print("Please provice spreadsheets data sheet")

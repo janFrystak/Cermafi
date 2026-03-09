@@ -10,7 +10,7 @@ export class UchazecVolba {
     uchazec_id!: number;
 
     @PrimaryColumn()
-    poradi!: number; 
+    priorita!: number; 
 
     @Column({ nullable: true })
     redizo!: string;

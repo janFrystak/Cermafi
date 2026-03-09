@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Observable, tap } from 'rxjs';
+import { Observable, shareReplay, tap } from 'rxjs';
 import { RegionResponse } from '../Models/region-response.interface';
 import { environment } from '../../environments/environment';
 
@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class RegionDataService {
   private baseUrl = environment.db_url
+  private years? :Observable<number[]>
   constructor(private http:HttpClient) {}
 
   getData_RegionSummary(id: number): Observable<RegionResponse>{
@@ -17,7 +18,12 @@ export class RegionDataService {
 
   }
   getData_Years(): Observable<number[]>{
-    return this.http.get<number[]>(`${this.baseUrl}/years`)
+    if (!this.years){
+       return this.http.get<number[]>(`${this.baseUrl}/years`).pipe(
+        shareReplay(1)
+       )
+    }
+    return this.years 
   }
   getData_RegionYearSummary(id: number, year: number): Observable<RegionResponse>{
     const myUrl = `${this.baseUrl}/region/summary/${id}/${year}`
