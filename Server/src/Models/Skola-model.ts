@@ -11,7 +11,7 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'red_izo' })
   red_izo!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'IČO' })
+  @Column({ type: 'text', nullable: true, name: 'ico' })
   ico!: string;
 
   @Column({ type: 'text', nullable: true, name: 'Zřizovatel' })

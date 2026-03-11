@@ -24,7 +24,8 @@ AppDataSource.initialize()
         app.use(cors());
         app.get("/region/summary/:id/:year", async(req: Request, res: Response) => {
             const regionId = req.params.id;
-            const year = req.params.year;
+            const year = parseInt(req.params.year);
+            
             try {
                 const [statsRes, topFields, topSchools] = await Promise.all([
                     AppDataSource.query(`
