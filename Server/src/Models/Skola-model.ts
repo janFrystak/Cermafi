@@ -14,84 +14,86 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'ico' })
   ico!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Zřizovatel' })
+  @Column({ type: 'text', nullable: true, name: 'zrizovatel' })
   zrizovatel!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Území' })
+  @Column({ type: 'text', nullable: true, name: 'uzemi' })
   uzemi!: string;
 
   @Column({ type: 'bigint', nullable: true, name: 'kraj_id' })
   kraj_id!: number; 
 
-  @Column({ type: 'text', nullable: true, name: 'Okres/Obvod' })
+  @Column({ type: 'text', nullable: true, name: 'okres' })
   okresObvod!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Správní úřad' })
+  @Column({ type: 'text', nullable: true, name: 'spravni_urad' })
   spravniUrad!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'ORP' })
+  @Column({ type: 'text', nullable: true, name: 'orp' })
   orp!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Název ORP' })
+  @Column({ type: 'text', nullable: true, name: 'orp_nazev' })
   nazevOrp!: string;
 
   @Column({ type: 'text', nullable: true, name: 'plny_nazev' })
   plnyNazev!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Zkrácený název' })
+  @Column({ type: 'text', nullable: true, name: 'zkraceny_nazev' })
   zkracenyNazev!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Ulice' })
+  @Column({ type: 'text', nullable: true, name: 'ulice' })
   ulice!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Č. p.' })
+  @Column({ type: 'text', nullable: true, name: 'cislo_popisne' })
   cisloPopisne!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Č. or.' })
+  @Column({ type: 'text', nullable: true, name: 'cislo_orientacni' })
   cisloOrientacni!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Část obce' })
+  @Column({ type: 'text', nullable: true, name: 'cast_obce' })
   castObce!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'PSČ' })
+  @Column({ type: 'text', nullable: true, name: 'psc' })
   psc!: string;
 
   @Column({ type: 'text', nullable: true, name: 'misto' })
   misto!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Telefon' })
+  @Column({ type: 'text', nullable: true, name: 'ruian' })
+  ruian!: string;
+
+  @Column({ type: 'text', nullable: true, name: 'telefon' })
   telefon!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Fax' })
+  @Column({ type: 'text', nullable: true, name: 'fax' })
   fax!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Email 1' })
+  @Column({ type: 'text', nullable: true, name: 'email_1' })
   email1!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Email 2' })
+  @Column({ type: 'text', nullable: true, name: 'email_2' })
   email2!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'WWW' })
+  @Column({ type: 'text', nullable: true, name: 'web' })
   www!: string;
 
-
-  @Column({ type: 'text', nullable: true, name: 'Ředitel' })
+  @Column({ type: 'text', nullable: true, name: 'reditel' })
   reditel!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'je OVM' })
-  jeOvm!: string;
+  @Column({ type: 'text', nullable: true, name: 'izo' })
+  izo!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'ZUJ' })
-  zuj!: string;
+  @Column({ type: 'text', nullable: true, name: 'druh' })
+  druh!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Email zřizovatele' })
-  emailZrizovatele!: string;
+  @Column({ type: 'text', nullable: true, name: 'datum_zahajeni' })
+  datumZahajeni!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Právní forma ředitelství' })
-  pravniFormaReditelstvi!: string;
+  @Column({ type: 'text', nullable: true, name: 'budova' })
+  budova!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'Datum zápisu' })
-  datumZapisu!: string;
+  @Column({ type: 'text', nullable: true, name: 'kapacita' })
+  kapacita!: string;
 
 
   @OneToMany(() => UchazecVolba, (volba) => volba.skola_join)

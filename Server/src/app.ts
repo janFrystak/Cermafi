@@ -38,7 +38,7 @@ AppDataSource.initialize()
                         )
                         SELECT 
                             $1 as "id",
-                            k.region_nazev as "regionName", 
+                            k.nazev as "regionName", 
                             COUNT(DISTINCT tr.uchazec_id) as "totalApps",
                             
                             ROUND(AVG(CASE WHEN tr.prijat = 1 THEN 100 ELSE 0 END) 
@@ -56,7 +56,7 @@ AppDataSource.initialize()
                         FROM public.kraj k
                         LEFT JOIN temp_region tr ON k.id = tr.kraj_id
                         WHERE k.id = $1
-                        GROUP BY k.id, k.region_nazev, k.region_nazev_kratky  
+                        GROUP BY k.id, k.nazev, k.nazev_kratky  
                     `, [regionId, year]),
 
                     AppDataSource.query(`
@@ -133,7 +133,7 @@ AppDataSource.initialize()
                 )
                 SELECT 
                     $1 as "id",
-                    k.region_nazev as "regionName", 
+                    k.nazev as "regionName", 
                     COUNT(DISTINCT tr.uchazec_id) as "totalApps",
                     
                 
@@ -151,7 +151,7 @@ AppDataSource.initialize()
                 FROM public.kraj k
                 LEFT JOIN temp_region tr ON k.id = tr.kraj_id
                 WHERE k.id = $1
-                GROUP BY k.id, k.region_nazev, k.region_nazev_kratky  
+                GROUP BY k.id, k.nazev, k.nazev_kratky  
             `, [regionId]);
 
                 

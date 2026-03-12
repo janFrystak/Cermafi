@@ -62,7 +62,7 @@ def process_dataFrame(df, table, engine):
 
 def convert(path: str, engine, seperator: str, table: str):
     try:
-        df = pd.read_csv(path, sep=seperator, encoding='utf-8-sig')
+        df = pd.read_csv(path, sep=seperator, encoding='utf-16')
         process_dataFrame(df, table, engine)
         
         print("Succesfully loaded: ", path)
