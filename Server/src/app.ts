@@ -3,25 +3,87 @@ import {Request, Response} from "express";
 import express from "express";
 import helmet from 'helmet';
 import cors from 'cors';
+import multer from 'multer'
 import { AppDataSource } from "./data-source";
 import { Uchazec } from "./Models/Uchazec-model";
 import { UchazecVolba } from './Models/Uchazec_volba-model';
 import { Obor } from './Models/Obor-model';
+import { spawn } from 'child_process';
+import path from 'path';
+import fs from 'fs'
+
+
+
 
 const app = express();
+const upload = multer({ dest: 'uploads/' });
 
 app.use(helmet());
+app.use(cors({
+    origin: 'http://localhost:4200',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
+
+
+app.post("/api/upload",upload.array('file'), async(req: Request, res: Response) =>{
+
+    try {
+        const wipeFlag: string = req.body.wipeData === 'true' ? 'true' : 'false';
+        const files: Express.Multer.File[] = req.files as Express.Multer.File[];
+        const filePaths: string[] = files.map(file => file.path);
+        const scriptPath = path.join(__dirname, '../../scripts/ImportToDB.py');
+        let pythonErrorData = '';
+
+        if (filePaths.length === 0 || !filePaths) {
+            console.error("No files found in request");
+            return res.status(400).json({ message: "No files uploaded" });
+        }
+
+        const pythonProcess = spawn('python3', [
+            scriptPath, 
+            wipeFlag,
+            ...filePaths,
+        ]);
+
+        pythonProcess.stdout.on('data', (data)=>{
+            pythonErrorData += data.toString();
+        });
+
+        pythonProcess.stderr.on('data', (data)=>{
+            console.log('Python Error: ' + data)
+        })
+
+        pythonProcess.on('close', (code)=>{
+            //delete temp files
+            filePaths.forEach(p => fs.unlinkSync(p));
+            console.log("Python exit code: " + code)
+            
+            if (code === 0){
+                res.status(200).json({ message: "Import succesful"})
+                console.log("Import sucesfull")
+            }
+            else {
+                res.status(500).json({
+                    message: 'Import failed',
+                    details: pythonErrorData || "Unknown error"
+                })
+                console.log("Python script creashed, returned: "+pythonErrorData)
+            }
+        })
+    } catch (err) {
+        console.log("Import error: " + err)
+    }
+})
+/* /Users/admin/Downloads/Cermafi/Cermafi/Server/scripts/ImportToDB.py */
 AppDataSource.initialize()
     .then(() => {
         const volbaRepository = AppDataSource.getRepository(UchazecVolba);
         const uchazecRepository = AppDataSource.getRepository(Uchazec)
         const fieldRepository = AppDataSource.getRepository(Obor)
         
-
-       
-        app.use(cors());
         app.get("/region/summary/:id/:year", async(req: Request, res: Response) => {
             const regionId = req.params.id;
             const year = parseInt(req.params.year);

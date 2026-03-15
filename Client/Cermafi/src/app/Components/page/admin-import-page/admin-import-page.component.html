@@ -1,0 +1,32 @@
+<div class="admin-container p-4">
+  <p-card header="Data Importer" subheader="Upload Cermat Excel files to PostgreSQL">
+    
+    <div class="flex align-items-center gap-3 mb-4 p-3 border-round bg-muted">
+      <p-inputSwitch [(ngModel)]="isWiping" inputId="wipe-toggle"></p-inputSwitch>  
+      <p-tag *ngIf="isWiping" severity="danger" value="REPLACE MODE" pTooltip="WARNING: Will delete already existing data / Smaže už existující data"></p-tag>
+      <p-tag *ngIf="!isWiping" severity="info" value="APPEND MODE"></p-tag>
+    </div>
+
+    <p-fileUpload 
+      name="file" 
+      url="http://localhost:8080/api/upload" 
+      accept=".xlsx,.xls" 
+      [multiple]="true" 
+      maxFileSize="50000000"
+      (onBeforeSend)="onStartUpload($event)"
+      (onUpload)="onUploadSuccess($event)"
+      (onError)="onUploadError($event)"
+      chooseLabel="Select Excel Files"
+      uploadLabel="Run Import Script"
+      [disabled]="isImporting">
+      
+      <ng-template pTemplate="content">
+        <ul *ngIf="importLogs.length > 0" class="log-list">
+          <li *ngFor="let log of importLogs">{{ log }}</li>
+        </ul>
+      </ng-template>
+    </p-fileUpload>
+
+    <p-progressBar *ngIf="isImporting" mode="indeterminate" [style]="{'height': '6px'}" class="mt-3"></p-progressBar>
+  </p-card>
+</div>

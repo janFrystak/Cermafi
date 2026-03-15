@@ -1,0 +1,20 @@
+.bg-muted {
+  background: var(--bg-muted);
+}
+
+.log-list {
+  list-style: none;
+  padding: 1rem;
+  margin: 0;
+  background: #1e1e1e; /* Dark terminal look */
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 4px;
+}
+
+.log-list li {
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+}
