@@ -3,13 +3,17 @@
     
     <div class="flex align-items-center gap-3 mb-4 p-3 border-round bg-muted">
       <p-inputSwitch [(ngModel)]="isWiping" inputId="wipe-toggle"></p-inputSwitch>  
-      <p-tag *ngIf="isWiping" severity="danger" value="REPLACE MODE" pTooltip="WARNING: Will delete already existing data / Smaže už existující data"></p-tag>
-      <p-tag *ngIf="!isWiping" severity="info" value="APPEND MODE"></p-tag>
+      @if (isWiping){
+        <p-tag severity="danger" value="REPLACE MODE" pTooltip="WARNING: Will delete already existing data / Smaže už existující data"></p-tag>
+      } @else {
+        <p-tag severity="info" value="APPEND MODE"></p-tag>
+      }
+      
     </div>
 
     <p-fileUpload 
       name="file" 
-      url="http://localhost:8080/api/upload" 
+      url="http://localhost:8080/admin/upload" 
       accept=".xlsx,.xls" 
       [multiple]="true" 
       maxFileSize="50000000"
@@ -21,12 +25,20 @@
       [disabled]="isImporting">
       
       <ng-template pTemplate="content">
-        <ul *ngIf="importLogs.length > 0" class="log-list">
-          <li *ngFor="let log of importLogs">{{ log }}</li>
+        @if (importLogs.length>0) {
+          <ul class="log-list">
+           @for (log of importLogs; track $index) {
+            <li >{{ log }}</li>
+           }
+          
         </ul>
+        }
+        
       </ng-template>
     </p-fileUpload>
-
-    <p-progressBar *ngIf="isImporting" mode="indeterminate" [style]="{'height': '6px'}" class="mt-3"></p-progressBar>
+@if (isImporting) {
+  <p-progressBar mode="indeterminate" [style]="{'height': '6px'}" class="mt-3"></p-progressBar>
+}
+    
   </p-card>
 </div>

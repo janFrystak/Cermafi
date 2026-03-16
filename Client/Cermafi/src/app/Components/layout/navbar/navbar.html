@@ -3,6 +3,15 @@
         <span class="font-bold text-lg mr-4 text-primary">Cermafi</span>
     </ng-template>
     <ng-template #end>
-        <app-dark-mode-toggle></app-dark-mode-toggle>
+        <div class="flex flex-row align-items-center gap-3">
+            @if (isLoggedIn$ | async) {
+                <a routerLink="/admin/upload" class="admin-link">
+                    <i class="pi pi-shield"></i>
+                    <span>Admin</span>
+                </a>
+                <span class="admin-divider"></span>
+            }
+            <app-dark-mode-toggle></app-dark-mode-toggle>
+        </div>
     </ng-template>
 </p-menubar>

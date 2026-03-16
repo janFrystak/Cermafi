@@ -1,19 +1,30 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Menubar } from "primeng/menubar";
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { DarkModeToggle } from '../../elements/dark-mode-toggle/dark-mode-toggle';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../../auth.service';
+import { AsyncPipe } from '@angular/common';
+import { Divider } from 'primeng/divider';
 
 @Component({
   selector: 'app-navbar',
-  imports: [Menubar, DarkModeToggle],
+  standalone: true,
+  imports: [Menubar, DarkModeToggle, AsyncPipe, RouterLink, Divider],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar implements OnInit {
   items: MenuItem[] | undefined;
+  isLoggedIn$: Observable<boolean>;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private auth: AuthService
+  ) {
+    this.isLoggedIn$ = this.auth.isLoggedIn$
+  }
 
   ngOnInit(): void {
     this.buildMenu();

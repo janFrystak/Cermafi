@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RegionDataService } from '../../../Services/region-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { RegionResponse} from '../../../Models/region-response.interface';
-import { DecimalPipe, JsonPipe, NgFor, NgIf } from '@angular/common';
+import { DecimalPipe, JsonPipe} from '@angular/common';
 import { ScrollerModule } from 'primeng/scroller';
 import { CardModule } from 'primeng/card';
 import { Tag } from 'primeng/tag';
@@ -14,7 +14,7 @@ import { Skeleton } from 'primeng/skeleton';
 
 @Component({  
   selector: 'app-single-region-page',
-  imports: [ScrollerModule, CardModule, NgFor, NgIf, DecimalPipe, Tag, DropdownComponent, TableModule, Skeleton],
+  imports: [ScrollerModule, CardModule,DecimalPipe, Tag, DropdownComponent, TableModule, Skeleton],
   templateUrl: './single-region-page.html',
   styleUrl: './single-region-page.css',
 })

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Card } from 'primeng/card';
 import { FileUpload } from 'primeng/fileupload';
-import { NgIf, NgFor } from '@angular/common';
+
 import { MessageService } from 'primeng/api';
 import {InputSwitchModule} from 'primeng/inputswitch'
 import { Tag } from 'primeng/tag';
@@ -12,7 +12,7 @@ import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-admin-import-page',
-  imports: [Card, FileUpload, NgIf, NgFor, InputSwitchModule, Tag, ProgressBar, FormsModule, Tooltip],
+  imports: [Card, FileUpload, InputSwitchModule, Tag, ProgressBar, FormsModule, Tooltip],
   templateUrl: './admin-import-page.component.html',
   styleUrl: './admin-import-page.component.css',
   providers: [MessageService]

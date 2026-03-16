@@ -1,0 +1,44 @@
+<div class="login-surface">
+  <div class="login-card-wrapper">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="login-header">
+            <i class="pi pi-shield" style="font-size: 2rem"></i>
+            <h2>Admin přístup</h2>
+            <p class="login-subtitle">Pouze pro oprávněné uživatele</p>
+        </div>
+        </ng-template>  
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-user"></i>
+          <input pInputText id="username" formControlName="username"
+                 placeholder="Uživatelské jméno" class="w-full" />
+        </span>
+
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-lock"></i>
+          <input pInputText type="password" id="password" formControlName="password"
+                 placeholder="Heslo" class="w-full" (keydown.enter)="onSubmit()" />
+        </span>
+
+        @if (errorMessage) {
+          <p-message severity="error" [text]="errorMessage" styleClass="w-full"></p-message>
+        }
+
+        <button pButton type="submit"
+                label="Přihlásit se"
+                [loading]="loading"
+                icon="pi pi-sign-in"
+                class="w-full">
+        </button>
+
+      </form>
+      <small class="login-warning">
+  <i class="pi pi-lock"></i>
+  Přihlášení je určeno pouze pro administrátory
+</small>
+    </p-card>
+  </div>
+</div>

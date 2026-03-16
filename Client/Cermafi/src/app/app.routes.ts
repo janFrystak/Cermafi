@@ -5,7 +5,7 @@ import { RegionPage } from './Components/page/region-page/region-page';
 import { SingleRegionPage } from './Components/page/single-region-page/single-region-page';
 import { AdminImportPage} from './Components/page/admin-import-page/admin-import-page.component';
 import { authGuard } from './auth.guard';
-import { LoginPage } from './Components/page/login-page/login-page.component';
+import { LoginPage } from './Components/page/login-page/login-page';
 
 
 export const routes: Routes = [
@@ -14,9 +14,9 @@ export const routes: Routes = [
     {path: 'region', component: RegionPage},
     {path: 'field', component: FieldPage },
     {path: 'region/:id', component: SingleRegionPage},
-    { path: 'region/:id/:year', component: SingleRegionPage },
-    {path: 'admin/import', component: AdminImportPage, canActivate: [authGuard]},
-    {path: 'admin', component: LoginPage },
+    {path: 'region/:id/:year', component: SingleRegionPage },
+    {path: 'admin/upload', component: AdminImportPage, canActivate: [authGuard]},
+    {path: 'login', component: LoginPage },
     {path: '', redirectTo:'home', pathMatch: 'full'},
    
    

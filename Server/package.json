@@ -16,17 +16,24 @@
   "dependencies": {
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.1",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
-    "pg": "^8.16.3",
+    "pg": "^8.20.0",
     "typeorm": "^0.3.27"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.1.0",
+    "@types/pg": "^8.18.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }

@@ -1,10 +1,7 @@
 :host ::ng-deep .p-menubar {
-  /* Uses your custom surface color + subtle transparency for blur */
   background: var(--bg-surface); 
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  
-  /* Softer border that adapts to dark mode */
   border-bottom: 1px solid var(--bg-muted);
   padding: 0.5rem 1.5rem;
   transition: all 0.3s ease;
@@ -27,16 +24,13 @@
   opacity: 0.6;
 }
 
-/* THE ACTIVE STATE - Much cleaner in Dark Mode */
 :host ::ng-deep .active-nav-item > .p-menubar-item-link {
-  /* Instead of heavy blue, use a subtle tint of your accent color */
   background: rgba(59, 130, 246, 0.1) !important; 
   color: var(--text-accent) !important;
   font-weight: 600;
 }
 
 .p-dark :host ::ng-deep .active-nav-item > .p-menubar-item-link {
-  /* Brighter glow for dark mode */
   background: rgba(96, 165, 250, 0.15) !important;
 }
 
@@ -48,5 +42,53 @@
 :host {
   position: sticky;
   top: 0;
-  z-index: 1100; /* Stays above PrimeNG tables but below modals */
+  z-index: 1100;
+}
+
+/* ---- end section ---- */
+:host ::ng-deep .p-menubar-end {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.75rem;
+}
+
+:host ::ng-deep .p-menubar-end > div {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.75rem;
+}
+
+:host ::ng-deep app-dark-mode-toggle {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* ---- admin link ---- */
+.admin-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-color);
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: var(--surface-hover);
+    color: var(--primary-color);
+  }
+
+  i {
+    font-size: 0.95rem;
+  }
+}
+
+.admin-divider {
+  width: 1px;
+  height: 1.2rem;
+  background: var(--surface-border);
 }
