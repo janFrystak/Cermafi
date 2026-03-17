@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegionDataService } from '../../../Services/region-data.service';
 import { ActivatedRoute } from '@angular/router';
-import { RegionResponse} from '../../../Models/region-response.interface';
+import { RegionResponse} from '../../../Models/stat-response.interface';
 import { DecimalPipe, JsonPipe} from '@angular/common';
 import { ScrollerModule } from 'primeng/scroller';
 import { CardModule } from 'primeng/card';

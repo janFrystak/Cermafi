@@ -1,29 +1,119 @@
-<div class="p-4"> <!-- Padding kolem celého obsahu -->
-  
-  
+<div class="p-4">
+
   <section class="text-center mb-5">
     <h2 class="text-4xl font-bold mb-2">O Cermafi</h2>
     <p class="text-xl text-secondary">Informační web zaměřený na výsledky přijímaček za posledních x let.</p>
   </section>
 
-  
   <div class="grid">
-    
-   
+
     <div class="col-12 md:col-8">
-        <div class="p-card p-4 shadow-2 border-round-xl">
+      <div class="p-card p-4 shadow-2 border-round-xl">
         <h3 class="mt-0 mb-4 text-center">Vývoj počtu uchazečů</h3>
         <app-simple-graph></app-simple-graph>
       </div>
-      
     </div>
 
-  
     <div class="col-12 md:col-4">
       <div class="p-card p-4 shadow-2 h-full flex flex-column align-items-center justify-content-center border-round-xl bg-primary-reverse">
         <app-countdown-timer></app-countdown-timer>
       </div>
     </div>
 
+   
+
+<div class="col-12 md:col-4">
+  <div class="p-card p-4 shadow-2 border-round-xl flex flex-column align-items-center gap-2">
+    <i class="pi pi-users text-primary" style="font-size: 2rem"></i>
+    <span class="text-secondary text-sm">Celkem uchazečů v databázi</span>
+    <span class="text-3xl font-bold">{{ stats?.uchazecCount}}</span>
+  </div>
+</div>
+
+<div class="col-12 md:col-4">
+  <div class="p-card p-4 shadow-2 border-round-xl flex flex-column align-items-center gap-2">
+    <i class="pi pi-check-circle text-primary" style="font-size: 2rem"></i>
+    <span class="text-secondary text-sm">Průměrná úspěšnost přijetí ({{ years[years.length-1] }})</span>
+    <span class="text-3xl font-bold">{{ stats?.acceptanceRate }}%</span>
+  </div>
+</div>
+
+<div class="col-12 md:col-4">
+  <div class="p-card p-4 shadow-2 border-round-xl flex flex-column align-items-center gap-2">
+    <i class="pi pi-calendar text-primary" style="font-size: 2rem"></i>
+    <span class="text-secondary text-sm">Dostupných ročníků</span>
+    <span class="text-3xl font-bold">{{ years.length }}</span>
+  </div>
+</div>
+
+<!-- sources -->
+<div class="col-12">
+  <div class="p-card p-4 shadow-2 border-round-xl">
+    <h3 class="mt-0 mb-3">
+      <i class="pi pi-database mr-2 text-primary"></i>
+      Zdroje dat
+    </h3>
+    <p class="text-secondary mt-0 mb-4">
+      Veškerá data pocházejí z veřejně dostupných datových sad.
+    </p>
+    <div class="grid">
+
+      <div class="col-12 md:col-6">
+        <div class="source-item flex align-items-start gap-3 p-3 border-round-lg">
+          <i class="pi pi-file text-primary mt-1"></i>
+          <div>
+            <div class="font-semibold mb-1">Cermat — výsledky přijímacích zkoušek</div>
+            <div class="text-secondary text-sm mb-2">Anonymizovaná data o uchazečích, volbách škol a výsledcích jednotné přijímací zkoušky.</div>
+            <a href="https://data.cermat.cz/menu/data-a-analyticke-vystupy-jednotna-prijimaci-zkouska/datove-soubory" 
+               target="_blank" class="source-link">
+              data.cermat.cz <i class="pi pi-external-link ml-1" style="font-size: 0.75rem"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6">
+        <div class="source-item flex align-items-start gap-3 p-3 border-round-lg">
+          <i class="pi pi-file text-primary mt-1"></i>
+          <div>
+            <div class="font-semibold mb-1">ISV — tabulka zřizovatelů škol</div>
+            <div class="text-secondary text-sm mb-2">Data o zřizovatelích středních škol z informačního systému veřejné správy.</div>
+            <a href="https://isv.gov.cz/ccis/detail/548d461e-79dc-4649-b63f-a121260c7db5" 
+               target="_blank" class="source-link">
+              isv.gov.cz <i class="pi pi-external-link ml-1" style="font-size: 0.75rem"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6">
+        <div class="source-item flex align-items-start gap-3 p-3 border-round-lg">
+          <i class="pi pi-file text-primary mt-1"></i>
+          <div>
+            <div class="font-semibold mb-1">RSSZ — tabulka škol (Redizo)</div>
+            <div class="text-secondary text-sm mb-2">Přehled středních škol s identifikátory Redizo.</div>
+            <a href="https://isv.gov.cz/rssz/prehled" 
+               target="_blank" class="source-link">
+              isv.gov.cz/rssz <i class="pi pi-external-link ml-1" style="font-size: 0.75rem"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6">
+        <div class="source-item flex align-items-start gap-3 p-3 border-round-lg">
+          <i class="pi pi-file text-primary mt-1"></i>
+          <div>
+            <div class="font-semibold mb-1">ISV — klasifikace KKOV</div>
+            <div class="text-secondary text-sm mb-2">Klasifikace kmenových oborů vzdělání používaná pro kategorizaci studijních oborů.</div>
+            <a href="https://isv.gov.cz/ccis/detail/0967c638-ec70-4584-b826-60f2271d39b9" 
+               target="_blank" class="source-link">
+              isv.gov.cz <i class="pi pi-external-link ml-1" style="font-size: 0.75rem"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>

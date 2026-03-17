@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
-import { Observable, tap } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { ChartResponse } from '../Models/chart-response.interface';
-import { RegionResponse } from '../Models/region-response.interface';
+import { HomeResponse } from '../Models/stat-response.interface';
 import { environment } from '../../environments/environment';
 
 @Injectable({providedIn: 'root'})
 
 
-export class ChartDataService {
+export class HomeDataService {
   
   private baseUrl = environment.db_url
+   private years? :Observable<number[]>
 
   constructor(private http:HttpClient) {}
 
@@ -28,6 +29,19 @@ export class ChartDataService {
       .set("start", start)
       .set("end", end)
     return this.http.get<ChartResponse>(`${this.baseUrl}/uchazec/years`, { params })
+  }
+
+  getHomeStats(): Observable<HomeResponse>{
+    return this.http.get<HomeResponse>(`${this.baseUrl}/stats/summary`)
+  }
+
+  getData_Years(): Observable<number[]>{
+      if (!this.years){
+         return this.http.get<number[]>(`${this.baseUrl}/years`).pipe(
+          shareReplay(1)
+         )
+      }
+      return this.years 
   }
   
 }

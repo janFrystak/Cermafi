@@ -12,11 +12,11 @@ pandas DataFrame to_sql() metod: https://pandas.pydata.org/docs/reference/api/pa
 stylová knihovna: https://primeng.org/
 countdown: https://github.com/janFrystak/CatClock
 
-mapa čr: https://mapsvg.com/maps
+Cermat data: https://data.cermat.cz/menu/data-a-analyticke-vystupy-jednotna-prijimaci-zkouska/datove-soubory
 Tabulka zřizovatel škol: https://isv.gov.cz/ccis/detail/548d461e-79dc-4649-b63f-a121260c7db5
 Tabulka ŠKOL(Redizo): https://isv.gov.cz/rssz/prehled
 Tabulka Kkov: https://isv.gov.cz/ccis/detail/0967c638-ec70-4584-b826-60f2271d39b9
-
+mapa čr: https://mapsvg.com/maps
 
 how to operate:
 Start postgres service - brew services start postgresql@

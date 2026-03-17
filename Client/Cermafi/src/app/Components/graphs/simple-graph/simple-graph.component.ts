@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { CommonModule } from '@angular/common';
-import { ChartDataService } from '../../../Services/chart-data.service';
+import { HomeDataService } from '../../../Services/home-data.service';
 import { UIChart } from "primeng/chart" 
 import { RegionDataService } from '../../../Services/region-data.service';
-import { last } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -33,7 +32,7 @@ export class SimpleGraphComponent implements OnInit{
   };
   
   constructor(
-    private dataService: ChartDataService,
+    private dataService: HomeDataService,
     private yearService: RegionDataService
   ) {}
 

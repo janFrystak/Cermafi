@@ -11,5 +11,10 @@ export interface RegionResponse {
   topFields: FieldModel[] //Top 3 most popular fields
   topSchools: SchoolModel[] | null; //Top 3 most popular schools
   
-  
+}
+
+export interface HomeResponse {
+  uchazecCount: number,
+  /* years: number[] */
+  acceptanceRate : string
 }
