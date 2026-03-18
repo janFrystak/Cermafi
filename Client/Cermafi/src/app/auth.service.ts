@@ -10,15 +10,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     this.checkAuth().subscribe()
-    this.http.get<any>('http://localhost:8080/api/me', { withCredentials: true }).pipe(
-      tap(res => this.loggedIn.next(true)),
-      catchError(() => {
-        this.loggedIn.next(false);
-        return of(null);
-      })
-    ).subscribe();
+    
 }
 
+  isLoggedIn():boolean {
+    return this.loggedIn.getValue()
+  }
   login(credentials: any) {
     return this.http.post<any>('http://localhost:8080/login', credentials, {
       withCredentials: true

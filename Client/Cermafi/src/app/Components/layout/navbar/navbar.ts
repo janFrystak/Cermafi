@@ -6,17 +6,21 @@ import { DarkModeToggle } from '../../elements/dark-mode-toggle/dark-mode-toggle
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../auth.service';
 import { AsyncPipe } from '@angular/common';
-import { Divider } from 'primeng/divider';
+import { Menu } from 'primeng/menu'
+
+
+
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [Menubar, DarkModeToggle, AsyncPipe, RouterLink, Divider],
+  imports: [Menubar, DarkModeToggle, AsyncPipe, Menu],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar implements OnInit {
   items: MenuItem[] | undefined;
+  adminItems: MenuItem[] | undefined;
   isLoggedIn$: Observable<boolean>;
 
   constructor(
@@ -34,7 +38,7 @@ export class Navbar implements OnInit {
 
   private buildMenu(): void {
     const url = this.router.url;
-
+    
     this.items = [
       {
         label: 'Přehled',
@@ -43,17 +47,43 @@ export class Navbar implements OnInit {
         styleClass: url === '/home' ? 'active-nav-item' : '',
       },
       {
-        label: 'Podle regionu',
+        label: 'Region',
         icon: PrimeIcons.MAP_MARKER,
         routerLink: '/region',
         styleClass: url === '/region' ? 'active-nav-item' : '',
       },
       {
-        label: 'Podle oboru',
+        label: 'Obor',
         icon: PrimeIcons.BOOK,
         routerLink: '/field',
         styleClass: url === '/field' ? 'active-nav-item' : '',
       },
+      {
+        label: 'Školy',
+        icon: PrimeIcons.BOOK,
+        routerLink :'/school',
+        styleClass: url === '/field' ? 'active-nav-item' : '',
+
+      }    
     ];
+    this.adminItems = [
+      {
+        label: 'Upload dat',
+        icon: 'pi pi-upload',
+        routerLink: '/admin/upload'
+      },
+      {
+        separator: true
+      },
+      {
+        label: 'Odhlásit se',
+        icon: 'pi pi-sign-out',
+        command: () => {
+          this.auth.logout().subscribe(() => {
+            this.router.navigate(['/home']);
+          });
+        }
+      }
+];
   }
 }
