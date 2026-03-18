@@ -7,7 +7,6 @@ import multer from 'multer'
 import { AppDataSource } from "./data-source";
 import { Uchazec } from "./Models/Uchazec-model";
 import { Admin } from './Models/Admin-model';
-import { UchazecVolba } from './Models/Uchazec_volba-model';
 import { Obor } from './Models/Obor-model';
 import { spawn } from 'child_process';
 import path from 'path';
@@ -16,6 +15,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser';
+import { Skola } from './Models/Skola-model';
+import { fieldRouter } from './routes/field.routes';
 
 
 dotenv.config({path: '../.env'})
@@ -32,6 +33,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
+app.use('/field', fieldRouter)
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.token;
@@ -39,7 +41,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const decoded = jwt.verify(token, String(process.env.JWT_SECRET));
-    (req as any).user = decoded; // work around for making req.user an additional global variable
+    (req as any).user = decoded; // work around for making req.user an additional global variable, no, dont understand
     next();
   } catch {
     res.status(401).json({ message: 'Invalid token' });
@@ -136,7 +138,8 @@ AppDataSource.initialize()
         const adminRepository = AppDataSource.getRepository(Admin)
         const uchazecRepository = AppDataSource.getRepository(Uchazec)
         const fieldRepository = AppDataSource.getRepository(Obor)
-
+        const schoolRepository = AppDataSource.getRepository(Skola)
+        
         app.post('/login', async (req: Request, res: Response) => {
             const { username, password } = req.body;
 
@@ -411,7 +414,7 @@ AppDataSource.initialize()
                 .getRawMany();
                 
                 const list = years.map(y => y.rok);
-                console.log ("YEARS HERE: ", list)
+                /* console.log ("YEARS HERE: ", list) */
                 return res.json(list);
                 
             } catch (err) {
@@ -466,12 +469,32 @@ AppDataSource.initialize()
                 return res.status(500).json({ message: 'Internal server error' });
             }
         });
+        app.get("/schools", async(req: Request, res: Response)=>{
+            try {
+                const all = await schoolRepository
+                .createQueryBuilder("s")
+                .addSelect("s.id", "id")
+                .select("s.plnyNazev", "fullName")
+                .addSelect("u.nazev", "name")
+                .getRawMany();
+                
+                if (!all || all.length === 0) {
+                    return res.status(404).json({ message: "No fields found." });
+                }
+                return res.json(all)
+            }
+            catch(err){
+                console.error(err);
+                return res.status(500).json({message: 'Internal server error'})
+            }
+            
+        })
         app.get("/fields", async(req: Request, res: Response)=>{
             try {
                 const all = await fieldRepository
                 .createQueryBuilder("u")
-                .addSelect("u.id", "id")
-                .select("u.kod", "code")
+                .select("u.id", "id")
+                .addSelect("u.kod", "code")
                 .addSelect("u.nazev", "name")
                 .getRawMany();
                 

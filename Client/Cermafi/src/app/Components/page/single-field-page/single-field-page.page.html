@@ -1,0 +1,168 @@
+
+@if (fieldData) {
+
+
+  <header class="header">
+    <div class="header-left">
+      <span class="code-tag">{{ fieldData.code }}</span>
+      <h1 class="field-title">{{ fieldData.name }}</h1>
+    </div>
+  </header>
+
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Škol nabízí obor</div>
+      <div class="kpi-value clickable">{{ fieldData.schoolCount }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Průměrná úspěšnost (P1)</div>
+      <div class="kpi-value green">{{ fieldData.avgAcceptanceRate }}%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Míra nepřijetí</div>
+      <div class="kpi-value red">{{ fieldData.failRate }}%</div>
+    </div>
+  </div>
+
+    <div class="charts-row">
+    <div class="card">
+        <div class="card-label">Zájem v čase</div>
+        <app-chart type="line" [data]="trendChartData" [options]="trendChartOptions"></app-chart>
+    </div>
+    <div class="card">
+        <div class="card-label">Volba priority</div>
+        <app-chart type="doughnut" [data]="priorityChartData" [options]="priorityChartOptions"></app-chart>
+    </div>
+    </div>
+
+    <div class="card region-card">
+    <div class="card-label">Zájem podle krajů</div>
+    <div class="region-list">
+        @for (region of fieldData.byRegion; track $index) {
+        <div class="region-row">
+            <span class="region-name">{{ region.name }}</span>
+            <div class="region-bar-wrap">
+            <div class="region-bar-fill" [style.width.%]="regionPct(region.count, fieldData?.byRegion)"></div>
+            </div>
+            <span class="region-count">{{ region.count }}</span>
+        </div>
+        }
+    </div>
+    </div>
+
+  
+
+
+  <div class="card school-section" id="school-section">
+    <div class="section-header">
+      <div class="section-label">Školy nabízející tento obor</div>
+      <select class="kraj-filter" [(ngModel)]="selectedKraj" (change)="filterSchools()">
+        <option value="">Všechny kraje</option>
+        @for (kraj of availableKraje; track $index) {
+        <option  [value]="kraj">{{ kraj }}</option> }
+      </select>
+    </div>
+
+    <table class="school-table">
+      <thead>
+        <tr>
+          <th style="width: 36px;"></th>
+          <th>Škola</th>
+          <th>Kraj</th>
+          <th class="right">Přihlášek (P1)</th>
+          <th class="right">Úspěšnost</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (school of filteredSchools; track $index) {
+        <tr (click)="goToSchool(school.id)">
+          <td>
+            <div class="rank-badge" [class.rank-gold]="$index === 0" [class.rank-silver]="$index === 1" [class.rank-bronze]="$index === 2" [class.rank-default]="$index > 2">
+              {{ $index + 1 }}
+            </div>
+          </td>
+          <td>
+            <div class="school-name-cell">
+              <span class="school-name-text">{{ school.shortName }}</span>
+              <span class="school-place-text">{{ school.place }}</span>
+            </div>
+          </td>
+          <td class="kraj-cell">{{ school.kraj }}</td>
+          <td class="right">{{ school.appCount }}</td>
+          <td class="right">
+            <span [class.rate-green]="school.acceptanceRate >= 60" [class.rate-red]="school.acceptanceRate < 60">
+              {{ school.acceptanceRate }}%
+            </span>
+          </td>
+        </tr>
+        } 
+      </tbody>
+    </table>
+    @if (filteredSchools.length < fieldData.schoolCount  ) {
+        <div class="load-more-wrap">
+  @if (schoolsLoading) {
+    <div style="display:flex; gap:1rem; padding: 0.75rem 0;">
+      <p-skeleton shape="circle" size="24px"></p-skeleton>
+      <p-skeleton height="0.85rem" width="40%"></p-skeleton>
+      <p-skeleton height="0.85rem" width="15%" styleClass="ml-auto"></p-skeleton>
+      <p-skeleton height="0.85rem" width="15%"></p-skeleton>
+    </div>
+  }
+  @if (!allSchoolsLoaded && !schoolsLoading) {
+    <button class="load-more-btn" (click)="loadSchools()">
+      Načíst další školy
+    </button>
+  }
+  @if (allSchoolsLoaded) {
+    <p class="more-hint">Zobrazeno všech {{ filteredSchools.length }} škol</p>
+  }
+</div>
+}   
+</div>
+
+}
+
+<!-- Skeleton -->
+@if (!fieldData) {
+<div class="page">
+  <div class="header skeleton-header">
+    <div>
+      <p-skeleton height="1rem" width="90px" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="2.4rem" width="320px" styleClass="mb-2"></p-skeleton>
+      <p-skeleton height="0.85rem" width="160px"></p-skeleton>
+    </div>
+    <p-skeleton height="2.2rem" width="200px" borderRadius="999px"></p-skeleton>
+  </div>
+
+  <div class="kpi-grid">
+    @for (i of [1,2,3]; track $index) {
+    <div class="kpi">
+      <p-skeleton height="0.75rem" width="120px" styleClass="mb-3"></p-skeleton>
+      <p-skeleton height="1.8rem" width="80px"></p-skeleton>
+    </div>
+    }
+  </div>
+
+  <div class="two-col">
+    <div class="left-stack">
+      <div class="card"><p-skeleton height="180px"></p-skeleton></div>
+      <div class="card"><p-skeleton height="140px"></p-skeleton></div>
+    </div>
+    <div class="card"><p-skeleton height="340px"></p-skeleton></div>
+  </div>
+
+  <div class="card">
+    <p-skeleton height="1rem" width="200px" styleClass="mb-4"></p-skeleton>
+    @for (i of [1,2,3,4,5]; track $index) {
+    <div style="display:flex; gap:1rem; padding: 0.75rem 0; border-bottom: 1px solid #f0efe9;">
+      <p-skeleton shape="circle" size="24px"></p-skeleton>
+      <p-skeleton height="0.85rem" width="40%"></p-skeleton>
+      <p-skeleton height="0.85rem" width="15%" styleClass="ml-auto"></p-skeleton>
+      <p-skeleton height="0.85rem" width="15%"></p-skeleton>
+    </div>
+    }
+  </div>
+</div>
+}
+

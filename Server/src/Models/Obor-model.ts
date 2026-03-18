@@ -13,7 +13,7 @@ export class Obor {
     @Column()
     nazev!:string
 
-    @Column()
+    @Column({name: 'zkraceny_nazev'})
     zkracenyNazev!:string
 
     @OneToMany(()=>UchazecVolba, volba=>volba.obor_join)

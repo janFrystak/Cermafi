@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Card } from 'primeng/card';
 import { FileUpload } from 'primeng/fileupload';
-
 import { MessageService } from 'primeng/api';
-import {InputSwitchModule} from 'primeng/inputswitch'
+import { InputSwitchModule } from 'primeng/inputswitch'
 import { Tag } from 'primeng/tag';
 import {ProgressBar} from 'primeng/progressbar'
 import { FormsModule } from '@angular/forms';

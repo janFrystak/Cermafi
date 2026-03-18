@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SimpleGraphComponent } from '../../graphs/simple-graph/simple-graph.component';
+import { HomeGraphComponent } from '../../elements/charts/home-graph/home-graph.component';
 import { CountdownTimer } from '../../elements/countdown-timer/countdown-timer';
 import { HomeDataService } from '../../../Services/home-data.service';
 import { RegionDataService } from '../../../Services/region-data.service';
@@ -7,7 +7,7 @@ import { HomeResponse } from '../../../Models/stat-response.interface';
 import { OnInit } from '@angular/core';
 @Component({
   selector: 'app-home-page',
-  imports: [SimpleGraphComponent, CountdownTimer, ],
+  imports: [HomeGraphComponent, CountdownTimer, ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })

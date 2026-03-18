@@ -24,10 +24,12 @@ export class SingleRegionPage implements OnInit {
   regionData: RegionResponse | null = null;
   year: number | null = null
   avYears: number[] | null = null
+  
 
   constructor (
     private route: ActivatedRoute,
     private dataService: RegionDataService,
+
   ){}
 
   ngOnInit(): void {
@@ -36,8 +38,6 @@ export class SingleRegionPage implements OnInit {
       this.year = Number(params.get('year'));
       this.fetchData();
       this.fetchYears();
-      
-      
       
     });
   }

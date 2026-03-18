@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SimpleGraphComponent } from './simple-graph.component';
+import { SchoolPagePage } from './school-page.page';
 
-describe('SimpleGraphComponent', () => {
-  let component: SimpleGraphComponent;
-  let fixture: ComponentFixture<SimpleGraphComponent>;
+describe('SchoolPagePage', () => {
+  let component: SchoolPagePage;
+  let fixture: ComponentFixture<SchoolPagePage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SimpleGraphComponent]
+      imports: [SchoolPagePage]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SimpleGraphComponent);
+    fixture = TestBed.createComponent(SchoolPagePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

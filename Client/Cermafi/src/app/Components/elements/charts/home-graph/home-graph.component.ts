@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { CommonModule } from '@angular/common';
-import { HomeDataService } from '../../../Services/home-data.service';
+import { HomeDataService } from '../../../../Services/home-data.service';
 import { UIChart } from "primeng/chart" 
-import { RegionDataService } from '../../../Services/region-data.service';
+import { RegionDataService } from '../../../../Services/region-data.service';
 
 @Component({
   standalone: true,
-  selector: 'app-simple-graph',
+  selector: 'app-home-graph',
   imports: [CommonModule, UIChart],
-  templateUrl: './simple-graph.component.html',
-  styleUrls: ['./simple-graph.component.css']
+  templateUrl: './home-graph.component.html',
+  styleUrls: ['./home-graph.component.css']
 })
 
-export class SimpleGraphComponent implements OnInit{
+export class HomeGraphComponent implements OnInit{
   avYears: number[] | null = null
   chartData: ChartData<"line"> = {
     datasets: []

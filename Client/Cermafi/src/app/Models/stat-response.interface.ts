@@ -18,3 +18,43 @@ export interface HomeResponse {
   /* years: number[] */
   acceptanceRate : string
 }
+
+export interface FieldTrendPoint {
+  year: number;
+  round1: number;
+  round2: number;
+}
+
+export interface FieldPrioritySplit {
+  p1: number;
+  p2: number;
+  p3: number;
+}
+
+export interface FieldRegion {
+  name: string;
+  count: number;
+}
+
+export interface FieldSchool {
+  id: number;
+  shortName: string;
+  place: string;
+  kraj: string;
+  appCount: number;
+  acceptanceRate: number;
+}
+
+export interface FieldDetail {
+  id: number;
+  code: string;
+  name: string;
+  shortName: string;
+  schoolCount: number;
+  avgAcceptanceRate: number;
+  failRate: number;
+  trend: FieldTrendPoint[];
+  prioritySplit: FieldPrioritySplit;
+  byRegion: FieldRegion[];
+  schools: FieldSchool[];
+}

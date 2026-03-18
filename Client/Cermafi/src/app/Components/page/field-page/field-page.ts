@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { SearchFieldComponent } from '../../elements/search-field/search-field.component';
 import { SearchItem } from '../../../Models/element-items.interface';
 import { FieldDataService } from '../../../Services/field-data.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,14 +13,14 @@ import { FieldDataService } from '../../../Services/field-data.service';
 })
 export class FieldPage {
   constructor(
-    private fieldService : FieldDataService
+    private fieldService : FieldDataService,
+    private router: Router
   ){}
   
   searchItems = signal<SearchItem[]>([]);
 
   ngOnInit() {
     this.fieldService.getData_Fields().subscribe(fields => {
-    
       const mapped = fields.map(f => ({
         id: f.id,      
         h1: f.name,   
@@ -30,6 +31,7 @@ export class FieldPage {
   }
 
   handleSelection(item: SearchItem) {
-    console.log("User picked ID:", item.id);
+    this.router.navigate(['/field', item.id]);  
   }
+  
 }
