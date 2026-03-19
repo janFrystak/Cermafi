@@ -5,13 +5,13 @@
     <ng-template #end>
         <div class="flex flex-row align-items-center gap-3">
             @if (isLoggedIn$ | async) {
-            <p-menu #adminMenu [model]="adminItems" [popup]="true"></p-menu>
+            <p-menu #adminMenu [model]="adminItems" [popup]="true" appendTo="body"></p-menu>
             <button 
                 class="admin-link" 
                 (click)="adminMenu.toggle($event)">
                 <i class="pi pi-shield"></i>
                 <span>Admin</span>
-                <i class="pi pi-angle-down" style="font-size: 0.75rem;"></i>
+                <i class="pi pi-angle-down" style="font-size: 0.75rem;"></i>  
             </button>
             }
             <app-dark-mode-toggle></app-dark-mode-toggle>

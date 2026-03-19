@@ -8,6 +8,7 @@ typeorm help: https://stackoverflow.com/questions/51537780/typeorm-joining-when-
 python csv reading libary: https://www.w3schools.com/python/pandas/
 getting started with postgres: https://neon.com/postgresql
 pandas DataFrame to_sql() metod: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html
+dropdown in sticky navbar was placing the menu under page components: https://github.com/primefaces/primeng/issues/619
 
 stylová knihovna: https://primeng.org/
 countdown: https://github.com/janFrystak/CatClock

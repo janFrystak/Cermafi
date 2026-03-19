@@ -44,8 +44,10 @@
   top: 0;
   z-index: 1100;
 }
+:host ::ng-deep .p-menu {
+  z-index: 1200 !important;
+}
 
-/* ---- end section ---- */
 :host ::ng-deep .p-menubar-end {
   display: flex !important;
   flex-direction: row !important;
@@ -65,7 +67,6 @@
   align-items: center !important;
 }
 
-/* ---- admin link ---- */
 .admin-link {
   display: flex;
   align-items: center;
