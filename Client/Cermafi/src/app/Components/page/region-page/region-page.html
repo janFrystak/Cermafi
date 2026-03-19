@@ -1,39 +1,17 @@
-<div class="p-4 md:p-6 lg:p-8" style="background: var(--p-surface-50); min-height: 90vh;">
-    <div class="max-w-screen-xl mx-auto">
-        
-        <p-panel>
-  
-            <ng-template pTemplate="header">
-                <div class="flex align-items-center gap-3">
-                    <i class="pi pi-map-marker text-primary text-2xl"></i>
-                    <span class="font-bold text-xl">Geografický přehled</span>
-                </div>
-            </ng-template>
+<div class="region-page">
 
-            <div class="grid p-2">
-               
-                <div class="col-12 lg:col-4 border-right-1 surface-border pr-4">
-                    <h2 class="text-3xl font-black mt-0 mb-3">Analýza krajů</h2>
-                    <p class="text-secondary line-height-3 mb-4">
-                        Interaktivní distribuce přihlášek. Klikněte na konkrétní oblast mapy pro hloubkovou analýzu škol a oborů v daném regionu.
-                    </p>
-
-                    <p-divider></p-divider>
-
-                    
-                </div>
-
-               
-                <div class="col-12 lg:col-8 p-0 md:pl-6 flex align-items-center justify-content-center" style="min-height: 450px;">
-                    <div class="w-full">
-                        <app-region-map></app-region-map>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer Panelu: Status bar -->
-            
-        </p-panel>
-
+  <div class="hero">
+    <div class="hero-text">
+      <span class="hero-tag">Geografický přehled</span>
+      <h1 class="hero-title">Analýza krajů</h1>
+      <p class="hero-sub">
+        Interaktivní distribuce přihlášek podle regionu. Klikněte na kraj pro hloubkovou analýzu škol a oborů.
+      </p>
     </div>
+
+    <div class="map-card">
+      <app-region-map></app-region-map>
+    </div>
+  </div>
+
 </div>

@@ -166,3 +166,24 @@
     display: none;
   }
 }
+
+:host-context(.p-dark) .hero {
+  background: var(--p-surface-950);
+}
+
+:host-context(.p-dark) .hero::after {
+  background: radial-gradient(
+    ellipse 75% 65% at 50% 45%,
+    transparent 20%,
+    var(--p-surface-950) 100%
+  );
+}
+
+:host-context(.p-dark) .hero-title {
+  color: var(--p-surface-0);
+}
+
+:host-context(.p-dark) .info-strip {
+  background: var(--p-surface-900);
+  border-color: var(--p-surface-700);
+}
