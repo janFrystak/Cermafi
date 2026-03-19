@@ -205,3 +205,20 @@ The funnel rows use *ngFor="let i of [1,2,3]" to render exactly 3 rows matching 
 School items use a circle skeleton for the rank badge, matching its shape
 The table skeleton manually replicates the 3-column header + 6 body rows with the pill-shaped tag in column 2
 Swap *ngIf="loading" / *ngIf="!loading && regionData" with whatever boolean you use to track your fetch state
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+message: when logged in and trying to access the accounts page, it doesnt let me in with: __:8080/admin/me:1__  Failed to load resource: the server responded with a status of 401 (Unauthorized)
+core.mjs:6547 ERROR NullInjectorError: R3InjectorError(Standalone[_AdminDashboardPage])[_MessageService -> _MessageService -> _MessageService]:    NullInjectorError: No provider for _MessageService!     at NodeInjectorFactory.AdminDashboardPage_Factory [as factory] (__admin-dashboard.page____.ts:22:32__)
+handleError@__core.mjs:6547__
+
+return: 
+NullInjectorError for MessageService — MessageService needs to be provided at the component level since you're using standalone components:
+ts@Component({
+  ...
+  providers: [MessageService, ConfirmationService]  // ← make sure this is there
+})
+export class AdminDashboardPage { ... }
+If it's already there, the issue is that p-toast and p-confirmDialog need to be in the imports array too:
+tsimports: [CommonModule, FormsModule, Toast, ConfirmDialog]

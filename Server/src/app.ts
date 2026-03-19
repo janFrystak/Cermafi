@@ -1,52 +1,36 @@
 import 'reflect-metadata';
-import {NextFunction, Request, Response} from "express";
+import {Request, Response} from "express";
 import express from "express";
 import helmet from 'helmet';
 import cors from 'cors';
-import multer from 'multer'
 import { AppDataSource } from "./data-source";
 import { Uchazec } from "./Models/Uchazec-model";
 import { Admin } from './Models/Admin-model';
 import { Obor } from './Models/Obor-model';
-import { spawn } from 'child_process';
-import path from 'path';
-import fs from 'fs';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser';
 import { Skola } from './Models/Skola-model';
 import { fieldRouter } from './routes/field.routes';
+import { adminRouter } from './routes/admin.routes';
 
 
 dotenv.config({path: '../.env'})
 
 const app = express();
-const upload = multer({ dest: 'uploads/' });
+
 
 app.use(cookieParser());
 app.use(helmet());
 app.use(cors({
     origin: 'http://localhost:4200',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
 app.use(express.json());
 app.use('/field', fieldRouter)
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
-  try {
-    const decoded = jwt.verify(token, String(process.env.JWT_SECRET));
-    (req as any).user = decoded; // work around for making req.user an additional global variable, no, dont understand
-    next();
-  } catch {
-    res.status(401).json({ message: 'Invalid token' });
-  }
-};
 app.get('/stats/summary', async (req: Request, res: Response) => {
     try {
         const [uchazecCount, acceptanceRate] = await Promise.all([
@@ -71,101 +55,16 @@ app.get('/stats/summary', async (req: Request, res: Response) => {
     }
 });
 
-app.post('/admin/logout', (req: Request, res: Response) => {
-  res.clearCookie('token', { httpOnly: true, secure: false });
-  res.json({ success: true });
-});
 
-app.get('/api/me', authMiddleware, (req, res) => {
-  res.json({ success: true });
-});
-
-app.post("/admin/upload", authMiddleware, upload.array('file'), async(req: Request, res: Response) =>{
-    try {
-        const wipeFlag: string = req.body.wipeData === 'true' ? 'true' : 'false';
-        const files: Express.Multer.File[] = req.files as Express.Multer.File[];
-        const filePaths: string[] = files.map(file => file.path);
-        const scriptPath = path.join(__dirname, '../../scripts/ImportToDB.py');
-        let pythonStderr = ''
-        let pythonStdout = ''
-
-        if (filePaths.length === 0 || !filePaths) {
-            console.error("No files found in request");
-            return res.status(400).json({ message: "No files uploaded" });
-        }
-
-        const pythonProcess = spawn('python3', [
-            scriptPath, 
-            wipeFlag,
-            ...filePaths,
-        ]);
-
-        pythonProcess.stdout.on('data', (data)=>{
-            pythonStdout += data.toString();
-        });
-
-        pythonProcess.stderr.on('data', (data)=>{
-            pythonStderr += data.toString();
-        })
-
-        pythonProcess.on('close', (code)=>{
-            //delete temp files
-            filePaths.forEach(p => fs.unlinkSync(p));
-            
-
-            if (code === 0){
-                res.status(200).json({ 
-                    message: "Import succesful", 
-                    details: pythonStdout || ""
-                })
-                console.log("Import sucesfull")
-            }
-            else {
-                res.status(500).json({
-                    message: 'Import failed',
-                    details: pythonStderr || "Unknown error"
-                })
-                console.log("Python script creashed, returned: "+pythonStderr)
-            }
-        })
-    } catch (err) {
-        console.log("Import error: " + err)
-    }
-})
 /* /Users/admin/Downloads/Cermafi/Cermafi/Server/scripts/ImportToDB.py */
 AppDataSource.initialize()
     .then(() => {
-        const adminRepository = AppDataSource.getRepository(Admin)
         const uchazecRepository = AppDataSource.getRepository(Uchazec)
         const fieldRepository = AppDataSource.getRepository(Obor)
         const schoolRepository = AppDataSource.getRepository(Skola)
         
-        app.post('/login', async (req: Request, res: Response) => {
-            const { username, password } = req.body;
-
-            console.log("Logn attempt: " + username + " : "+ password)
-
-            const user = await adminRepository.findOne({
-                where:  {username}
-            })
-
-            if (!user || !(await bcrypt.compare(password, user.passHash))) {
-                return res.status(401).json({ message: 'Invalid credentials' });
-            }
-
-            const token = jwt.sign({ id: user.id }, String(process.env.JWT_SECRET), {
-                expiresIn: '8h'
-            });
-
-            res.cookie('token', token, { 
-                httpOnly: true, 
-                secure: false, // true for https
-                sameSite: 'lax',
-                maxAge: 8 * 60 * 60 * 1000 //8 Hours
-                
-            });
-            res.json({ success: true });
-        });
+        
+        app.use('/admin', adminRouter)
         app.get("/region/summary/:id/:year", async(req: Request, res: Response) => {
             const regionId = req.params.id;
             const year = parseInt(req.params.year);

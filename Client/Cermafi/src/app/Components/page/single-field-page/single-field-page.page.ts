@@ -129,7 +129,7 @@ export class SingleFieldPage implements OnInit {
   }
 
   goToSchool(id: number): void {
-    this.router.navigate(['/skola', id]);
+    this.router.navigate(['/skola'/* , id */]);
   }
  
   scaleBar(value: number, trend: any[]): number {

@@ -83,6 +83,14 @@ export class Navbar implements OnInit {
             this.router.navigate(['/home']);
           });
         }
+      },
+      {
+        separator: true
+      }, 
+      {
+        label: 'Správa účtů',
+        icon: 'pi pi-account',
+        routerLink: 'admin/accounts'
       }
 ];
   }

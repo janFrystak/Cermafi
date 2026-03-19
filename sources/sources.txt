@@ -9,6 +9,9 @@ python csv reading libary: https://www.w3schools.com/python/pandas/
 getting started with postgres: https://neon.com/postgresql
 pandas DataFrame to_sql() metod: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html
 dropdown in sticky navbar was placing the menu under page components: https://github.com/primefaces/primeng/issues/619
+hashovací "Salt rounds": https://stackoverflow.com/questions/46693430/what-are-salt-rounds-and-how-are-salts-stored-in-bcrypt
+adding ts variables to sql queries: https://medium.com/@jessie.robinson7/using-javascript-variables-within-sql-query-statements-20bea6a3532a
+changing cors policy for allowed events: https://expressjs.com/en/resources/middleware/cors.html
 
 stylová knihovna: https://primeng.org/
 countdown: https://github.com/janFrystak/CatClock

@@ -17,11 +17,13 @@
 
         <div class="card">
           <p-skeleton height="1.1rem" width="160px" styleClass="mb-4"></p-skeleton>
-          <div *ngFor="let i of [1,2,3]" class="funnel-row" style="margin-bottom: 1.1rem;">
+          @for (i of [1,2,3]; track $index) {
+          <div class="funnel-row" style="margin-bottom: 1.1rem;">
             <p-skeleton height="0.85rem" width="70px"></p-skeleton>
             <p-skeleton height="1rem" styleClass="flex-1 mx-3"></p-skeleton>
             <p-skeleton height="0.85rem" width="36px"></p-skeleton>
           </div>
+        }
         </div>
 
         <div class="card kpi primary">
@@ -35,7 +37,8 @@
         <p-skeleton height="1.1rem" width="180px" styleClass="mb-3"></p-skeleton>
 
         <div class="school-list">
-          <div class="school-item" *ngFor="let i of [1,2,3,4,5]" style="display:flex; align-items:center; gap: 1rem; padding: 0.75rem 0;">
+          @for (i of [1,2,3,4,5]; track $index) {
+          <div class="school-item" style="display:flex; align-items:center; gap: 1rem; padding: 0.75rem 0;">
             <p-skeleton shape="circle" size="2.2rem"></p-skeleton>
             <div style="flex:1">
               <p-skeleton height="0.9rem" width="70%" styleClass="mb-2"></p-skeleton>
@@ -46,6 +49,7 @@
               <p-skeleton height="0.7rem" width="70px"></p-skeleton>
             </div>
           </div>
+        }
         </div>
 
         <p-skeleton height="1.1rem" width="200px" styleClass="mb-3 mt-4"></p-skeleton>
@@ -58,12 +62,13 @@
             <p-skeleton height="0.8rem" width="15%" styleClass="ml-auto"></p-skeleton>
           </div>
 
-          <div *ngFor="let i of [1,2,3,4,5,6]"
-              style="display:flex; gap:1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--p-surface-100);">
+          @for (i of [1,2,3,4,5]; track $index) {
+          <div style="display:flex; gap:1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--p-surface-100);">
             <p-skeleton height="0.85rem" width="50%"></p-skeleton>
             <p-skeleton height="1.4rem" width="60px" borderRadius="999px"></p-skeleton>
             <p-skeleton height="0.85rem" width="40px" styleClass="ml-auto"></p-skeleton>
           </div>
+        }
         </div>
 
       </div>
@@ -141,9 +146,10 @@
         <h3 class="section-title"><i class="pi pi-verified icon"></i> Nejžádanější školy</h3>
 
         <div class="school-list">
-          <div class="school-item" *ngFor="let school of regionData.topSchools; let i = index" 
-              [class.rank-1]="i===0" [class.rank-2]="i===1" [class.rank-3]="i===2">
-            <div class="rank-badge">{{ i + 1 }}</div>
+          @for (school of regionData.topSchools; track $index) {
+          <div class="school-item"
+              [class.rank-1]="$index===0" [class.rank-2]="$index===1" [class.rank-3]="$index===2">
+            <div class="rank-badge">{{ $index + 1 }}</div>
             <div class="school-info">
               <div class="school-name">{{ school.short_name }}</div>
               <div class="school-place"><i class="pi pi-map-marker"></i> {{ school.place }}</div>
@@ -153,6 +159,7 @@
               <div class="label">Přihlášek (P1)</div>
             </div>
           </div>
+        }
         </div>
 
         <h3 class="section-title"><i class="pi pi-chart-line icon purple"></i> Zájem podle oborů</h3>

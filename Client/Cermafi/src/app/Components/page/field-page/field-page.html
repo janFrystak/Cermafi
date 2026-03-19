@@ -1,9 +1,40 @@
-<div class="flex justify-content-center align-items-center pt-6">
-  <div style="width: 100%; max-width: 480px;">
-    </div><app-search-field
-        [items]="searchItems()" 
-        [placeholder]="'Hledat obor vzdělání...'"
-        (itemSelected)="handleSelection($event)">
-    </app-search-field>
+<div class="field-page">
+
+  <div class="hero">
+    <div class="hero-content">
+
+      <span class="hero-tag">Databáze oborů</span>
+      <h1 class="hero-title">Najděte svůj obor</h1>
+      <p class="hero-sub">Prohledejte středoškolské obory podle názvu nebo kódu KKOV</p>
+
+      <div class="search-wrap">
+        <app-search-field
+          [items]="searchItems()"
+          [placeholder]="'Hledat obor vzdělání...'"
+          (itemSelected)="handleSelection($event)">
+        </app-search-field>
+      </div>
+
+      <p class="hero-hint">
+        <i class="pi pi-arrow-up-right"></i>
+        Například: <span (click)="hint('Gymnázium')">Gymnázium</span>,
+        <span (click)="hint('79-41-K')">79-41-K</span>,
+        <span (click)="hint('Strojírenství')">Strojírenství</span>
+      </p>
+
+    </div>
   </div>
 
+  <div class="info-strip">
+    <div class="info-item">
+      <span class="info-value">{{ searchItems().length }}</span>
+      <span class="info-label">Oborů v databázi</span>
+    </div>
+    <div class="info-divider"></div>
+    <div class="info-item">
+      <span class="info-value">2024 – 2025</span>
+      <span class="info-label">Rozsah dat</span>
+    </div>
+  </div>
+
+</div>

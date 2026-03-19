@@ -16,3 +16,8 @@ export interface SchoolModel {
     short_name: string,
     count: number | null
 }
+
+export interface AdminModel {
+  id: number;
+  username: string;
+}

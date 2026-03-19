@@ -1,0 +1,119 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="page">
+
+  <header class="dash-header">
+    <div>
+      <span class="page-tag">Admin</span>
+      <h1 class="page-title">Správa účtů</h1>
+    </div>
+  </header>
+
+  <div class="dash-grid">
+
+    <div class="card">
+      <div class="card-label">Nový admin</div>
+
+      <div class="form-group">
+        <label class="form-label">Uživatelské jméno</label>
+        <input
+          type="text"
+          class="form-input"
+          [(ngModel)]="newUsername"
+          placeholder="username"
+          autocomplete="off"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Heslo</label>
+        <div class="input-wrap">
+            <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-input"
+            [(ngModel)]="newPassword"
+            placeholder="password"/>
+            <button class="toggle-btn" type="button" (click)="showPassword = !showPassword">
+            <i class="pi" [class.pi-eye]="!showPassword" [class.pi-eye-slash]="showPassword"></i>
+            </button>
+            
+        </div>
+      </div>
+      <button
+        class="btn btn-primary"
+        (click)="createAdmin()"
+        [disabled]="!newUsername || !newPassword || createLoading">
+        <i class="pi" [class.pi-plus]="!createLoading" [class.pi-spinner]="createLoading" [class.pi-spin]="createLoading"></i>
+        Vytvořit admina
+      </button>
+    </div>
+
+    <!-- Admin list -->
+    <div class="card admins-card">
+      <div class="card-label">Aktivní účty ({{ admins.length }})</div>
+
+      <div class="admin-list">
+        @for (admin of admins; track admin.id) {
+          <div class="admin-item">
+            <div class="admin-avatar">{{ admin.username[0].toUpperCase() }}</div>
+
+            <div class="admin-info">
+              <span class="admin-username">{{ admin.username }}</span>
+              <span class="admin-id">ID {{ admin.id }}</span>
+            </div>
+
+            <div class="admin-actions">
+              <button
+                class="action-btn"
+                [class.active]="changingPasswordFor === admin.id"
+                (click)="startChangePassword(admin.id)"
+                title="Změnit heslo">
+                <i class="pi pi-key"></i>
+              </button>
+              <button
+                class="action-btn danger"
+                (click)="confirmDelete(admin)"
+                title="Smazat">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          @if (changingPasswordFor === admin.id) {
+            <div class="password-change-row">
+                <div class="input-wrap">
+                    <input
+                        [type]="showChangePassword ? 'text' : 'password'"
+                        class="form-input"
+                        [(ngModel)]="newPasswordValue"
+                        placeholder="Nové heslo"/>
+                        <button class="toggle-btn" type="button" (click)="showChangePassword = !showChangePassword">
+                            <i class="pi" [class.pi-eye]="!showChangePassword" [class.pi-eye-slash]="showChangePassword"></i>
+                        </button>
+                        
+                </div>
+              <button
+                class="btn btn-primary btn-sm"
+                (click)="changePassword(admin)"
+                [disabled]="!newPasswordValue || changeLoading">
+                <i class="pi" [class.pi-check]="!changeLoading" [class.pi-spinner]="changeLoading" [class.pi-spin]="changeLoading"></i>
+                Uložit
+              </button>
+              <button class="btn btn-ghost btn-sm" (click)="startChangePassword(admin.id)">
+                Zrušit
+              </button>
+            </div>
+          }
+        }
+
+        @if (admins.length === 0) {
+          <div class="empty-state">
+            <i class="pi pi-users"></i>
+            <span>Žádní admini</span>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

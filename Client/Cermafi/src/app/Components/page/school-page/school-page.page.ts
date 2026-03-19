@@ -8,7 +8,7 @@ import { SearchFieldComponent } from '../../elements/search-field/search-field.c
   templateUrl: './school-page.page.html',
   styleUrl: './school-page.page.css'
 })
-export class SchoolPagePage {
+export class SchoolPage {
 
   /* onstructor(
     private fieldService : FieldDataService

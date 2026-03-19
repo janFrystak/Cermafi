@@ -17,7 +17,7 @@ export class AuthService {
     return this.loggedIn.getValue()
   }
   login(credentials: any) {
-    return this.http.post<any>('http://localhost:8080/login', credentials, {
+    return this.http.post<any>('http://localhost:8080/admin/login', credentials, {
       withCredentials: true
     }).pipe(
       tap(res => {
@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   checkAuth() {
-    return this.http.get<any>('http://localhost:8080/api/me', {
+    return this.http.get<any>('http://localhost:8080/admin/me', {
       withCredentials: true
     }).pipe(
       tap(() => this.loggedIn.next(true)),
