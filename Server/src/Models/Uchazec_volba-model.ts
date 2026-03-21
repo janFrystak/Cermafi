@@ -15,9 +15,6 @@ export class UchazecVolba {
     @Column({ nullable: true })
     redizo!: string;
 
-    @Column({ nullable: true })
-    zrizovatel!: string;
-
     @Column({ nullable: true})
     obor_kod!: string;
 

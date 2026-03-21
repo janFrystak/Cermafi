@@ -2,6 +2,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { UchazecVolba } from './Uchazec_volba-model';
 import { Kraj } from './Kraj-model';
+import { Zrizovatel } from './Zrizovatel-model';
 
 @Entity({ name: 'skola' })
 export class Skola {
@@ -102,5 +103,9 @@ export class Skola {
   @ManyToOne(() => Kraj, (kraj) => kraj.skola_join)
   @JoinColumn({ name: 'kraj_id' }) 
   kraj_join!: Kraj;
+
+  @ManyToOne(() => Zrizovatel, (zrizovatel) => zrizovatel.skola_join)
+  @JoinColumn({ name: 'kraj_id' }) 
+  zrizovatel_join!: Kraj;
 
 }
