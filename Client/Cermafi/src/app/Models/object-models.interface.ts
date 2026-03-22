@@ -20,4 +20,5 @@ export interface SchoolModel {
 export interface AdminModel {
   id: number;
   username: string;
+  permissionLevel: number;
 }

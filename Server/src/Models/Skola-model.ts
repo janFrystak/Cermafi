@@ -50,8 +50,6 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'psc' })
   psc!: string;
 
-
-
   @Column({ type: 'text', nullable: true, name: 'ruian' })
   ruian!: string;
 
@@ -96,8 +94,6 @@ export class Skola {
   @JoinColumn({ name: 'kraj_id' }) 
   kraj_join!: Kraj;
 
-  @ManyToOne(() => Zrizovatel, (zrizovatel) => zrizovatel.skola_join)
-  @JoinColumn({ name: 'kraj_id' }) 
-  zrizovatel_join!: Kraj;
+  
 
 }

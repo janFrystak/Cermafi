@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import path from 'path';
 import { spawn } from 'child_process';
-import fs from 'fs';
+import fs, { appendFile } from 'fs';
 import bcrypt from 'bcrypt';
 import { Admin } from '../Models/Admin-model';
 
@@ -14,6 +14,17 @@ export const adminRouter = Router();
 const upload = multer({ dest: 'uploads/' });
 const SALT_ROUNDS = 12;
 const adminRepository = AppDataSource.getRepository(Admin)
+
+//middleWare checking if the logged in admins permissionLevel
+const rootOnly = (req: Request, res: Response, next: NextFunction) => {
+    const userId = (req as any).user.id;
+    adminRepository.findOne({ where: { id: userId } }).then(admin => {
+        if (!admin || admin.permissionLevel !== 0) {
+            return res.status(403).json({ message: 'Root access required' });
+        }
+        next();
+    });
+};
 
 //middleWare checking the cookies token for wherever is is valid and correct
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -41,9 +52,11 @@ adminRouter.post('/login', async (req: Request, res: Response) => {
         return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user.id }, String(process.env.JWT_SECRET), {
-        expiresIn: '8h'
-    });
+    const token = jwt.sign(
+        { id: user.id, permissionLevel: user.permissionLevel}, 
+        String(process.env.JWT_SECRET), 
+        { expiresIn: '8h' }
+    );
 
     res.cookie('token', token, {
         httpOnly: true,
@@ -55,6 +68,7 @@ adminRouter.post('/login', async (req: Request, res: Response) => {
     res.json({ success: true });
 });
 
+
 adminRouter.use(authMiddleware)
 
 //logout of admin account
@@ -65,8 +79,10 @@ adminRouter.post('/logout', (req: Request, res: Response) => {
 
 //check active cookies
 adminRouter.get('/me', (req, res) => {
-    res.json({ success: true });
+    const user = (req as any).user;
+    res.json({ success: true, permissionLevel: user.permissionLevel });
 });
+
 
 //try to upload new data using the ImportToDB.py script
 adminRouter.post("/upload", upload.array('file'), async (req: Request, res: Response) => {
@@ -124,10 +140,10 @@ adminRouter.post("/upload", upload.array('file'), async (req: Request, res: Resp
 
 
 // get list of all accounts
-adminRouter.get('/accounts', async (req: Request, res: Response) => {
+adminRouter.get('/accounts',rootOnly, async (req: Request, res: Response) => {
     try {
         const user = await adminRepository.find({
-            select: ['id', 'username'],
+            select: ['id', 'username', 'permissionLevel'],
             order: { id: 'ASC' }
         })
         res.json(user);
@@ -138,8 +154,8 @@ adminRouter.get('/accounts', async (req: Request, res: Response) => {
 });
 
 // create admin account
-adminRouter.post('/account', async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+adminRouter.post('/account', rootOnly, async (req: Request, res: Response) => {
+    const { username, password, permissionLevel = 1 } = req.body;
 
     if (!username || !password) {
         return res.status(400).json({ message: 'Username and password are required' });
@@ -155,9 +171,13 @@ adminRouter.post('/account', async (req: Request, res: Response) => {
 
         const hash = await bcrypt.hash(password, SALT_ROUNDS);
         const saved = await adminRepository.save({
-            username, passHash: hash
+            username, passHash: hash, permissionLevel
         })
-        res.status(201).json({ id: saved.id, username: saved.username });
+        res.status(201).json({ 
+            id: saved.id, 
+            username: saved.username,
+            permissionLevel: saved.permissionLevel
+        });
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: 'Internal server error' });
@@ -165,9 +185,9 @@ adminRouter.post('/account', async (req: Request, res: Response) => {
 });
 
 // delete admin account
-adminRouter.delete('/account/:id', async (req: Request, res: Response) => {
+adminRouter.delete('/account/:id',rootOnly, async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { myId } = (req as any).user.id;
+    const myId  = (req as any).user.id;
 
     if (id == myId){
         return res.status(403).json({ message: 'Cannot delete your own account', case: 3}); //case 3 - dont have to compare strings on received
@@ -188,7 +208,7 @@ adminRouter.delete('/account/:id', async (req: Request, res: Response) => {
 });
 
 // change password
-adminRouter.patch('/account/:id/password', async (req: Request, res: Response) => {
+adminRouter.patch('/account/:id/password',rootOnly, async (req: Request, res: Response) => {
     const { id } = req.params;
     const { password } = req.body;
 

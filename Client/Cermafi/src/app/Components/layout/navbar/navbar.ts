@@ -84,14 +84,17 @@ export class Navbar implements OnInit {
           });
         }
       },
-      {
+      ...(this.auth.isRoot()) ? [
+        {
         separator: true
       }, 
       {
         label: 'Správa účtů',
-        icon: 'pi pi-account',
+        icon: 'pi pi-users',
         routerLink: 'admin/accounts'
       }
+      ] : []
+      
 ];
   }
 }

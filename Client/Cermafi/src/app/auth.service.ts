@@ -7,6 +7,7 @@ import { BehaviorSubject, of } from 'rxjs';
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.loggedIn.asObservable();
+  permissionLevel:number = 0
 
   constructor(private http: HttpClient) {
     this.checkAuth().subscribe()
@@ -39,12 +40,20 @@ export class AuthService {
     return this.http.get<any>('http://localhost:8080/admin/me', {
       withCredentials: true
     }).pipe(
-      tap(() => this.loggedIn.next(true)),
+      tap((res) => {
+        this.loggedIn.next(true),
+        this.permissionLevel = res.permissionLevel;
+      }),
+        
       catchError(() => {
         this.loggedIn.next(false);
         return of(null);
       })
     );
+  }
+
+  isRoot() :boolean{
+    return this.permissionLevel == 0
   }
 
   

@@ -24,6 +24,7 @@ export class AdminDashboardPage implements OnInit{
 
   newUsername = '';
   newPassword = '';
+  newPermissionLevel:number = 1
   showPassword = false
   createLoading = false;
 
@@ -46,15 +47,22 @@ export class AdminDashboardPage implements OnInit{
   loadAdmins(): void {
     this.adminService.getAccounts()
       .subscribe({
-        next: (data) => this.admins = data,
+        next: (data) => this.admins = data.map(a => ({
+          ...a,
+          permissionLevel: Number(a.permissionLevel)  //casting to number
+        }),
+       
+      ),
         error: () => this.toast('error', 'Chyba', 'Nepodařilo se načíst adminy')
+
       });
+      
   }
   createAdmin(): void {
     if (!this.newUsername || !this.newPassword) return;
     this.createLoading = true;
  
-    this.adminService.createAccount(this.newUsername, this.newPassword)
+    this.adminService.createAccount(this.newUsername, this.newPassword, this.newPermissionLevel)
     .subscribe({
       next: (admin) => {
         this.admins = [...this.admins, admin];

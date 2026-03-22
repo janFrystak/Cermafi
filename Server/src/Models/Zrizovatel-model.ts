@@ -16,19 +16,6 @@ export class Zrizovatel {
     @Column({name: 'zkraceny_zazev'})
     nazevZkraceny!:string
 
-    @Column({name: 'specifikace'})
-    specifikace!:string
-
-    @Column({name: 'platnost_od'})
-    platnostOd!:string
-
-    @Column({name: 'platnost_do'})
-    platnostDo!:string
-
-    @Column({name: 'poznamka'})
-    poznamka!:string
-
-    @OneToMany(() => Skola, skola => skola.kraj_join)
-    skola_join!: Skola[];
+  
     
 }

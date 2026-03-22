@@ -15,8 +15,8 @@ export class AdminService {
     return this.http.get<AdminModel[]>(`${this.base}/admin/accounts`, this.opts);
   }
 
-  createAccount(username: string, password: string): Observable<AdminModel> {
-    return this.http.post<AdminModel>(`${this.base}/admin/account`, { username, password }, this.opts);
+  createAccount(username: string, password: string, permissionLevel = 1): Observable<AdminModel> {
+    return this.http.post<AdminModel>(`${this.base}/admin/account`, { username, password, permissionLevel }, this.opts);
   }
 
   deleteAccount(id: number): Observable<any> {
