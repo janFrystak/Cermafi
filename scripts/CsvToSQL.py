@@ -62,9 +62,20 @@ def process_dataFrame(df, table, engine):
 
 def convert(path: str, engine, seperator: str, table: str):
     try:
-        df = pd.read_csv(path, sep=seperator, encoding='utf-16')
-        process_dataFrame(df, table, engine)
+        encodings = ['utf-8', 'utf-16', 'utf-16-le', 'utf-8-sig', 'windows-1250']
+        df = None
+        for enc in encodings:
+            try:
+                with open(path, encoding=enc) as f:
+                    df = pd.read_csv(f, sep=seperator)
+                break
+            except (UnicodeDecodeError, UnicodeError):
+                continue
         
+        if df is None:
+            raise Exception("Could not detect file encoding")
+
+        process_dataFrame(df, table, engine)
         print("Succesfully loaded: ", path)
     except Exception as e:
         print("Error while loading file: ", path)

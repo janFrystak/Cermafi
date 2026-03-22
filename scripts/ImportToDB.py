@@ -16,8 +16,9 @@ port = config.get("DB_PORT")
 
 def convert(path, engine, append_mode):
     try:
-        # Find current max ID for ID offset
+        # Find current max ID for uchazec offset
         current_max_id = 0
+        current_max_volba_id = 0
         if append_mode == "append":
             try:
                 with engine.connect() as conn:
@@ -25,6 +26,12 @@ def convert(path, engine, append_mode):
                     current_max_id = int(result.scalar())
             except:
                 current_max_id = 0
+            try:
+                with engine.connect() as conn:
+                    result = conn.execute(text("SELECT COALESCE(MAX(id), 0) FROM public.uchazec_volba"))
+                    current_max_volba_id = int(result.scalar())
+            except:
+                current_max_volba_id = 0
 
         # Load Data
         xl = pd.ExcelFile(path)
@@ -38,11 +45,10 @@ def convert(path, engine, append_mode):
         ]
 
         # --- 2. TABLE: uchazec_volba ---
-      
         duvod_map = {
-            "prijat_na_vyssi_prioritu": 1, 
-            "pro_nesplneni_podminek": 2, 
-            "pro_nedostacujici_kapacitu": 3, 
+            "prijat_na_vyssi_prioritu": 1,
+            "pro_nesplneni_podminek": 2,
+            "pro_nedostacujici_kapacitu": 3,
             "vzdal_se_prijeti": 4
         }
 
@@ -58,7 +64,7 @@ def convert(path, engine, append_mode):
         # Data Cleaning
         if "duvod_neprijeti" in uchazec_volba.columns:
             uchazec_volba["duvod_neprijeti_id"] = uchazec_volba["duvod_neprijeti"].astype(str).str.strip().map(duvod_map)
-        
+
         if "kkov" in uchazec_volba.columns:
             uchazec_volba['obor_kod'] = uchazec_volba['kkov'].astype(str).str.strip().str.replace(r'[-/]', '', regex=True).replace('nan', None)
 
@@ -68,10 +74,13 @@ def convert(path, engine, append_mode):
 
         uchazec_volba = uchazec_volba.rename(columns={'index': 'uchazec_id'})
 
+        # Generate IDs for uchazec_volba
+        uchazec_volba = uchazec_volba.reset_index(drop=True)
+        uchazec_volba.insert(0, 'id', range(current_max_volba_id + 1, current_max_volba_id + 1 + len(uchazec_volba)))
+
         # Syncing columns with DB schema
-        # We only want these specific columns to go to SQL
-        final_cols = ['uchazec_id', 'priorita', 'obor_kod', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti_id', 'redizo']
-        
+        final_cols = ['id', 'uchazec_id', 'priorita', 'obor_kod', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti_id', 'redizo']
+
         for col in final_cols:
             if col not in uchazec_volba.columns:
                 uchazec_volba[col] = None
@@ -83,11 +92,11 @@ def convert(path, engine, append_mode):
         uchazec_volba.to_sql("uchazec_volba", engine, if_exists=append_mode, index=False)
 
         print(f"SUCCESS|{os.path.basename(path)}|{len(uchazec)}")
-        
+
     except Exception as e:
         print(f"ERROR|{os.path.basename(path)}|{str(e)}")
         raise e
-
+    
 def run():
     if len(sys.argv) < 3:
         print("ERROR|SYSTEM|Usage: script.py <wipe_flag> <file_paths...>")
