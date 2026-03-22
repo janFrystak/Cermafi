@@ -27,14 +27,8 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'okres' })
   okresObvod!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'spravni_urad' })
-  spravniUrad!: string;
-
   @Column({ type: 'text', nullable: true, name: 'orp' })
   orp!: string;
-
-  @Column({ type: 'text', nullable: true, name: 'orp_nazev' })
-  nazevOrp!: string;
 
   @Column({ type: 'text', nullable: true, name: 'plny_nazev' })
   plnyNazev!: string;
@@ -48,8 +42,7 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'cislo_popisne' })
   cisloPopisne!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'cislo_orientacni' })
-  cisloOrientacni!: string;
+
 
   @Column({ type: 'text', nullable: true, name: 'cast_obce' })
   castObce!: string;
@@ -57,8 +50,7 @@ export class Skola {
   @Column({ type: 'text', nullable: true, name: 'psc' })
   psc!: string;
 
-  @Column({ type: 'text', nullable: true, name: 'misto' })
-  misto!: string;
+
 
   @Column({ type: 'text', nullable: true, name: 'ruian' })
   ruian!: string;

@@ -70,7 +70,7 @@ def convert(path, engine, append_mode):
 
         # Syncing columns with DB schema
         # We only want these specific columns to go to SQL
-        final_cols = ['uchazec_id', 'priorita', 'zrizovatel', 'obor_kod', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti_id', 'redizo']
+        final_cols = ['uchazec_id', 'priorita', 'obor_kod', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti_id', 'redizo']
         
         for col in final_cols:
             if col not in uchazec_volba.columns:
