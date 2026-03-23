@@ -43,7 +43,7 @@
         <div class="region-row">
             <span class="region-name">{{ region.name }}</span>
             <div class="region-bar-wrap">
-            <div class="region-bar-fill" [style.width.%]="regionPct(region.count, fieldData?.byRegion)"></div>
+            <div class="region-bar-fill" [style.width.%]="regionPct(region.count, fieldData!.byRegion)"></div>
             </div>
             <span class="region-count">{{ region.count }}</span>
         </div>

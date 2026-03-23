@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { SearchFieldComponent } from '../../elements/search-field/search-field.component';
 
 
 @Component({
   selector: 'app-school-page',
-  imports: [SearchFieldComponent],
+  imports: [],
   templateUrl: './school-page.page.html',
   styleUrl: './school-page.page.css'
 })
