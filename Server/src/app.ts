@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { Request, Response } from 'express';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -20,7 +19,7 @@ const app = express();
 app.use(cookieParser());
 app.use(helmet());
 app.use(cors({
-    origin: 'http://localhost:4200',
+    origin: process.env.WEB_ADDRESS,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
