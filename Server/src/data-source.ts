@@ -10,7 +10,7 @@ import { Kraj } from "./Models/Kraj-model";
 import { Admin } from "./Models/Admin-model";
 import path from 'path';
 
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+/* dotenv.config({ path: path.resolve(__dirname, '../.env') }); */
 
 
 console.log("logging in as user: " + String(process.env.DB_USER));
@@ -23,6 +23,7 @@ export const AppDataSource = new DataSource({
     password: String(process.env.DB_PSWD),
     database: process.env.DB_NAME,
     synchronize: false,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     logging: ["error", "schema", "warn"],
     entities: [Uchazec, UchazecVolba, Neprijeti, Obor, Skola, Kraj, Admin],
     migrations: [],
