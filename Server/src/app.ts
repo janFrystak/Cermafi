@@ -14,6 +14,7 @@ import { schoolRouter } from './routes/school.routes';
 import path from 'path';
 
 const port = Number(process.env.PORT)
+const domain = process.env.DOMAIN
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
@@ -39,7 +40,7 @@ app.use('/school', schoolRouter);
 AppDataSource.initialize()
     .then(() => {
         app.listen(port, () => {
-            console.log('Listening for requests');
+            console.log('Listening on: ', domain);
         });
     })
     .catch((err) => {
