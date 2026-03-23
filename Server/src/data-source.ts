@@ -8,9 +8,10 @@ import { Obor } from "./Models/Obor-model";
 import { Skola } from "./Models/Skola-model";
 import { Kraj } from "./Models/Kraj-model";
 import { Admin } from "./Models/Admin-model";
+import path from 'path';
 
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-dotenv.config({path: '../.env'})
 
 console.log("logging in as user: " + String(process.env.DB_USER));
 

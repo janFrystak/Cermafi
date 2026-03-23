@@ -11,15 +11,16 @@ import { regionRouter } from './routes/region.routes';
 import { uchazecRouter } from './routes/uchazec.routes';
 import { statsRouter } from './routes/stats.routes';
 import { schoolRouter } from './routes/school.routes';
+import path from 'path';
 
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
 
 app.use(cookieParser());
 app.use(helmet());
 app.use(cors({
-    origin: process.env.WEB_ADDRESS,
+    origin: 'http://localhost:4200',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
