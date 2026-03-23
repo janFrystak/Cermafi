@@ -11,14 +11,13 @@ import { environment } from '../../environments/environment';
 export class HomeDataService {
   
   private baseUrl = environment.db_url
-   private years? :Observable<number[]>
+  private years? :Observable<number[]>
 
   constructor(private http:HttpClient) {}
 
   getChartData_Id(id: string): Observable<any> {
-    const myUrl = `${this.baseUrl}/uchazec-single/${encodeURIComponent(id)}`
-    return this.http.get(myUrl)
-  }
+    return this.http.get(`${this.baseUrl}/uchazec/single/${encodeURIComponent(id)}`);
+}
   getChartData_Year_Round(year: string, round: string): Observable<any> {
     const myUrl = `${this.baseUrl}/uchazec/${encodeURIComponent(year)}/${encodeURIComponent(round)}`
     return this.http.get(myUrl)
@@ -35,14 +34,14 @@ export class HomeDataService {
     return this.http.get<HomeResponse>(`${this.baseUrl}/stats/summary`)
   }
 
-  getData_Years(): Observable<number[]>{
-      if (!this.years){
-         return this.http.get<number[]>(`${this.baseUrl}/years`).pipe(
-          shareReplay(1)
-         )
-      }
-      return this.years 
+  getData_Years(): Observable<number[]> {
+  if (!this.years) {
+    return this.http.get<number[]>(`${this.baseUrl}/uchazec/available-years`).pipe(
+      shareReplay(1)
+    );
   }
+  return this.years;
+}
   
 }
 

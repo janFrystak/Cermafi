@@ -12,8 +12,8 @@ export class SchoolDataService {
   private baseUrl = environment.db_url
   constructor(private http:HttpClient) {}
 
-  getData_Fields(): Observable<SchoolModel[]>{
-    return this.http.get<SchoolModel[]>(`${this.baseUrl}/schools`)
+  getData_Fields(): Observable<SchoolModel[]> {
+    return this.http.get<SchoolModel[]>(`${this.baseUrl}/school/all`);
   }
 
 }

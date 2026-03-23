@@ -17,14 +17,15 @@ export class RegionDataService {
     return this.http.get<RegionResponse>(myUrl)
 
   }
-  getData_Years(): Observable<number[]>{
-    if (!this.years){
-       return this.http.get<number[]>(`${this.baseUrl}/years`).pipe(
+  getData_Years(): Observable<number[]> {
+    if (!this.years) {
+      return this.http.get<number[]>(`${this.baseUrl}/uchazec/available-years`).pipe(
         shareReplay(1)
-       )
+      );
     }
-    return this.years 
+    return this.years;
   }
+
   getData_RegionYearSummary(id: number, year: number): Observable<RegionResponse>{
     const myUrl = `${this.baseUrl}/region/summary/${id}/${year}`
     return this.http.get<RegionResponse>(myUrl)

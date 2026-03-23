@@ -29,15 +29,15 @@ export class FieldDataService {
   }
 
   getData_FieldTrend(id: string): Observable<FieldTrendPoint[]> {
-      return this.http.get<FieldTrendPoint[]>(`${this.baseUrl}/field/detail/${id}/trend`);
+    return this.http.get<FieldTrendPoint[]>(`${this.baseUrl}/field/detail/${id}/trend`);
   }
 
   getData_FieldPrioritySplit(id: string): Observable<FieldPrioritySplit> {
-      return this.http.get<FieldPrioritySplit>(`${this.baseUrl}/field/detail/${id}/priority-split`);
+    return this.http.get<FieldPrioritySplit>(`${this.baseUrl}/field/detail/${id}/priority-split`);
   }
 
   getData_FieldByRegion(id: string): Observable<FieldRegion[]> {
-      return this.http.get<FieldRegion[]>(`${this.baseUrl}/field/detail/${id}/by-region`);
+    return this.http.get<FieldRegion[]>(`${this.baseUrl}/field/detail/${id}/by-region`);
   }
 
   getData_FieldSchools(id: string, limit:number = 20, offset:number = 0, kraj?:string): Observable<FieldSchool[]> {
