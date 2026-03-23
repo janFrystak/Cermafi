@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "start": "http-server dist/your-project-name/browser -p $PORT",
+    "build": "ng build --configuration development",
     "test": "ng test"
   },
   "private": true,
