@@ -37,8 +37,8 @@ app.use('/school', schoolRouter);
 
 AppDataSource.initialize()
     .then(() => {
-        app.listen(8080, () => {
-            console.log('Listening on http://localhost:8080');
+        app.listen(Number(process.env.API_ADDRESS), () => {
+            console.log('Listening for requests');
         });
     })
     .catch((err) => {
