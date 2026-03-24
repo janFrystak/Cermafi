@@ -20,14 +20,13 @@
     "@angular/router": "19.2.18",
     "@primeuix/themes": "^2.0.3",
     "chart.js": "^4.4.1",
+    "http-server": "^14.1.1",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^19.1.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0",
-    "http-server": "^14.1.1"
-  
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "19.2.18",
