@@ -58,13 +58,13 @@ export class Navbar implements OnInit {
         routerLink: '/field',
         styleClass: url === '/field' ? 'active-nav-item' : '',
       },
-      {
+      /* {
         label: 'Školy',
         icon: PrimeIcons.BOOK,
         routerLink :'/school',
         styleClass: url === '/field' ? 'active-nav-item' : '',
 
-      }    
+      }     */
     ];
     this.adminItems = [
       {
