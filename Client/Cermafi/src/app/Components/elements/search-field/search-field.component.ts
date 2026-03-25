@@ -37,10 +37,11 @@ export class SearchFieldComponent {
     if (q.length < 2) return [];
 
     return this.items()
-      .filter(item => 
-        item.h1.toLowerCase().includes(q) || 
-        (item.h2 && item.h2.toLowerCase().includes(q))
-      )
+      .filter(item => {
+        const h1Match = item.h1?.toLowerCase().includes(q);
+        const h2Match = item.h2?.toLowerCase().includes(q);
+        return h1Match || h2Match;
+      })
       .slice(0, 6);
   });
 

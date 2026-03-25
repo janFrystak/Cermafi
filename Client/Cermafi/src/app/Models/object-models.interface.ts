@@ -2,7 +2,6 @@ export interface FieldModel {
     id: number,
     code: string,
     name: string, 
-    
 }
 
 export interface SchoolModel {

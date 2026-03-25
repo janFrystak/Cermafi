@@ -11,13 +11,22 @@ fieldRouter.get('/all', async (req: Request, res: Response) =>{
             select: ['kod', 'nazev', 'zkracenyNazev'],
             order: {id: 'ASC'}
         })
-        res.json(fields)
+        res.json(fields.map(field =>({
+            id: field.id,
+            code: field.kod,
+            name: field.nazev,
+        })
+    ))
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: 'Internal server error' });
     }
 })
-
+/* this.searchItems.set(fields.map(f => ({
+        id: f.id,
+        h1: f.name,
+        h2: f.code
+      }))); */
 fieldRouter.get('/detail/:id/meta', async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
