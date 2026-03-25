@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable, shareReplay } from 'rxjs';
-import { ChartResponse } from '../Models/chart-response.interface';
+import { ChartResponse } from '../Models/stat-response.interface';
 import { HomeResponse } from '../Models/stat-response.interface';
 import { environment } from '../../environments/environment';
 

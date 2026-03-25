@@ -1,6 +1,12 @@
 import { FieldModel } from "./object-models.interface";
 import { SchoolModel } from "./object-models.interface";
 
+export interface ChartResponse {
+  labels: string[];
+  value_round1: number[];  
+  value_round2: number[]; 
+}
+
 export interface RegionResponse {
   id: number;                   
   regionName: string;        
@@ -15,7 +21,6 @@ export interface RegionResponse {
 
 export interface HomeResponse {
   uchazecCount: number,
-  /* years: number[] */
   acceptanceRate : string
 }
 
