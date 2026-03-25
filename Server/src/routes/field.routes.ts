@@ -8,7 +8,7 @@ const fieldRepository = AppDataSource.getRepository(Obor)
 fieldRouter.get('/all', async (req: Request, res: Response) =>{
     try {
         const fields = await fieldRepository.find({
-            select: ['kod', 'nazev', 'zkracenyNazev'],
+            select: ['kod', 'nazev', 'id'],
             order: {id: 'ASC'}
         })
         res.json(fields.map(field =>({
@@ -22,11 +22,7 @@ fieldRouter.get('/all', async (req: Request, res: Response) =>{
         res.status(500).json({ message: 'Internal server error' });
     }
 })
-/* this.searchItems.set(fields.map(f => ({
-        id: f.id,
-        h1: f.name,
-        h2: f.code
-      }))); */
+
 fieldRouter.get('/detail/:id/meta', async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
