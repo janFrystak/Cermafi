@@ -87,7 +87,7 @@ def run(filepaths):
     print("testing: ", user, pswd, port, database)
     try:
         
-        engine = create_engine(f"postgresql+psycopg2://{user}:{pswd}@localhost:{port}/{database}")
+        engine = create_engine(f"postgresql+psycopg2://{user}:{pswd}@{host}:{port}/{database}")
         """ print(user, pswd, database) """
         print("Connection succesful!")
 

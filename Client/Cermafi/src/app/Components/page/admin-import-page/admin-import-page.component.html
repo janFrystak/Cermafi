@@ -13,7 +13,7 @@
 
     <p-fileUpload 
       name="file" 
-      url="http://localhost:8080/admin/upload" 
+      [url]="uploadUrl"
       accept=".xlsx,.xls" 
       [multiple]="true" 
       maxFileSize="50000000"

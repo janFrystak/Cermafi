@@ -7,7 +7,7 @@ import { Tag } from 'primeng/tag';
 import {ProgressBar} from 'primeng/progressbar'
 import { FormsModule } from '@angular/forms';
 import { Tooltip } from 'primeng/tooltip';
-
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-admin-import-page',
@@ -19,7 +19,8 @@ import { Tooltip } from 'primeng/tooltip';
 export class AdminImportPage {
   isWiping: boolean = false;
   isImporting: boolean = false;
-  importLogs: string[] = []
+  importLogs: string[] = [];
+  uploadUrl = `${environment.db_url}/admin/upload`;
 
   constructor(private messageService: MessageService){}
 

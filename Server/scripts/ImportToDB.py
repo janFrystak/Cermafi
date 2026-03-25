@@ -13,6 +13,7 @@ database = config.get("DB_NAME")
 user = config.get("DB_USER")
 pswd = config.get("DB_PSWD")
 port = config.get("DB_PORT")
+host = config.get("DB_HOST")
 
 def convert(path, engine, append_mode):
     try:
@@ -107,7 +108,7 @@ def run():
     append_mode = "replace" if wipe_flag == "true" else "append"
 
     try:
-        engine = create_engine(f"postgresql+psycopg2://{user}:{pswd}@localhost:{port}/{database}")
+        engine = create_engine(f"postgresql+psycopg2://{user}:{pswd}@{host}:{port}/{database}")
         
         for path in file_paths:
             convert(path, engine, append_mode)

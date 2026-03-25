@@ -14,6 +14,7 @@ database = config["DB_NAME"]
 user = config["DB_USER"]
 pswd = config["DB_PSWD"]
 port = config["DB_PORT"]
+host = config["DB_HOST"]
 
 print(database, user, port)
 def choose_files(prompt: str) -> str:
@@ -165,7 +166,7 @@ def run(filepaths):
     try:
         
         engine = create_engine(
-            f"postgresql+psycopg2://{user}:{pswd}@localhost:{port}/{database}"
+            f"postgresql+psycopg2://{user}:{pswd}@{host}:{port}/{database}"
         )
         print("Connection succesful!")
     except Exception as e:
