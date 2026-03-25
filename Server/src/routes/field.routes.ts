@@ -1,7 +1,22 @@
 import { Router, Request, Response } from 'express';
 import { AppDataSource } from '../data-source';
+import { Obor } from '../Models/Obor-model';
 
 export const fieldRouter = Router();
+const fieldRepository = AppDataSource.getRepository(Obor)
+
+fieldRouter.get('all', async (req: Request, res: Response) =>{
+    try {
+        const fields = await fieldRepository.find({
+            select: ['kod', 'nazev', 'zkracenyNazev'],
+            order: {id: 'ASC'}
+        })
+        res.json(fields)
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+})
 
 fieldRouter.get('/detail/:id/meta', async (req: Request, res: Response) => {
     const { id } = req.params;

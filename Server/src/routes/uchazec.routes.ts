@@ -114,7 +114,7 @@ uchazecRouter.get('/available-years', async (req: Request, res: Response) => {
     }
 });
 
-// GET /uchazec (all with relations — use carefully)
+
 uchazecRouter.get('/', async (req: Request, res: Response) => {
     try {
         const all = await uchazecRepository.find({

@@ -21,7 +21,7 @@ export class FieldDataService {
     private http:HttpClient) {}
 
   getData_Fields(): Observable<FieldModel[]>{
-    return this.http.get<FieldModel[]>(`${this.baseUrl}/fields`)
+    return this.http.get<FieldModel[]>(`${this.baseUrl}/field/all`)
   }
 
   getData_FieldMeta(id: string): Observable<any> {

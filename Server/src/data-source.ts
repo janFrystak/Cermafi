@@ -2,11 +2,11 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Uchazec } from "./Models/Uchazec-model";
 import dotenv from 'dotenv';
+import { Kraj } from "./Models/Kraj-model";
 import { UchazecVolba } from "./Models/Uchazec_volba-model";
 import { Neprijeti } from "./Models/Neprijeti-model";
 import { Obor } from "./Models/Obor-model";
 import { Skola } from "./Models/Skola-model";
-import { Kraj } from "./Models/Kraj-model";
 import { Admin } from "./Models/Admin-model";
 import path from 'path';
 
