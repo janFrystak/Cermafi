@@ -59,3 +59,22 @@
   text-align: center;
   border-top: 1px solid var(--p-surface-200);
 }
+
+:host-context(.p-dark) .hint-overlay {
+  background: var(--p-surface-800);
+  border-color: var(--p-surface-700);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+:host-context(.p-dark) .hint-row {
+  border-bottom-color: var(--p-surface-700);
+}
+
+:host-context(.p-dark) .hint-row:hover {
+  background-color: var(--p-surface-700);
+}
+
+:host-context(.p-dark) .hint-footer {
+  background: var(--p-surface-900);
+  border-top-color: var(--p-surface-700);
+}
