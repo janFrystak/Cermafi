@@ -5,9 +5,6 @@
   padding: 2.5rem 1.5rem 4rem;
 }
 
-
-
-
 .header {
   display: flex;
   align-items: flex-start;
@@ -340,4 +337,37 @@
   .field-title {
     font-size: 24px;
   }
+}
+
+/* ── Dark mode ───────────────────────────────── */
+:host-context(.p-dark) .field-title {
+  color: var(--p-surface-0);
+}
+
+:host-context(.p-dark) .code-tag {
+  background: var(--p-blue-900);
+  color: var(--p-blue-200);
+}
+
+:host-context(.p-dark) .region-bar-fill {
+  background: #a78bfa;
+}
+
+:host-context(.p-dark) .kraj-filter {
+  background: var(--p-surface-800);
+  border-color: var(--p-surface-600);
+  color: var(--p-surface-100);
+}
+
+:host-context(.p-dark) .school-table tbody tr:hover td {
+  background: var(--p-surface-800);
+}
+
+:host-context(.p-dark) .load-more-btn {
+  background: var(--p-surface-800);
+  border-color: var(--p-surface-600);
+}
+
+:host-context(.p-dark) .load-more-btn:hover {
+  background: var(--p-surface-700);
 }
