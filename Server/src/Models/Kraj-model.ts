@@ -7,10 +7,10 @@ export class Kraj {
   id!: number; 
 
   @Column({ type: 'varchar', length: 100 })
-  nazev!: string; 
+  name!: string; 
 
   @Column({ type: 'varchar', length: 10, unique: true })
-  nazev_kratky!: string; 
+  name_short!: string; 
 
 
   @OneToMany(() => Skola, skola => skola.kraj_join)
