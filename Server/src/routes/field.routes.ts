@@ -5,7 +5,7 @@ import { Obor } from '../Models/Obor-model';
 export const fieldRouter = Router();
 const fieldRepository = AppDataSource.getRepository(Obor)
 
-fieldRouter.get('all', async (req: Request, res: Response) =>{
+fieldRouter.get('/all', async (req: Request, res: Response) =>{
     try {
         const fields = await fieldRepository.find({
             select: ['kod', 'nazev', 'zkracenyNazev'],
