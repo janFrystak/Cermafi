@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, of } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.loggedIn.asObservable();
   permissionLevel:number = 0
+  baseUrl = environment.db_url
 
   constructor(private http: HttpClient) {
     this.checkAuth().subscribe()
@@ -18,7 +20,7 @@ export class AuthService {
     return this.loggedIn.getValue()
   }
   login(credentials: any) {
-    return this.http.post<any>('http://localhost:8080/admin/login', credentials, {
+    return this.http.post<any>(`${this.baseUrl}/admin/login`, credentials, {
       withCredentials: true
     }).pipe(
       tap(res => {
@@ -28,7 +30,7 @@ export class AuthService {
   }
 
   logout() {
-  return this.http.post('http://localhost:8080/admin/logout', {}, {
+  return this.http.post(`${this.baseUrl}/admin/logout`, {}, {
     withCredentials: true
   }).pipe(
     tap(() => {
@@ -37,7 +39,7 @@ export class AuthService {
   }
 
   checkAuth() {
-    return this.http.get<any>('http://localhost:8080/admin/me', {
+    return this.http.get<any>(`${this.baseUrl}/admin/me`, {
       withCredentials: true
     }).pipe(
       tap((res) => {

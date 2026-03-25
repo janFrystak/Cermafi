@@ -1,7 +1,6 @@
-
 export const environment = {
   production: true,
-  web_url: "https://cermafi.up.railway.app",
-  db_url: process.env['API_URL']
+  web_url: "http://localhost:4200",
+  db_url: "http://localhost:8080",
   
 };
