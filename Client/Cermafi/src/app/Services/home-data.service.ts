@@ -31,7 +31,7 @@ export class HomeDataService {
   }
 
   getHomeStats(): Observable<HomeResponse>{
-    return this.http.get<HomeResponse>(`${this.baseUrl}/stats/summary`)
+    return this.http.get<HomeResponse>(`https://cermafi-backend-production.up.railway.app/stats/summary`)
   }
 
   getData_Years(): Observable<number[]> {
