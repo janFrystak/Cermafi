@@ -13,8 +13,7 @@ export class RegionMap {
   constructor(private router: Router) {}
 
   selectRegion(code: number) {
-    console.log('Vybrán kraj:', code);
-
+    /* console.log('Vybrán kraj:', code); */
     this.router.navigate(['/region', code]);
   }
 }

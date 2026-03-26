@@ -46,7 +46,7 @@ export class SingleRegionPage implements OnInit {
     request.subscribe({
       next: (data) => {
         this.avYears = data;
-        console.log("years loaded: ", data)
+        /* console.log("years loaded: ", data) */
       },
       error: (err) => console.error('Error fetching available years: ', err)
     })
@@ -62,7 +62,7 @@ export class SingleRegionPage implements OnInit {
     request.subscribe({
       next: (data) => {
         this.regionData = data;
-        console.log('Data loaded:', this.regionData);
+        /* console.log('Data loaded:', this.regionData); */
         this.dataLoading = false
       },
       error: (err) => console.error('Error fetching region data:', err)
