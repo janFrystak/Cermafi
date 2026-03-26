@@ -9,31 +9,28 @@ import { forkJoin } from 'rxjs';
 import { ChartData, ChartOptions } from 'chart.js';
 import { ChartComponent } from '../../elements/charts/chart-component/chart-component.component';
 
-
-
 @Component({
   selector: 'app-single-fiel-page',
   imports: [Skeleton, FormsModule, ChartComponent],
   templateUrl: './single-field-page.page.html',
   styleUrl: './single-field-page.page.css'
 })
-
 export class SingleFieldPage implements OnInit {
   fieldData: FieldDetail | null = null;
   filteredSchools: FieldSchool[] = [];
   availableKraje: string[] = [];
   selectedKraj: string = '';
-  LIMIT = 50;
   schoolsLoading = false;
-  allSchoolsLoaded = false;
+
+  currentPage = 1;
+  totalPages = 1;
+  readonly PAGE_SIZE = 20;
 
   trendChartData: ChartData<'line'> = { datasets: [] };
   trendChartOptions: ChartOptions<'line'> = {
     responsive: true,
     plugins: { legend: { display: true, position: 'top' } },
-    scales: {
-      y: { beginAtZero: false }
-    }
+    scales: { y: { beginAtZero: false } }
   };
 
   priorityChartData: ChartData<'doughnut'> = { datasets: [] };
@@ -42,13 +39,13 @@ export class SingleFieldPage implements OnInit {
     cutout: '70%',
     plugins: { legend: { display: true, position: 'bottom' } }
   };
- 
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fieldService: FieldDataService
   ) {}
- 
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
@@ -62,6 +59,8 @@ export class SingleFieldPage implements OnInit {
       next: (data) => {
         this.fieldData = { ...data.meta, ...data, schools: [] };
         this.availableKraje = data.byRegion.map((r: FieldRegion) => r.name).sort();
+        this.totalPages = Math.ceil(data.meta.schoolCount / this.PAGE_SIZE);
+
         this.trendChartData = {
           labels: data.trend.map((t: FieldTrendPoint) => String(t.year)),
           datasets: [
@@ -83,6 +82,7 @@ export class SingleFieldPage implements OnInit {
             }
           ]
         };
+
         const ps = data.prioritySplit;
         this.priorityChartData = {
           labels: ['1. priorita', '2. priorita', '3. priorita'],
@@ -97,21 +97,18 @@ export class SingleFieldPage implements OnInit {
       },
       error: (err) => console.error(err)
     });
-   
   }
- 
 
   loadSchools(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (!id || this.schoolsLoading || this.allSchoolsLoaded) return;
+    if (!id || this.schoolsLoading) return;
 
     this.schoolsLoading = true;
-    const offset = this.filteredSchools.length;
+    const offset = (this.currentPage - 1) * this.PAGE_SIZE;
 
-    this.fieldService.getData_FieldSchools(id, this.LIMIT, offset, this.selectedKraj || undefined).subscribe({
-      next: (batch) => {
-        this.filteredSchools = [...this.filteredSchools, ...batch];
-        if (batch.length < this.LIMIT) this.allSchoolsLoaded = true;
+    this.fieldService.getData_FieldSchools(id, this.PAGE_SIZE, offset, this.selectedKraj || undefined).subscribe({
+      next: (schools) => {
+        this.filteredSchools = schools;
         this.schoolsLoading = false;
       },
       error: (err) => {
@@ -120,31 +117,30 @@ export class SingleFieldPage implements OnInit {
       }
     });
   }
- 
-  
+
   filterSchools(): void {
-    this.filteredSchools = [];
-    this.allSchoolsLoaded = false;
-    this.loadSchools(); 
+    this.currentPage = 1;
+    this.totalPages = Math.ceil((this.fieldData?.schoolCount ?? 0) / this.PAGE_SIZE);
+    this.loadSchools();
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.loadSchools();
   }
 
   goToSchool(id: number): void {
-    this.router.navigate(['/skola'/* , id */]);
+    this.router.navigate(['/skola']);
   }
- 
-  scaleBar(value: number, trend: any[]): number {
-    const max = Math.max(...trend.map(t => Math.max(t.round1, t.round2)));
-    return Math.round((value / max) * 110);
-  }
+
   scrollToSchools(): void {
     document.getElementById('school-section')?.scrollIntoView({ behavior: 'smooth' });
   }
- 
-  regionPct(count: number, regions: FieldRegion[] | undefined): number {
-  if (!regions || regions.length === 0) return 0;
-  const max = Math.max(...regions.map(r => r.count));
-  return Math.round((count / max) * 100);
-}
- 
 
+  regionPct(count: number, regions: FieldRegion[] | undefined): number {
+    if (!regions || regions.length === 0) return 0;
+    const max = Math.max(...regions.map(r => r.count));
+    return Math.round((count / max) * 100);
+  }
 }

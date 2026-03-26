@@ -47,7 +47,7 @@ export class Navbar implements OnInit {
         styleClass: url === '/home' ? 'active-nav-item' : '',
       },
       {
-        label: 'Region',
+        label: 'Kraj',
         icon: PrimeIcons.MAP_MARKER,
         routerLink: '/region',
         styleClass: url === '/region' ? 'active-nav-item' : '',

@@ -98,7 +98,7 @@
       </tbody>
     </table>
     @if (filteredSchools.length < fieldData.schoolCount  ) {
-        <div class="load-more-wrap">
+      <div class="load-more-wrap">
   @if (schoolsLoading) {
     <div style="display:flex; gap:1rem; padding: 0.75rem 0;">
       <p-skeleton shape="circle" size="24px"></p-skeleton>
@@ -107,13 +107,16 @@
       <p-skeleton height="0.85rem" width="15%"></p-skeleton>
     </div>
   }
-  @if (!allSchoolsLoaded && !schoolsLoading) {
-    <button class="load-more-btn" (click)="loadSchools()">
-      Načíst další školy
-    </button>
-  }
-  @if (allSchoolsLoaded) {
-    <p class="more-hint">Zobrazeno všech {{ filteredSchools.length }} škol</p>
+  @if (totalPages > 1 && !schoolsLoading) {
+    <div class="pagination">
+      <button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+        <i class="pi pi-chevron-left"></i>
+      </button>
+      <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+      <button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+        <i class="pi pi-chevron-right"></i>
+      </button>
+    </div>
   }
 </div>
 }   
@@ -153,7 +156,7 @@
   <div class="card">
     <p-skeleton height="1rem" width="200px" styleClass="mb-4"></p-skeleton>
     @for (i of [1,2,3,4,5]; track $index) {
-    <div style="display:flex; gap:1rem; padding: 0.75rem 0; border-bottom: 1px solid #f0efe9;">
+    <div class="bottom-skeleton">
       <p-skeleton shape="circle" size="24px"></p-skeleton>
       <p-skeleton height="0.85rem" width="40%"></p-skeleton>
       <p-skeleton height="0.85rem" width="15%" styleClass="ml-auto"></p-skeleton>
