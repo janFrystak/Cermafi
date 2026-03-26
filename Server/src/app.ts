@@ -15,7 +15,7 @@ import path from 'path';
 
 const port = Number(process.env.PORT)
 const domain = process.env.DOMAIN
-const frontend_url_full = 'https://'+process.env.FRONTEND_URL
+const frontend_url_full = process.env.FRONTEND_URL
 /* dotenv.config({ path: path.resolve(__dirname, '../.env') }); */
 
 const app = express();
