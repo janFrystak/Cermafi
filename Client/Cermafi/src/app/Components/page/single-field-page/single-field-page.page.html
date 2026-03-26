@@ -1,7 +1,5 @@
-
 @if (fieldData) {
-
-
+<div class ="page">
   <header class="header">
     <div class="header-left">
       <span class="code-tag">{{ fieldData.code }}</span>
@@ -25,31 +23,31 @@
     </div>
   </div>
 
-    <div class="charts-row">
+  <div class="charts-row">
     <div class="card">
-        <div class="card-label">Zájem v čase</div>
-        <app-chart type="line" [data]="trendChartData" [options]="trendChartOptions"></app-chart>
+      <div class="card-label">Zájem v čase</div>
+      <app-chart type="line" [data]="trendChartData" [options]="trendChartOptions"></app-chart>
     </div>
     <div class="card">
-        <div class="card-label">Volba priority</div>
-        <app-chart type="doughnut" [data]="priorityChartData" [options]="priorityChartOptions"></app-chart>
+      <div class="card-label">Volba priority</div>
+      <app-chart type="doughnut" [data]="priorityChartData" [options]="priorityChartOptions"></app-chart>
     </div>
-    </div>
+  </div>
 
-    <div class="card region-card">
+  <div class="card region-card">
     <div class="card-label">Zájem podle krajů</div>
     <div class="region-list">
-        @for (region of fieldData.byRegion; track $index) {
-        <div class="region-row">
-            <span class="region-name">{{ region.name }}</span>
-            <div class="region-bar-wrap">
-            <div class="region-bar-fill" [style.width.%]="regionPct(region.count, fieldData!.byRegion)"></div>
-            </div>
-            <span class="region-count">{{ region.count }}</span>
+      @for (region of fieldData.byRegion; track $index) {
+      <div class="region-row">
+        <span class="region-name">{{ region.name }}</span>
+        <div class="region-bar-wrap">
+          <div class="region-bar-fill" [style.width.%]="regionPct(region.count, fieldData!.byRegion)"></div>
         </div>
-        }
+        <span class="region-count">{{ region.count }}</span>
+      </div>
+      }
     </div>
-    </div>
+  </div>
 
 
   <div class="card school-section" id="school-section">
@@ -58,7 +56,7 @@
       <select class="kraj-filter" [(ngModel)]="selectedKraj" (change)="filterSchools()">
         <option value="">Všechny kraje</option>
         @for (kraj of availableKraje; track $index) {
-        <option  [value]="kraj">{{ kraj }}</option> }
+        <option [value]="kraj">{{ kraj }}</option> }
       </select>
     </div>
 
@@ -76,8 +74,11 @@
         @for (school of filteredSchools; track $index) {
         <tr (click)="goToSchool(school.id)">
           <td>
-            <div class="rank-badge" [class.rank-gold]="$index === 0" [class.rank-silver]="$index === 1" [class.rank-bronze]="$index === 2" [class.rank-default]="$index > 2">
-              {{ $index + 1 }}
+            <div class="rank-badge" [class.rank-gold]="($index + (currentPage-1) * PAGE_SIZE) === 0"
+              [class.rank-silver]="($index + (currentPage-1) * PAGE_SIZE) === 1"
+              [class.rank-bronze]="($index + (currentPage-1) * PAGE_SIZE) === 2"
+              [class.rank-default]="($index + (currentPage-1) * PAGE_SIZE) > 2">
+              {{ $index + 1 + (currentPage - 1) * PAGE_SIZE }}
             </div>
           </td>
           <td>
@@ -94,34 +95,33 @@
             </span>
           </td>
         </tr>
-        } 
+        }
       </tbody>
     </table>
-    @if (filteredSchools.length < fieldData.schoolCount  ) {
-      <div class="load-more-wrap">
-  @if (schoolsLoading) {
-    <div style="display:flex; gap:1rem; padding: 0.75rem 0;">
-      <p-skeleton shape="circle" size="24px"></p-skeleton>
-      <p-skeleton height="0.85rem" width="40%"></p-skeleton>
-      <p-skeleton height="0.85rem" width="15%" styleClass="ml-auto"></p-skeleton>
-      <p-skeleton height="0.85rem" width="15%"></p-skeleton>
-    </div>
-  }
-  @if (totalPages > 1 && !schoolsLoading) {
-    <div class="pagination">
-      <button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
-        <i class="pi pi-chevron-left"></i>
-      </button>
-      <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
-      <button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
-        <i class="pi pi-chevron-right"></i>
-      </button>
-    </div>
+    @if (filteredSchools.length < fieldData.schoolCount ) { <div class="load-more-wrap">
+      @if (schoolsLoading) {
+      <div style="display:flex; gap:1rem; padding: 0.75rem 0;">
+        <p-skeleton shape="circle" size="24px"></p-skeleton>
+        <p-skeleton height="0.85rem" width="40%"></p-skeleton>
+        <p-skeleton height="0.85rem" width="15%" styleClass="ml-auto"></p-skeleton>
+        <p-skeleton height="0.85rem" width="15%"></p-skeleton>
+      </div>
+      }
+      @if (totalPages > 1 && !schoolsLoading) {
+      <div class="pagination">
+        <button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+        <button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+      }
+  </div>
   }
 </div>
-}   
 </div>
-
 }
 
 <!-- Skeleton -->
@@ -166,4 +166,3 @@
   </div>
 </div>
 }
-
