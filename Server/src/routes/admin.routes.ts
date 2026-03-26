@@ -60,8 +60,8 @@ adminRouter.post('/login', async (req: Request, res: Response) => {
 
     res.cookie('token', token, {
         httpOnly: true,
-        secure: false, // true for https
-        sameSite: 'lax',
+        secure: true,
+        sameSite: 'none',
         maxAge: 8 * 60 * 60 * 1000 //8 Hours
 
     });
@@ -73,7 +73,11 @@ adminRouter.use(authMiddleware)
 
 //logout of admin account
 adminRouter.post('/logout', (req: Request, res: Response) => {
-    res.clearCookie('token', { httpOnly: true, secure: false });
+    res.clearCookie('token', { 
+        httpOnly: true, 
+        secure: true,
+        sameSite: 'none' 
+    });
     res.json({ success: true });
 });
 
