@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "http-server dist/cermafi/browser -p $PORT ",
-    "build": "ng build --configuration development",
+    "start": "http-server dist/cermafi/browser -p $PORT --single",
+    "build": "ng build --configuration production",
     "test": "ng test"
   },
   "private": true,
