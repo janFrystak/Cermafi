@@ -1,7 +1,6 @@
 export const environment = {
   production: true,
   web_url: "https://cermafi-frontend.up.railway.app",
-  db_url : process.env["API_URL"]
- /*  db_url: "https://cermafi-backend-production.up.railway.app" */
+  db_url: "https://cermafi-backend-production.up.railway.app" //sadly has to be hardcoded
   
 };
