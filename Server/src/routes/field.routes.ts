@@ -7,16 +7,14 @@ const fieldRepository = AppDataSource.getRepository(Obor)
 
 fieldRouter.get('/all', async (req: Request, res: Response) => {
     try {
-        const fields = await fieldRepository.find({
-            select: ['kod', 'nazev', 'id'],
-            order: { id: 'ASC' }
-        })
-        res.json(fields.map(field => ({
-            id: field.id,
-            code: field.kod,
-            name: field.nazev,
-        })
-        ))
+        const fields = await AppDataSource.query(`  
+            SELECT DISTINCT o.id, o.kod AS code, o.nazev AS name
+            FROM public.obor o
+            JOIN public.uchazec_volba uv ON uv.obor_kod = o.kod
+            JOIN public.uchazec u ON uv.uchazec_id = u.id
+            ORDER BY o.nazev`
+        )
+        res.json(fields)
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: 'Internal server error' });
