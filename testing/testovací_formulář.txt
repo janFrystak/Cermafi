@@ -52,13 +52,14 @@ SEKCE 3 — STRÁNKA REGIONŮ
 --------------------------------------------------------------------------------
 SEKCE 4 — ADMINISTRACE
 --------------------------------------------------------------------------------
-
+- příhlášení na stránce: https://cermafi.up.railway.app/admin/login
+- přihlašovací údaje jsou 
 4.1 Přihlášení funguje správně
     Výsledek: [ ] OK  [ ] X     Poznámky:
 
 4.2 Neplatné údaje zobrazí chybu
     Výsledek: [ ] OK  [ ] X     Poznámky: 
-
+-dropdown pro odhlášení nefunguje, ani se nezobrazí 
 4.3 Odhlášení funguje
     Výsledek: [ ] OK  [ ] X     Poznámky: 
 
