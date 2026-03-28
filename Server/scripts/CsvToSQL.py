@@ -15,6 +15,7 @@ database = config["DB_NAME"]
 user = config["DB_USER"]
 pswd = config["DB_PSWD"]
 port = config["DB_PORT"]
+host = config["DB_HOST"]
 
 
 
@@ -41,25 +42,11 @@ def choose_files(prompt: str) -> str:
     return list(filenames)
 
 def process_dataFrame(df, table, engine):
-    while True:
-        if ('id' in df.columns): 
-            id_override = input("Found existing column id, override column with a new one? (y/n)").lower()
-            match id_override:
-                case "y":
-                    df = df.drop(columns=["id"])
-                    df.index = df.index + 1
-                    df.to_sql(table, engine, if_exists="replace", index=True, index_label="id", chunksize=1000)
-                    break
-                case "n":
-                    df.to_sql(table, engine, if_exists="replace", index=False, chunksize=1000)
-                    break
-                case _:
-                    print("Invlaid answer given")
-        else:
-            df.index = df.index+1
-            df.to_sql(table, engine, if_exists="replace", index=True, index_label="id", chunksize=1000)
-            break
-
+    if 'id' in df.columns:
+        df = df.drop(columns=["id"])
+    df.index = df.index + 1
+    df.to_sql(table, engine, if_exists="replace", index=True, index_label="id")
+ 
 def convert(path: str, engine, seperator: str, table: str):
     try:
         encodings = ['utf-8', 'utf-16', 'utf-16-le', 'utf-8-sig', 'windows-1250']

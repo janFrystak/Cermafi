@@ -301,3 +301,59 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Dark mode ───────────────────────────────── */
+:host-context(.p-dark) .page-title {
+  color: var(--p-surface-0);
+}
+
+:host-context(.p-dark) .form-input {
+  background: var(--p-surface-800);
+  border-color: var(--p-surface-600);
+  color: var(--p-surface-100);
+}
+
+:host-context(.p-dark) .form-input:focus {
+  border-color: var(--p-primary-color);
+}
+
+:host-context(.p-dark) .btn-primary {
+  color: #fff;
+}
+
+:host-context(.p-dark) .btn-ghost {
+  border-color: var(--p-surface-600);
+  color: var(--p-surface-300);
+}
+
+:host-context(.p-dark) .btn-ghost:hover {
+  background: var(--p-surface-700);
+}
+
+:host-context(.p-dark) .action-btn {
+  border-color: var(--p-surface-600);
+}
+
+:host-context(.p-dark) .action-btn:hover {
+  background: var(--p-surface-700);
+  border-color: var(--p-surface-500);
+  color: var(--p-surface-100);
+}
+
+:host-context(.p-dark) .password-change-row .form-input {
+  background: var(--p-surface-800);
+  border-color: var(--p-surface-600);
+  color: var(--p-surface-100);
+}
+
+:host-context(.p-dark) .admin-item:hover {
+  background: var(--p-surface-800);
+}
+
+:host-context(.p-dark) .toggle-btn {
+  color: var(--p-surface-400);
+}
+
+:host-context(.p-dark) .toggle-btn:hover {
+  color: var(--p-surface-100);
+}
