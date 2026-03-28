@@ -95,7 +95,7 @@ export class SingleFieldPage implements OnInit {
 
         this.loadSchools();
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error('fork join error: ',err)
     });
   }
 

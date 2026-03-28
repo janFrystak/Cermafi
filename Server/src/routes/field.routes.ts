@@ -5,18 +5,18 @@ import { Obor } from '../Models/Obor-model';
 export const fieldRouter = Router();
 const fieldRepository = AppDataSource.getRepository(Obor)
 
-fieldRouter.get('/all', async (req: Request, res: Response) =>{
+fieldRouter.get('/all', async (req: Request, res: Response) => {
     try {
         const fields = await fieldRepository.find({
             select: ['kod', 'nazev', 'id'],
-            order: {id: 'ASC'}
+            order: { id: 'ASC' }
         })
-        res.json(fields.map(field =>({
+        res.json(fields.map(field => ({
             id: field.id,
             code: field.kod,
             name: field.nazev,
         })
-    ))
+        ))
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: 'Internal server error' });
@@ -45,13 +45,15 @@ fieldRouter.get('/detail/:id/meta', async (req: Request, res: Response) => {
                     WHERE uv2.obor_kod = o.kod AND u2.kolo = 1
                     GROUP BY uv2.uchazec_id
                 ) sub
-                ), 2) AS "failRate"
+                )
+            , 2) AS "failRate"
             FROM public.obor o
             JOIN public.uchazec_volba uv ON uv.obor_kod = o.kod
             JOIN public.uchazec u ON uv.uchazec_id = u.id
             WHERE o.id = $1 AND u.kolo = 1
             GROUP BY o.id, o.kod, o.nazev, o.zkraceny_nazev
         `, [id]);
+        console.log('meta result for id', id, ':', result);
         res.json(result[0]);
     } catch (e) {
         console.error(e);
@@ -128,12 +130,12 @@ fieldRouter.get('/detail/:id/by-region', async (req: Request, res: Response) => 
 });
 
 fieldRouter.get('/detail/:id/schools', async (req, res) => {
-  const { id } = req.params;
-  const limit = parseInt(req.query['limit'] as string) || 50;
-  const offset = parseInt(req.query['offset'] as string) || 0;
-  const kraj = req.query['kraj'] as string | undefined;
+    const { id } = req.params;
+    const limit = parseInt(req.query['limit'] as string) || 50;
+    const offset = parseInt(req.query['offset'] as string) || 0;
+    const kraj = req.query['kraj'] as string | undefined;
 
-  const result = await AppDataSource.query(`
+    const result = await AppDataSource.query(`
     SELECT
         s.id,
         s.zkraceny_nazev AS "shortName",
@@ -155,5 +157,5 @@ fieldRouter.get('/detail/:id/schools', async (req, res) => {
     LIMIT $2 OFFSET $3
   `, kraj ? [id, limit, offset, kraj] : [id, limit, offset]);
 
-  res.json(result);
+    res.json(result);
 });

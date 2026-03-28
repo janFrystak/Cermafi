@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { HomeDataService } from '../../../../Services/home-data.service';
-import { UIChart } from "primeng/chart" 
+import { UIChart } from "primeng/chart"
 import { RegionDataService } from '../../../../Services/region-data.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { RegionDataService } from '../../../../Services/region-data.service';
   styleUrls: ['./home-graph.component.css']
 })
 
-export class HomeGraphComponent implements OnInit{
+export class HomeGraphComponent implements OnInit {
   avYears: number[] | null = null
   chartData: ChartData<"line"> = {
     datasets: []
@@ -27,20 +27,20 @@ export class HomeGraphComponent implements OnInit{
       }
     },
     plugins: {
-      legend: {display: true, position: "top"}
+      legend: { display: true, position: "top" }
     }
   };
-  
+
   constructor(
     private dataService: HomeDataService,
     private yearService: RegionDataService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadData();
   }
 
-  
+
 
   private loadData(): void {
     this.yearService.getData_Years().subscribe({
@@ -50,8 +50,8 @@ export class HomeGraphComponent implements OnInit{
         const lastYear = years[years.length - 1]
 
         this.dataService.getChartData_YearsRange(String(firstYear), String(lastYear)).subscribe({
-          next: (res)=>{
-            
+          next: (res) => {
+
             const dataMinRound1 = Math.min(...res.value_round1);
             const dataMinRound2 = Math.min(...res.value_round2);
 
@@ -63,7 +63,7 @@ export class HomeGraphComponent implements OnInit{
                   position: 'left',
                   beginAtZero: false,
                   title: { display: true, text: 'Kolo 1' },
-                  min: Math.floor(dataMinRound1 * 0.95) 
+                  min: Math.floor(dataMinRound1 * 0.95)
                 },
                 y2: {
                   type: 'linear',
@@ -71,14 +71,13 @@ export class HomeGraphComponent implements OnInit{
                   beginAtZero: false,
                   grid: { drawOnChartArea: false },
                   title: { display: true, text: 'Kolo 2' },
-                 
-                  min: Math.floor(dataMinRound2 * 0.80) 
+                  min: Math.floor(dataMinRound2 * 0.80)
                 }
               }
             }
 
             this.chartData = {
-              
+
               labels: res.labels,
               datasets: [
                 {
@@ -89,7 +88,7 @@ export class HomeGraphComponent implements OnInit{
                   fill: true,
                   tension: 0.9,
                   yAxisID: 'y2',
-                  pointRadius: 2, 
+                  pointRadius: 3,
                   pointHoverRadius: 4,
                   borderWidth: 2
                 },
@@ -98,23 +97,23 @@ export class HomeGraphComponent implements OnInit{
                   data: res.value_round1,
                   borderColor: 'rgb(237, 152, 95)',
                   backgroundColor: 'rgb(250, 216, 183, 0.35)',
-                  fill: true, 
+                  fill: true,
                   tension: 0.3,
                   yAxisID: 'y',
-                  pointRadius: 3, 
+                  pointRadius: 3,
                   pointHoverRadius: 5,
                   borderWidth: 3
                 }
-                
+
               ]
             };
-        },
-        error: (err) => console.error("Chyba při načtení dat grafu: ", err)
+          },
+          error: (err) => console.error("Chyba při načtení dat grafu: ", err)
         });
       }
 
     })
-    
-    
+
+
   }
 }
