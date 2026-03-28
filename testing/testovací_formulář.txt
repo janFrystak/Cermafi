@@ -53,23 +53,20 @@ SEKCE 3 — STRÁNKA REGIONŮ
 SEKCE 4 — ADMINISTRACE
 --------------------------------------------------------------------------------
 - příhlášení na stránce: https://cermafi.up.railway.app/admin/login
-- přihlašovací údaje jsou 
+- přihlašovací údaje jsou uživatel:"tester" a heslo "test"
 4.1 Přihlášení funguje správně
     Výsledek: [ ] OK  [ ] X     Poznámky:
 
 4.2 Neplatné údaje zobrazí chybu
     Výsledek: [ ] OK  [ ] X     Poznámky: 
+
 -dropdown pro odhlášení nefunguje, ani se nezobrazí 
 4.3 Odhlášení funguje
     Výsledek: [ ] OK  [ ] X     Poznámky: 
 
-4.4 Správa účtů je dostupná pouze root adminovi
-    Výsledek: [ ] OK  [ ] X     Poznámky:
-
-4.5 Nahrávání dat funguje
+4.4 Možné vytvořit nového admina na /admin/accounts
     Výsledek: [ ] OK  [ ] X     Poznámky: 
-
-
+    
 --------------------------------------------------------------------------------
 NALEZENÉ CHYBY
 --------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ import { Menu } from 'primeng/menu'
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [Menubar, DarkModeToggle, AsyncPipe, Menu],
+  imports: [Menubar, DarkModeToggle, AsyncPipe, Menu, RouterLink],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
