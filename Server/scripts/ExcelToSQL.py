@@ -63,6 +63,7 @@ def convert(path: str, engine, sheet: str):
         # These are the column attributes(suffixes after 'ssX_')
         atributes = ['zrizovatel', 'kkov', 'forma', 'zkraceno', 'prijat', 'duvod_neprijeti', 'redizo']
         duvod_neprijeti_table = {"prijat_na_vyssi_prioritu":1, "pro_nesplneni_podminek":2, "pro_nedostacujici_kapacitu": 3, "vzdal_se_prijeti":4}
+
         # 2. Melt the dataframe to get a long list of all 'ss' columns
         # Include 'index' as the identifier
         long_df = df.reset_index().melt(
@@ -95,11 +96,11 @@ def convert(path: str, engine, sheet: str):
         # Converting some row values into a more database friendly form
         if "duvod_neprijeti" in uchazec_volba.columns:
             uchazec_volba["duvod_neprijeti_id"] = (
-            uchazec_volba["duvod_neprijeti"]
-            .astype(str)
-            .str.strip()
-            .map(duvod_neprijeti_table)
-    )
+                uchazec_volba["duvod_neprijeti"]
+                .astype(str)
+                .str.strip()
+                .map(duvod_neprijeti_table)
+        )
 
         if "kkov" in uchazec_volba.columns:
             uchazec_volba['kkov'] = uchazec_volba['kkov'].astype(str)
