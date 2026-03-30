@@ -86,13 +86,13 @@ def run(filepaths):
     
     for path in filepaths:
         table = input("Please input table name (uchazec, skola, obor...):").strip().lower()
-        seperator = input("Please input the CSV files seperator: ")
+        separator = input("Please input the CSV files seperator: ")
         conf = input("Continue? (y/n): ").lower()
         if conf != "y":
             print("Task ended by user.")
             break
         print(f"Selected table: {table} for file ", path)
-        convert(path, engine, seperator, table)
+        convert(path, engine, separator, table)
 
     
 

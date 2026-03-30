@@ -112,7 +112,7 @@
         <button class="page-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
           <i class="pi pi-chevron-left"></i>
         </button>
-        <span class="page-info">{{ currentPage }} / {{ totalPages }}</span>
+        <span class="page-info">{{ currentPage }} / {{ [totalPages] }}</span>
         <button class="page-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
           <i class="pi pi-chevron-right"></i>
         </button>

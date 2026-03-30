@@ -69,7 +69,7 @@ adminRouter.post('/login', async (req: Request, res: Response) => {
 });
 
 
-//adminRouter.use(authMiddleware)
+adminRouter.use(authMiddleware)
 
 //logout of admin account
 adminRouter.post('/logout', (req: Request, res: Response) => {

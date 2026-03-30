@@ -132,28 +132,42 @@ fieldRouter.get('/detail/:id/schools', async (req, res) => {
     const limit = parseInt(req.query['limit'] as string) || 50;
     const offset = parseInt(req.query['offset'] as string) || 0;
     const kraj = req.query['kraj'] as string | undefined;
+    const countResult = await AppDataSource.query(`
+        SELECT COUNT(DISTINCT s.id) as count
+        FROM public.uchazec_volba uv
+        JOIN public.obor o ON uv.obor_kod = o.kod
+        JOIN public.uchazec u ON uv.uchazec_id = u.id
+        JOIN public.skola s ON uv.redizo = s.red_izo
+        JOIN public.kraj k ON s.kraj_id = k.id
+        WHERE o.id = $1
+        AND u.kolo = 1
+        ${kraj ? `AND k.nazev = $2` : ''}
+    `, kraj ? [id, kraj] : [id]);
 
     const result = await AppDataSource.query(`
-    SELECT
-        s.id,
-        s.zkraceny_nazev AS "shortName",
-        s.misto AS "place",
-        k.nazev AS "kraj",
-        COUNT(*) FILTER (WHERE uv.priorita = '1') AS "appCount",
-        ROUND(AVG(CASE WHEN uv.prijat = 1 THEN 100 ELSE 0 END)
-            FILTER (WHERE uv.priorita = '1'), 1) AS "acceptanceRate"
-    FROM public.uchazec_volba uv
-    JOIN public.obor o   ON uv.obor_kod = o.kod
-    JOIN public.uchazec u ON uv.uchazec_id = u.id
-    JOIN public.skola s  ON uv.redizo = s.red_izo
-    JOIN public.kraj k   ON s.kraj_id = k.id
-    WHERE o.id = $1
-      AND u.kolo = 1
-      ${kraj ? `AND k.nazev = $4` : ''}
-    GROUP BY s.id, s.zkraceny_nazev, s.misto, k.nazev
-    ORDER BY "appCount" DESC
-    LIMIT $2 OFFSET $3
-  `, kraj ? [id, limit, offset, kraj] : [id, limit, offset]);
+        SELECT
+            s.id,
+            s.zkraceny_nazev AS "shortName",
+            s.misto AS "place",
+            k.nazev AS "kraj",
+            COUNT(*) FILTER (WHERE uv.priorita = '1') AS "appCount",
+            ROUND(AVG(CASE WHEN uv.prijat = 1 THEN 100 ELSE 0 END)
+                FILTER (WHERE uv.priorita = '1'), 1) AS "acceptanceRate"
+        FROM public.uchazec_volba uv
+        JOIN public.obor o   ON uv.obor_kod = o.kod
+        JOIN public.uchazec u ON uv.uchazec_id = u.id
+        JOIN public.skola s  ON uv.redizo = s.red_izo
+        JOIN public.kraj k   ON s.kraj_id = k.id
+        WHERE o.id = $1
+        AND u.kolo = 1
+        ${kraj ? `AND k.nazev = $4` : ''}
+        GROUP BY s.id, s.zkraceny_nazev, s.misto, k.nazev
+        ORDER BY "appCount" DESC
+        LIMIT $2 OFFSET $3
+    `, kraj ? [id, limit, offset, kraj] : [id, limit, offset]
+);
 
-    res.json(result);
+    res.json({
+        schools: result,
+        total: parseInt(countResult[0].count)});
 });

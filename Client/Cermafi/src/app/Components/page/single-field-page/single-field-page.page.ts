@@ -107,8 +107,9 @@ export class SingleFieldPage implements OnInit {
     const offset = (this.currentPage - 1) * this.PAGE_SIZE;
 
     this.fieldService.getData_FieldSchools(id, this.PAGE_SIZE, offset, this.selectedKraj || undefined).subscribe({
-      next: (schools) => {
-        this.filteredSchools = schools;
+      next: (response) => {
+        this.filteredSchools = response.schools;
+        this.totalPages = Math.ceil(response.total / this.PAGE_SIZE);
         this.schoolsLoading = false;
       },
       error: (err) => {

@@ -41,6 +41,11 @@ export interface FieldRegion {
   count: number;
 }
 
+export interface FieldSchoolResponse {
+  schools: FieldSchool[];
+  total: number
+}
+
 export interface FieldSchool {
   id: number;
   shortName: string;
