@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class RegionDataService {
-  private baseUrl = environment.db_url
+  private baseUrl = environment.back_url
   private years? :Observable<number[]>
   constructor(private http:HttpClient) {}
 

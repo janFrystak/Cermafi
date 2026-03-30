@@ -6,7 +6,7 @@ import { AdminModel } from '../Models/object-models.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
-  private base = environment.db_url;
+  private base = environment.back_url;
   private opts = { withCredentials: true };
 
   constructor(private http: HttpClient) {}

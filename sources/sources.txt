@@ -25,8 +25,9 @@ mapa čr: https://mapsvg.com/maps
 
 how to operate:
 Start postgres service - brew services start postgresql@
-Start server - build js - npm run build:ts - node app.js
-Start Client - ag seerve
+Start server - npm run start
+Build Client - ng build --configuration production
+Start Client - serve dist/cermafi/browser -s -l $PORT
 
 
 

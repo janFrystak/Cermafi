@@ -9,7 +9,7 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.loggedIn.asObservable();
   permissionLevel:number = 0
-  baseUrl = environment.db_url
+  baseUrl = environment.back_url
 
   constructor(private http: HttpClient) {
     this.checkAuth().subscribe()

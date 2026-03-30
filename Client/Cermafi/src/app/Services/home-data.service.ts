@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 
 export class HomeDataService {
   
-  private baseUrl = environment.db_url
+  private baseUrl = environment.back_url
   private years? :Observable<number[]>
 
   constructor(private http:HttpClient) {}

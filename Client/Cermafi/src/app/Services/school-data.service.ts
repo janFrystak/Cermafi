@@ -9,7 +9,7 @@ import { SchoolModel } from '../Models/object-models.interface';
 })
 export class SchoolDataService {
 
-  private baseUrl = environment.db_url
+  private baseUrl = environment.back_url
   constructor(private http:HttpClient) {}
 
   getData_Fields(): Observable<SchoolModel[]> {

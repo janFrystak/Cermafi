@@ -1,6 +1,5 @@
 export const environment = {
-  production: true,
-  web_url: "https://cermafi.up.railway.app",
-  db_url: "https://cermafi-backend-production.up.railway.app"
-  
+  production: false,
+  web_url: "http://localhost:4200",
+  back_url: "http://localhost:8080"
 };

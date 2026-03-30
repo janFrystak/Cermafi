@@ -20,7 +20,7 @@ export class AdminImportPage {
   isWiping: boolean = false;
   isImporting: boolean = false;
   importLogs: string[] = [];
-  uploadUrl = `${environment.db_url}/admin/upload`;
+  uploadUrl = `${environment.back_url}/admin/upload`;
 
   constructor(private messageService: MessageService){}
 

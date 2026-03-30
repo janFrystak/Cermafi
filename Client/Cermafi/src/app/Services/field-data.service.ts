@@ -14,7 +14,7 @@ import { FieldSchool } from '../Models/stat-response.interface';
   providedIn: 'root'
 })
 export class FieldDataService {
-  private baseUrl = environment.db_url
+  private baseUrl = environment.back_url
   
 
   constructor(
