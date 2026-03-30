@@ -9,8 +9,11 @@ h1, h2, h3 {
   color: var(--p-text-color);
 }
 
-footer {
-  background-color: var(--p-surface-900); 
-  padding: 3rem 1rem;
+.app-footer {
+  background: var(--p-surface-900);
+  color: var(--p-surface-200);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-size: 13px;
   margin-top: 4rem;
 }

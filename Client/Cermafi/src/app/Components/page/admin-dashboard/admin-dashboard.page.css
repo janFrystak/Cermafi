@@ -357,3 +357,13 @@
 :host-context(.p-dark) .toggle-btn:hover {
   color: var(--p-surface-100);
 }
+
+:host-context(.p-dark) .card {
+  background: var(--p-surface-900);
+  border-color: var(--p-surface-700);
+}
+
+:host-context(.p-dark) .kpi {
+  background: var(--p-surface-900);
+  border-color: var(--p-surface-700);
+}
