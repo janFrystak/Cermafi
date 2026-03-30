@@ -53,9 +53,9 @@
   <div class="card school-section" id="school-section">
     <div class="section-header">
       <div class="section-label">Školy nabízející tento obor</div>
-      <select class="kraj-filter" [(ngModel)]="selectedKraj" (change)="filterSchools()">
+      <select class="kraj-filter" [(ngModel)]="selectedRegion" (change)="filterSchools()">
         <option value="">Všechny kraje</option>
-        @for (kraj of availableKraje; track $index) {
+        @for (kraj of availableRegions; track $index) {
         <option [value]="kraj">{{ kraj }}</option> }
       </select>
     </div>

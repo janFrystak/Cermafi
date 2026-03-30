@@ -16,6 +16,6 @@ export class Obor {
     @Column({name: 'zkraceny_nazev'})
     zkracenyNazev!:string
 
-    @OneToMany(()=>UchazecVolba, volba=>volba.obor_join)
-    volba_join!: UchazecVolba
+    @OneToMany(()=>UchazecVolba, volba=>volba.oborJoin)
+    volbaJoin!: UchazecVolba
 }

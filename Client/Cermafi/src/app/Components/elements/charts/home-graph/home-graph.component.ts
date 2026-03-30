@@ -52,8 +52,8 @@ export class HomeGraphComponent implements OnInit {
         this.dataService.getChartData_YearsRange(String(firstYear), String(lastYear)).subscribe({
           next: (res) => {
 
-            const dataMinRound1 = Math.min(...res.value_round1);
-            const dataMinRound2 = Math.min(...res.value_round2);
+            const dataMinRound1 = Math.min(...res.valueRound1);
+            const dataMinRound2 = Math.min(...res.valueRound2);
 
             this.chartOptions = {
               ...this.chartOptions,
@@ -82,7 +82,7 @@ export class HomeGraphComponent implements OnInit {
               datasets: [
                 {
                   label: 'Počet uchazečů (Kolo 2)',
-                  data: res.value_round2,
+                  data: res.valueRound2,
                   borderColor: 'rgb(0, 31, 61)',
                   backgroundColor: 'rgb(230, 230, 230, 0.35)',
                   fill: true,
@@ -94,7 +94,7 @@ export class HomeGraphComponent implements OnInit {
                 },
                 {
                   label: 'Počet uchazečů (Kolo 1)',
-                  data: res.value_round1,
+                  data: res.valueRound1,
                   borderColor: 'rgb(237, 152, 95)',
                   backgroundColor: 'rgb(250, 216, 183, 0.35)',
                   fill: true,

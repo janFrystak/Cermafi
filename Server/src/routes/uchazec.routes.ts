@@ -13,14 +13,14 @@ uchazecRouter.get('/single/:id', async (req: Request, res: Response) => {
         const uchazec = await uchazecRepository.findOne({
             where: { id },
             relations: {
-                volba_join: {
-                    obor_join: true,
-                    neprijeti_join: true,
-                    skola_join: true
+                volbaJoin: {
+                    oborJoin: true,
+                    neprijetiJoin: true,
+                    skolaJoin: true
                 }
             },
             order: {
-                volba_join: {
+                volbaJoin: {
                     priorita: 'ASC'
                 }
             }
@@ -45,8 +45,8 @@ uchazecRouter.get('/count/:year', async (req: Request, res: Response) => {
         ]);
         return res.json({
             labels: ['Počet uchazečů'],
-            value_round1: [total_round1],
-            value_round2: [total_round2]
+            valueRound1: [total_round1],
+            valueRound2: [total_round2]
         });
     } catch (err) {
         console.error(err);
@@ -80,19 +80,19 @@ uchazecRouter.get('/years/:start/:end', async (req: Request, res: Response) => {
             .getRawMany();
 
         const yearsRange = Array.from({ length: end - start + 1 }, (_, i) => start + i);
-        const value_round1 = yearsRange.map(y => {
+        const valueRound1 = yearsRange.map(y => {
             const entry = rawData.find(d => Number(d.year) === y && Number(d.round) === 1);
             return entry ? Number(entry.count) : 0;
         });
-        const value_round2 = yearsRange.map(y => {
+        const valueRound2 = yearsRange.map(y => {
             const entry = rawData.find(d => Number(d.year) === y && Number(d.round) === 2);
             return entry ? Number(entry.count) : 0;
         });
 
         return res.json({
             labels: yearsRange.map(String),
-            value_round1,
-            value_round2
+            valueRound1,
+            valueRound2
         });
     } catch (err) {
         console.error(err);
@@ -119,10 +119,10 @@ uchazecRouter.get('/available-years', async (req: Request, res: Response) => {
     try {
         const all = await uchazecRepository.find({
             relations: {
-                volba_join: {
-                    skola_join: true,
-                    obor_join: true,
-                    neprijeti_join: true
+                volbaJoin: {
+                    skolaJoin: true,
+                    oborJoin: true,
+                    neprijetiJoin: true
                 }
             }
         });

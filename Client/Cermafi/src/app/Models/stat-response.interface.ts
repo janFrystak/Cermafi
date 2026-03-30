@@ -3,8 +3,8 @@ import { SchoolModel } from "./object-models.interface";
 
 export interface ChartResponse {
   labels: string[];
-  value_round1: number[];  
-  value_round2: number[]; 
+  valueRound1: number[];  
+  valueRound2: number[]; 
 }
 
 export interface RegionResponse {

@@ -31,21 +31,21 @@ export class UchazecVolba {
     duvod_neprijeti!: number; 
 
     
-    @ManyToOne(() => Uchazec, (uchazec) => uchazec.volba_join, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Uchazec, (uchazec) => uchazec.volbaJoin, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'uchazec_id'})
-    uchazec_join!:Uchazec;
+    uchazecJoin!:Uchazec;
 
-    @ManyToOne(() => Obor, (obor) => obor.volba_join)
+    @ManyToOne(() => Obor, (obor) => obor.volbaJoin)
     @JoinColumn({ name: 'obor_kod', referencedColumnName: 'kod' })
-    obor_join!:Obor
+    oborJoin!:Obor
 
-    @ManyToOne(()=> Neprijeti,(neprijeti) => neprijeti.volba_join)
+    @ManyToOne(()=> Neprijeti,(neprijeti) => neprijeti.volbaJoin)
     @JoinColumn({name: 'duvod_neprijeti_id'})
-    neprijeti_join!:Neprijeti
+    neprijetiJoin!:Neprijeti
 
-    @ManyToOne(()=> Skola, (skola) => skola.volba_join)
+    @ManyToOne(()=> Skola, (skola) => skola.volbaJoin)
     @JoinColumn({name: 'redizo', referencedColumnName:'red_izo'})
-    skola_join!:Skola
+    skolaJoin!:Skola
     
     
 }

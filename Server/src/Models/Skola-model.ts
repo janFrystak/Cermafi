@@ -87,12 +87,12 @@ export class Skola {
   kapacita!: string;
 
 
-  @OneToMany(() => UchazecVolba, (volba) => volba.skola_join)
-  volba_join!: UchazecVolba[];
+  @OneToMany(() => UchazecVolba, (volba) => volba.skolaJoin)
+  volbaJoin!: UchazecVolba[];
 
-  @ManyToOne(() => Kraj, (kraj) => kraj.skola_join)
+  @ManyToOne(() => Kraj, (kraj) => kraj.skolaJoin)
   @JoinColumn({ name: 'kraj_id' }) 
-  kraj_join!: Kraj;
+  krajJoin!: Kraj;
 
   
 

@@ -10,7 +10,7 @@ import { ChartData, ChartOptions } from 'chart.js';
 import { ChartComponent } from '../../elements/charts/chart-component/chart-component.component';
 
 @Component({
-  selector: 'app-single-fiel-page',
+  selector: 'app-single-field-page',
   imports: [Skeleton, FormsModule, ChartComponent],
   templateUrl: './single-field-page.page.html',
   styleUrl: './single-field-page.page.css'
@@ -18,8 +18,8 @@ import { ChartComponent } from '../../elements/charts/chart-component/chart-comp
 export class SingleFieldPage implements OnInit {
   fieldData: FieldDetail | null = null;
   filteredSchools: FieldSchool[] = [];
-  availableKraje: string[] = [];
-  selectedKraj: string = '';
+  availableRegions: string[] = [];
+  selectedRegion: string = '';
   schoolsLoading = false;
 
   currentPage = 1;
@@ -58,7 +58,7 @@ export class SingleFieldPage implements OnInit {
     }).subscribe({
       next: (data) => {
         this.fieldData = { ...data.meta, ...data, schools: [] };
-        this.availableKraje = data.byRegion.map((r: FieldRegion) => r.name).sort();
+        this.availableRegions = data.byRegion.map((r: FieldRegion) => r.name).sort();
         this.totalPages = Math.ceil(data.meta.schoolCount / this.PAGE_SIZE);
 
         this.trendChartData = {
@@ -106,7 +106,7 @@ export class SingleFieldPage implements OnInit {
     this.schoolsLoading = true;
     const offset = (this.currentPage - 1) * this.PAGE_SIZE;
 
-    this.fieldService.getData_FieldSchools(id, this.PAGE_SIZE, offset, this.selectedKraj || undefined).subscribe({
+    this.fieldService.getData_FieldSchools(id, this.PAGE_SIZE, offset, this.selectedRegion || undefined).subscribe({
       next: (response) => {
         this.filteredSchools = response.schools;
         this.totalPages = Math.ceil(response.total / this.PAGE_SIZE);

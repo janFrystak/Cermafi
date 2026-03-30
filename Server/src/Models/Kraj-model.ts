@@ -13,6 +13,6 @@ export class Kraj {
   short_name!: string; 
 
 
-  @OneToMany(() => Skola, skola => skola.kraj_join)
-  skola_join!: Skola[];
+  @OneToMany(() => Skola, skola => skola.krajJoin)
+  skolaJoin!: Skola[];
 }

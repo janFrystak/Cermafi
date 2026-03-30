@@ -23,6 +23,6 @@ export class Uchazec {
     c_procentni_skor!: number;  
 
     //backwards lookup
-    @OneToMany(()=> UchazecVolba, (volba) => volba.uchazec_join)
-    volba_join!: UchazecVolba[]
+    @OneToMany(()=> UchazecVolba, (volba) => volba.uchazecJoin)
+    volbaJoin!: UchazecVolba[]
 }
