@@ -142,7 +142,7 @@ adminRouter.post("/upload", upload.array('file'), async (req: Request, res: Resp
 
 
 // get list of all accounts
-adminRouter.get('/accounts', /*rootOnly,*/ async (req: Request, res: Response) => {
+adminRouter.get('/accounts', rootOnly, async (req: Request, res: Response) => {
     try {
         const user = await adminRepository.find({
             select: ['id', 'username', 'permissionLevel'],
@@ -156,7 +156,7 @@ adminRouter.get('/accounts', /*rootOnly,*/ async (req: Request, res: Response) =
 });
 
 // create admin account
-adminRouter.post('/account',  /*rootOnly,*/ async (req: Request, res: Response) => {
+adminRouter.post('/account',  rootOnly, async (req: Request, res: Response) => {
     const { username, password, permissionLevel = 1 } = req.body;
 
     if (!username || !password) {
@@ -187,7 +187,7 @@ adminRouter.post('/account',  /*rootOnly,*/ async (req: Request, res: Response) 
 });
 
 // delete admin account
-adminRouter.delete('/account/:id', /*rootOnly,*/ async (req: Request, res: Response) => {
+adminRouter.delete('/account/:id', rootOnly, async (req: Request, res: Response) => {
     const { id } = req.params;
     const myId  = (req as any).user.id;
 
@@ -210,7 +210,7 @@ adminRouter.delete('/account/:id', /*rootOnly,*/ async (req: Request, res: Respo
 });
 
 // change password
-adminRouter.patch('/account/:id/password', /*rootOnly,*/ async (req: Request, res: Response) => {
+adminRouter.patch('/account/:id/password', rootOnly, async (req: Request, res: Response) => {
     const { id } = req.params;
     const { password } = req.body;
 
