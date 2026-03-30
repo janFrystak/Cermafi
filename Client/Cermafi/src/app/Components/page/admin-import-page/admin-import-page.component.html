@@ -2,7 +2,7 @@
   <p-card header="Data Importer" subheader="Upload Cermat Excel files to PostgreSQL">
     
     <div class="flex align-items-center gap-3 mb-4 p-3 border-round bg-muted">
-      <p-inputSwitch [(ngModel)]="isWiping" inputId="wipe-toggle"></p-inputSwitch>  
+      <p-inputSwitch [(ngModel)]="isWiping" inputId="append-toggle"></p-inputSwitch>  
       @if (isWiping){
         <p-tag severity="danger" value="REPLACE MODE" pTooltip="WARNING: Will delete already existing data / Smaže už existující data"></p-tag>
       } @else {

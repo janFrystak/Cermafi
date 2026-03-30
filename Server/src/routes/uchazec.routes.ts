@@ -55,9 +55,9 @@ uchazecRouter.get('/count/:year', async (req: Request, res: Response) => {
 });
 
 // GET /uchazec/years?start=X&end=Y
-uchazecRouter.get('/years', async (req: Request, res: Response) => {
-    const start = parseInt(req.query.start?.toString() || '');
-    const end = parseInt(req.query.end?.toString() || '');
+uchazecRouter.get('/years/:start/:end', async (req: Request, res: Response) => {
+    const start = parseInt(req.params.start);
+    const end = parseInt(req.params.end);
     const maxYearRange = 20;
 
     if (isNaN(start) || isNaN(end) || start > end) {
@@ -115,7 +115,7 @@ uchazecRouter.get('/available-years', async (req: Request, res: Response) => {
 });
 
 
-uchazecRouter.get('/', async (req: Request, res: Response) => {
+/*uchazecRouter.get('/', async (req: Request, res: Response) => {
     try {
         const all = await uchazecRepository.find({
             relations: {
@@ -134,4 +134,4 @@ uchazecRouter.get('/', async (req: Request, res: Response) => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error.' });
     }
-});
+});*/

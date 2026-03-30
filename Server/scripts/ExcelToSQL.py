@@ -201,8 +201,8 @@ def run(filepaths):
         option = None    
     for path in filepaths:
         chosen_sheet = None
-        xl = pd.ExcelFile(path)
-        sheets = xl.sheet_names
+        excel = pd.ExcelFile(path)
+        sheets = excel.sheet_names
         if option is None:
             sheets_id = []
             for id, item in enumerate(sheets):

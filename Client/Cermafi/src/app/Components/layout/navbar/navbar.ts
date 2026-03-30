@@ -4,7 +4,7 @@ import { Menubar } from "primeng/menubar";
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { DarkModeToggle } from '../../elements/dark-mode-toggle/dark-mode-toggle';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../../auth.service';
+import { AuthService } from '../../../Services/auth.service';
 import { AsyncPipe } from '@angular/common';
 import { Menu } from 'primeng/menu'
 

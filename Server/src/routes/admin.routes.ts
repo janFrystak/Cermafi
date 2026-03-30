@@ -91,7 +91,7 @@ adminRouter.get('/me', (req, res) => {
 //try to upload new data using the ImportToDB.py script
 adminRouter.post("/upload", upload.array('file'), async (req: Request, res: Response) => {
     try {
-        const wipeFlag: string = req.body.wipeData === 'true' ? 'true' : 'false';
+        const appendOption: string = req.body.appendData === 'true' ? 'true' : 'false';
         const files: Express.Multer.File[] = req.files as Express.Multer.File[];
         const filePaths: string[] = files.map(file => file.path);
         const scriptPath = path.join(__dirname, '../../scripts/ImportToDB.py');
@@ -105,7 +105,7 @@ adminRouter.post("/upload", upload.array('file'), async (req: Request, res: Resp
 
         const pythonProcess = spawn('python3', [
             scriptPath,
-            wipeFlag,
+            appendOption,
             ...filePaths,
         ]);
 
@@ -120,8 +120,6 @@ adminRouter.post("/upload", upload.array('file'), async (req: Request, res: Resp
         pythonProcess.on('close', (code) => {
             //delete temp files
             filePaths.forEach(p => fs.unlinkSync(p));
-
-
             if (code === 0) {
                 res.status(200).json({
                     message: "Import succesful",

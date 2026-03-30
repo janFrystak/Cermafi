@@ -40,7 +40,7 @@ testem.log
 /typings
 /data/
 /blacklist/
-
+/testing
 
 # System files
 .DS_Store

@@ -100,12 +100,12 @@ def convert(path, engine, append_mode):
     
 def run():
     if len(sys.argv) < 3:
-        print("ERROR|SYSTEM|Usage: script.py <wipe_flag> <file_paths...>")
+        print("ERROR|SYSTEM|Usage: script.py <append_option> <file_paths...>")
         sys.exit(1)
 
-    wipe_flag = sys.argv[1]
+    append_option = sys.argv[1]
     file_paths = sys.argv[2:]
-    append_mode = "replace" if wipe_flag == "true" else "append"
+    append_mode = "replace" if append_option == "true" else "append"
 
     try:
         engine = create_engine(f"postgresql+psycopg2://{user}:{pswd}@{host}:{port}/{database}")
@@ -114,7 +114,7 @@ def run():
             convert(path, engine, append_mode)
             append_mode = "append" # Switch to append for subsequent files
 
-        if wipe_flag == "true":
+        if append_option == "true":
             with engine.connect() as conn:
                 conn.execute(text("CREATE INDEX IF NOT EXISTS idx_volba_uchazec_id ON uchazec_volba (uchazec_id);"))
                 conn.execute(text("CREATE INDEX IF NOT EXISTS idx_volba_redizo ON uchazec_volba (redizo);"))

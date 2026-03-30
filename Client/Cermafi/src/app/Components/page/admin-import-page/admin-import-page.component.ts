@@ -25,7 +25,7 @@ export class AdminImportPage {
   constructor(private messageService: MessageService){}
 
   onStartUpload(event: any){
-    event.formData.append('wipeData', this.isWiping.toString());
+    event.formData.append('appendData', this.isWiping.toString());
     this.isImporting = true;
     this.addLog('Starting import process...');
   }

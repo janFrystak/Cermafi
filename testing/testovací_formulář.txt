@@ -2,7 +2,7 @@
                     CERMAFI — TESTOVACÍ FORMULÁŘ
 
 
-Jméno testera:
+
 Prohlížeč:
 Operační systém:
 --------------------------------------------------------------------------------
