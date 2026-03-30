@@ -27,19 +27,19 @@ export class AdminImportPage {
   onStartUpload(event: any){
     event.formData.append('appendData', this.isWiping.toString());
     this.isImporting = true;
-    this.addLog('Starting import process...');
+    this.addLog('Začínám proces nahrávání...');
   }
 
   onUploadSuccess(event: any) {
     this.isImporting = false;
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data imported successfully' });
-    this.addLog('Import completed successfully.');
+    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Data byly nahrány úspěšně' });
+    this.addLog('Data úspěšně nahrány.');
   }
 
   onUploadError(event: any) {
     this.isImporting = false;
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Import failed' });
-    this.addLog('ERROR: Import process failed. Check server logs.');
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Nepovedlo se nahrát data' });
+    this.addLog('ERROR: Nahrávací proces selhal. Zkontrolujte serverové logy.');
   }
 
   private addLog(msg: string) {

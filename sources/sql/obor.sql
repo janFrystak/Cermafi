@@ -5,7 +5,7 @@
 -- Dumped from database version 15.14 (Homebrew)
 -- Dumped by pg_dump version 16.0
 
--- Started on 2026-03-30 12:04:49 CEST
+-- Started on 2026-03-30 15:22:05 CEST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1381,7 +1381,6 @@ COPY public.obor (id, kod, nazev, zkraceny_nazev) FROM stdin;
 1354	7941K407	Gymnázium - estetickovýchovné předměty (4leté)	G-estet.vých.předm.,4leté
 1355	7941K408	Gymnázium - živé jazyky (4eté)	G-živé jazyky,4leté
 1356	7941K409	Gymnázium - klasické jazyky (4leté)	G-klasické jazyky,4leté
-1357	7941K41	Gymnázium	Gymnázium
 1358	7941K411	Gymnázium - humanitní předměty (4leté)	G-humanitní předm.,4leté
 1359	7941K413	Gymnázium - tělesná výchova (4leté)	G-tělesná výchova,4leté
 1360	7941K420	Gymnázium - sportovní příprava (4leté)	G-sport.příprava,4leté
@@ -1393,7 +1392,6 @@ COPY public.obor (id, kod, nazev, zkraceny_nazev) FROM stdin;
 1366	7941K607	Gymnázium - estetickovýchovné předměty (6leté)	G-estet.vých.předm.,6leté
 1367	7941K608	Gymnázium - živé jazyky (6leté)	G-živé jazyky,6leté
 1368	7941K609	Gymnázium - klasické jazyky (6leté)	G-klasické jazyky,6leté
-1369	7941K61	Gymnázium	Gymnázium
 1370	7941K610	Gymnázium - vybrané předměty v cizím jazyce (6leté)	G-předm.v ciz.jaz.,6leté
 1371	7941K611	Gymnázium - humanitní předměty (6leté)	G-humanitní předm.,6leté
 1372	7941K613	Gymnázium - tělesná výchova (6leté)	G-tělesná výchova,6leté
@@ -1406,7 +1404,6 @@ COPY public.obor (id, kod, nazev, zkraceny_nazev) FROM stdin;
 1379	7941K807	Gymnázium - estetickovýchovné předměty (8leté)	G-estet.vých.předm.,8leté
 1380	7941K808	Gymnázium - živé jazyky (8leté)	G-živé jazyky,8leté
 1381	7941K809	Gymnázium - klasické jazyky (8leté)	G-klasické jazyky,8leté
-1382	7941K81	Gymnázium	Gymnázium
 1383	7941K810	Gymnázium - vybrané předměty v cizím jazyce (8leté)	G-předm.v ciz.jaz.,8leté
 1384	7941K811	Gymnázium - humanitní předměty (8leté)	G-humanitní předm.,8leté
 1385	7941K813	Gymnázium - tělesná výchova (8leté)	G-tělesná výchova,8leté
@@ -1439,6 +1436,8 @@ COPY public.obor (id, kod, nazev, zkraceny_nazev) FROM stdin;
 1412	8241M026	Konstrukce a tvorba nábytku	Konstr.,tvorba nábytku
 1413	8241M028	Modelářství a návrhářství obuvi a módních doplňků	Model.,návrh.obuvi,doplň.
 1414	8241M03	Scénická a výstavní tvorba	Scénická a výst.tvorba
+1357	7941K41	Gymnázium - čtyřleté studium	Gymnázium
+1369	7941K61	Gymnázium - šestileté studium	Gymnázium
 1415	8241M030	Tvarování dřeva a řezbářství	Tvarování dřeva,řezbářst.
 1416	8241M031	Uměleckořemeslná stavba varhan	Uměl.řem.stavba varhan
 1417	8241M032	Grafika v reklamní praxi	Grafika v reklamní praxi
@@ -1644,10 +1643,11 @@ COPY public.obor (id, kod, nazev, zkraceny_nazev) FROM stdin;
 1617	8251L51	Umělecké řemeslné práce	Umělecké řemeslné práce
 1618	8251L536	Scénická tvorba	Scénická tvorba
 1619	9111N01	Ochrana vojsk a obyvatelstva při krizových situacích	Ochr.vojsk,obyvatelstva
+1382	7941K81	Gymnázium - osmileté studium	Gymnázium
 \.
 
 
--- Completed on 2026-03-30 12:04:49 CEST
+-- Completed on 2026-03-30 15:22:05 CEST
 
 --
 -- PostgreSQL database dump complete

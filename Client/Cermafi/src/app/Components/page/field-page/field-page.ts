@@ -37,6 +37,6 @@ export class FieldPage implements OnInit {
     i.h1.toLowerCase().includes(text.toLowerCase()) ||
     i.h2?.toLowerCase().includes(text.toLowerCase())
   );
-  /* if (match) this.router.navigate(['/field', match.id]); */
+  if (match) this.router.navigate(['/field', match.id]);
 }
 }
