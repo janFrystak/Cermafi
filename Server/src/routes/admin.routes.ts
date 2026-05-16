@@ -27,7 +27,7 @@ const rootOnly = (req: Request, res: Response, next: NextFunction) => {
 };
 
 //middleWare checking the cookies token for wherever is is valid and correct
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ message: 'Unauthorized' });
 

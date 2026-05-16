@@ -11,6 +11,7 @@ import { regionRouter } from './routes/region.routes';
 import { uchazecRouter } from './routes/uchazec.routes';
 import { statsRouter } from './routes/stats.routes';
 import { schoolRouter } from './routes/school.routes';
+import { configRouter } from './routes/config.routes';
 import path from 'path';
 
 const port = Number(process.env.PORT)
@@ -36,6 +37,7 @@ app.use('/region', regionRouter);
 app.use('/uchazec', uchazecRouter);
 app.use('/stats', statsRouter);
 app.use('/school', schoolRouter);
+app.use('/config', configRouter);
 
 AppDataSource.initialize()
     .then(() => {

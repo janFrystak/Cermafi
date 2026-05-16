@@ -1,6 +1,13 @@
-<div class="countdown-container">
-      <span>Zbývá do přijímaček:</span>
-      <div class="timer">
-        {{ days }}d : {{ hours }}h : {{ minutes }}m : {{ seconds }}s
-      </div>
+@if (announced) {
+  <div class="countdown-container">
+  <span>Zbývá do přijímaček:</span>
+    <div class="timer">
+      {{ days }}d : {{ hours }}h : {{ minutes }}m : {{ seconds }}s
     </div>
+  </div>
+} @else {
+  <div class="not-announced">
+    <span>Termín dosud nebyl oznámen</span>
+  </div>
+}
+

@@ -41,4 +41,38 @@
 }
     
   </p-card>
+
+  <p-card>
+    <div class="card-label">Termín přijímacích zkoušek</div>
+
+    <div class="form-group">
+        <label class="form-label">Datum termínu</label>
+        <input
+            type="date"
+            class="form-input"
+            [(ngModel)]="targetDate" />
+    </div>
+
+    <div style="display: flex; gap: 8px; margin-top: 0.5rem;">
+        <button class="btn btn-primary" 
+            style="flex: 1;"
+            (click)="saveDate()" 
+            [disabled]="savingDate || !targetDate">
+            {{ savingDate ? 'Ukládám...' : 'Uložit datum' }}
+        </button>
+        <button class="btn btn-ghost btn-sm"
+            (click)="clearDate()"
+            [disabled]="savingDate || !targetDate">
+            <i class="pi pi-times"></i>
+            Vymazat
+        </button>
+    </div>
+
+    @if (dateMessage) {
+        <p style="font-size: 12px; margin-top: 0.5rem;"
+           [style.color]="dateMessage === 'Uloženo' ? 'var(--p-green-600)' : 'var(--p-red-500)'">
+            {{ dateMessage }}
+        </p>
+    }
+  </p-card>
 </div>
