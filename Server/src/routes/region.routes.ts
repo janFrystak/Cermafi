@@ -68,7 +68,7 @@ regionRouter.get('/summary/:id/:year', async (req: Request, res: Response) => {
                 JOIN public.skola s ON uv.redizo = s.red_izo
                 WHERE 
                     s.kraj_id = $1 AND uv.priorita = '1' AND u.rok = $2
-                GROUP BY fullName, shortName, s.red_izo, place, s.id
+                GROUP BY "fullName", "shortName", s.red_izo, place, s.id
                 ORDER BY count DESC
                 LIMIT 5                        
             `, [regionId, year])
@@ -146,7 +146,7 @@ regionRouter.get('/summary/:id', async (req: Request, res: Response) => {
                 JOIN public.uchazec u ON uv.uchazec_id = u.id
                 JOIN public.skola s ON uv.redizo = s.red_izo
                 WHERE s.kraj_id = $1 AND uv.priorita = '1'
-                GROUP BY shortName, fullName, s.red_izo, place, s.id
+                GROUP BY "shortName", "fullName", s.red_izo, place, s.id
                 ORDER BY count DESC
                 LIMIT 5
             `, [regionId])
