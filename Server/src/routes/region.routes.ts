@@ -57,8 +57,8 @@ regionRouter.get('/summary/:id/:year', async (req: Request, res: Response) => {
 
             AppDataSource.query(`
                 SELECT 
-                    s.plny_nazev as full_name, 
-                    s.zkraceny_nazev as short_name,
+                    s.plny_nazev as fullName, 
+                    s.zkraceny_nazev as shortName,
                     COUNT(*) as count,
                     s.red_izo as redizo,
                     s.misto as place,
