@@ -61,7 +61,7 @@ export class SingleRegionPage implements OnInit {
     request.subscribe({
       next: (data) => {
         this.regionData = data;
-        /* console.log('Data loaded:', this.regionData); */
+        console.log('topSchools:', data.topSchools); 
         this.dataLoading = false
       },
       error: (err) => console.error('Error fetching region data:', err)
