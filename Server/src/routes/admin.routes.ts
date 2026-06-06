@@ -11,7 +11,10 @@ import { Admin } from '../Models/Admin-model';
 
 
 export const adminRouter = Router();
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ 
+    dest: 'uploads/',
+    limits :{ fileSize: 50 * 1024 * 1024}
+ });
 const SALT_ROUNDS = 12;
 const adminRepository = AppDataSource.getRepository(Admin)
 
