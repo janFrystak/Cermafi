@@ -92,56 +92,63 @@ adminRouter.get('/me', (req, res) => {
 
 
 //try to upload new data using the ImportToDB.py script
-adminRouter.post("/upload", upload.array('file'), async (req: Request, res: Response) => {
-    try {
-        const appendOption: string = req.body.appendData === 'true' ? 'true' : 'false';
-        const files: Express.Multer.File[] = req.files as Express.Multer.File[];
-        const filePaths: string[] = files.map(file => file.path);
-        const scriptPath = path.join(__dirname, '../../scripts/ImportToDB.py');
-        let pythonStderr = ''
-        let pythonStdout = ''
-
-        if (filePaths.length === 0 || !filePaths) {
-            console.error("No files found in request");
-            return res.status(400).json({ message: "No files uploaded" });
-        }
-
-        const pythonProcess = spawn('python3', [
-            scriptPath,
-            appendOption,
-            ...filePaths,
-        ]);
-
-        pythonProcess.stdout.on('data', (data) => {
-            pythonStdout += data.toString();
+adminRouter.post("/upload",
+    (req: Request, res: Response, next: any) => {
+        upload.array('file')(req, res, (err) => {
+            if (err) {
+                console.error("Multer error: ", err);
+                return res.status(400).json({ message: "Chyba při nahrávání souboru", details: err.message });
+            }
+            next();
         });
+    },
+    async (req: Request, res: Response) => {
+        try {
+            const appendOption: string = req.body.appendData === 'true' ? 'true' : 'false';
+            const files: Express.Multer.File[] = req.files as Express.Multer.File[];
+            const filePaths: string[] = files.map(file => file.path);
+            const scriptPath = path.join(__dirname, '../../scripts/ImportToDB.py');
 
-        pythonProcess.stderr.on('data', (data) => {
-            pythonStderr += data.toString();
-        })
+            if (!filePaths || filePaths.length === 0) {
+                console.error("No files found in request");
+                return res.status(400).json({ message: "No files uploaded" });
+            }
 
-        pythonProcess.on('close', (code) => {
-            //delete temp files
-            filePaths.forEach(p => fs.unlinkSync(p));
-            if (code === 0) {
-                res.status(200).json({
-                    message: "Import succesful",
-                    details: pythonStdout || ""
-                })
-                console.log("Import sucesfull")
-            }
-            else {
-                res.status(500).json({
-                    message: 'Import failed',
-                    details: pythonStderr || "Unknown error"
-                })
-                console.log("Python script creashed, returned: " + pythonStderr)
-            }
-        })
-    } catch (err) {
-        console.log("Import error: " + err)
+            const pythonProcess = spawn('python3', [
+                scriptPath,
+                appendOption,
+                ...filePaths,
+            ]);
+
+            res.status(202).json({ message: "Import spuštěn, může trvat několik minut." });
+
+            let pythonStderr = '';
+            let pythonStdout = '';
+
+            pythonProcess.stdout.on('data', (data) => {
+                pythonStdout += data.toString();
+            });
+
+            pythonProcess.stderr.on('data', (data) => {
+                pythonStderr += data.toString();
+            });
+
+            pythonProcess.on('close', (code) => {
+                filePaths.forEach(p => {
+                    try { fs.unlinkSync(p); } catch {}
+                });
+                if (code === 0) {
+                    console.log("Import úspěšný:", pythonStdout);
+                } else {
+                    console.error("Import selhal:", pythonStderr);
+                }
+            });
+
+        } catch (err) {
+            console.log("Import error: " + err);
+        }
     }
-})
+);
 
 
 // get list of all accounts
