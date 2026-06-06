@@ -14,6 +14,7 @@
     <p-fileUpload 
       name="file" 
       [url]="uploadUrl"
+      [withCredentials] = "true"
       accept=".xlsx,.xls" 
       [multiple]="true" 
       maxFileSize="50000000"
